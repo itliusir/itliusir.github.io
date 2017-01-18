@@ -146,7 +146,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                3
+                4
                 <span>文章</span>
             </div>
             <div class="article-info-block">
@@ -340,6 +340,229 @@
             
     
         <a href="http://itliusir.github.io/2017/01/18/3.1 Docker介绍/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/3.1 Docker介绍/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-3.2 Docker的安装" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/01/18/3.2 Docker的安装/">Docker的安装</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/01/18/3.2 Docker的安装/">
+            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/docker/">docker</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Docker的安装是比较简单的，笔者原本不想过多提及；但是看到有不少读者对Docker的安装提出了疑问，故此进行一个安装的总结。</p>
+<p>对于Linux用户可以借助其发行版的Linux包管理工具安装，对于Windows和MAC用户相对麻烦一些，笔者下面以Windows7系统为例，讲述安装过程。<strong>笔者强烈建议大家使用Linux系统进入本章的学习</strong>，第一是比较符合目前Docker的市场趋势，第二Docker本身就是基于Linux的LXC技术。</p>
+<h2 id="CentOS-7-0下Docker的安装"><a href="#CentOS-7-0下Docker的安装" class="headerlink" title="CentOS 7.0下Docker的安装"></a>CentOS 7.0下Docker的安装</h2><ol>
+<li><p>查看内核版本(Docker需要64位版本，同时内核版本在3.10以上，如果版本低于3.10，需要升级内核)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r</div></pre></td></tr></table></figure>
+</li>
+<li><p>更新yum包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加yum仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-&apos;EOF&apos;</div><div class="line">[dockerrepo]</div><div class="line">name=Docker Repository</div><div class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/7/</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=https://yum.dockerproject.org/gpg</div><div class="line">EOF</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装Docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install docker-engine</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动Docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service docker start</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Docker国内镜像（为Docker镜像下载提速，非必须）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://fe8a7d6e.m.daocloud.io</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>参考：</p>
+<blockquote>
+<p>官方文档：<a href="https://docs.docker.com/engine/installation/linux/centos/" target="_blank" rel="external">https://docs.docker.com/engine/installation/linux/centos/</a></p>
+</blockquote>
+<h2 id="CentOS-6-5下Docker的安装"><a href="#CentOS-6-5下Docker的安装" class="headerlink" title="CentOS 6.5下Docker的安装"></a>CentOS 6.5下Docker的安装</h2><p>Docker容器最早受到RHEL完善的支持是从最近的CentOS 7.0开始的，官方说明是只能运行于64位架构平台，内核版本为2.6.32-431及以上（即 &gt;= CentOS 6.5，运行docker时实际提示3.10.0及以上）。<br>需要注意的是CentOS 6.5与7.0的安装是有一点点不同的，CentOS 6.x上Docker的安装包叫docker-io，并且来源于Fedora epel库，这个仓库维护了大量的没有包含在发行版中的软件，所以先要安装EPEL，而CentOS 7.x的Docker直接包含在官方镜像源的Extras仓库（CentOS-Base.repo下的[extras]节enable=1启用）。</p>
+<p>下面就CentOS 6.5讲解Docker的安装过程，以下是软件版本：</p>
+<table>
+<thead>
+<tr>
+<th>Linux版本</th>
+<th>Docker版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS 6.5 X64（只能X64）</td>
+<td>1.7.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="升级内核"><a href="#升级内核" class="headerlink" title="升级内核"></a>升级内核</h3><p>查看内核版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r</div></pre></td></tr></table></figure>
+<p>结果：<code>2.6.32-431.el6.x86_64</code>，不满足上文的需求，故此需要升级内核。</p>
+<p>升级步骤：</p>
+<ol>
+<li><p>导入公钥数字证书</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装ELRepo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh http://www.elrepo.org/elrepo-release-6-5.el6.elrepo.noarch.rpm</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装kernel长期版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum --enablerepo=elrepo-kernel install kernel-lt -y 	# lt表示long-term的意思，长期维护版本，也可以将kernel-lt改为kernel-ml，安装主线版本</div></pre></td></tr></table></figure>
+</li>
+<li><p>编辑grub.conf文件，修改Grub引导顺序，确认刚安装好的内核在哪个位置，然后设置default值（从0开始），一般新安装的内核在第一个位置，所以设置default=0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">vim /etc/grub.conf</div><div class="line"></div><div class="line"># 以下是/etc/grub.conf的内容</div><div class="line">default=0		# 修改该值即可</div><div class="line">timeout=5</div><div class="line">splashimage=(hd0,0)/grub/splash.xpm.gz</div><div class="line">hiddenmenu</div><div class="line">title CentOS (3.10.103-1.el6.elrepo.x86_64)</div></pre></td></tr></table></figure>
+</li>
+<li><p>重启并查看内核版本，将会发现内核已经更新。</p>
+</li>
+</ol>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><ol>
+<li><p>禁用selinux，因为selinux和LXC有冲突，故而需要禁用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/selinux/config的内容</div><div class="line"></div><div class="line"># 以下是/etc/selinux/config的内容</div><div class="line">#     enforcing - SELinux security policy is enforced.</div><div class="line">#     permissive - SELinux prints warnings instead of enforcing.</div><div class="line">#     disabled - No SELinux policy is loaded.</div><div class="line">SELINUX=disabled  # 将SELINUX设为disabled，注意修改后最好重启下机器。</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装 Fedora EPEL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装Docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y docker-io</div></pre></td></tr></table></figure>
+</li>
+<li><p>以守护模式运行Docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker -d</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果不报错，那就是启动成功了，如果报以下异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker: relocation error: docker: symbol dm_task_get_info_with_deferred_remove, version Base not defined in file libdevmapper.so.1.02 with link time reference</div><div class="line">INFO[0000] Listening for HTTP on unix (/var/run/docker.sock)</div></pre></td></tr></table></figure>
+<p>执行以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum upgrade device-mapper-libs</div></pre></td></tr></table></figure>
+</li>
+<li><p>将Docker开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig docker on</div></pre></td></tr></table></figure>
+</li>
+<li><p>重启机器</p>
+</li>
+</ol>
+<h2 id="其他平台的安装"><a href="#其他平台的安装" class="headerlink" title="其他平台的安装"></a>其他平台的安装</h2><p>请参考：<a href="https://docs.docker.com/engine/installation/" target="_blank" rel="external">https://docs.docker.com/engine/installation/</a></p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><blockquote>
+<p>Windows：<a href="https://docs.docker.com/engine/installation/windows/" target="_blank" rel="external">https://docs.docker.com/engine/installation/windows/</a></p>
+<p>MAC： <a href="https://docs.docker.com/engine/installation/mac/" target="_blank" rel="external">https://docs.docker.com/engine/installation/mac/</a></p>
+<p>CentOS：<a href="https://docs.docker.com/engine/installation/linux/centos/" target="_blank" rel="external">https://docs.docker.com/engine/installation/linux/centos/</a></p>
+</blockquote>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/" data-id="ciy29bir100003ks1s6ab1f8d" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/">评论</a>
     
 
         </footer>
@@ -646,6 +869,25 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2017/01/18/3.2 Docker的安装/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a></p>
+                            <p class="item-title"><a href="/2017/01/18/3.2 Docker的安装/" class="title">Docker的安装</a></p>
+                            <p class="item-date"><time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/01/17/hello-world/" class="thumbnail">
     
     
@@ -690,7 +932,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/">Log</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/log/">log</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">1</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/">Log</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/log/">log</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">2</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -699,7 +941,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li></ul>
         </div>
     </div>
 
@@ -708,7 +950,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -717,7 +959,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/hello/" style="font-size: 20px;">hello</a>
+            <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/hello/" style="font-size: 10px;">hello</a>
         </div>
     </div>
 
