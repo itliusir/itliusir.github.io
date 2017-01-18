@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>liusir|blog</title>
+    <title>Java endorsed | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="coding">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.github.io/index.html">
+    <meta name="description" content="摘要:endorsed:可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java endorsed">
+<meta property="og:url" content="http://itliusir.github.io/2017/01/18/javase-endorsed/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="coding">
+<meta property="og:description" content="摘要:endorsed:可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能">
+<meta property="og:updated_time" content="2017-01-18T11:18:22.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="coding">
+<meta name="twitter:title" content="Java endorsed">
+<meta name="twitter:description" content="摘要:endorsed:可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能">
     
 
     
@@ -192,16 +193,15 @@
 </aside>
 
             
-            <section id="main">
-    <article id="post-javase-endorsed" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-javase-endorsed" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
             <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/javase-endorsed/">Java endorsed</a>
+        <h1 class="article-title" itemprop="name">
+            Java endorsed
         </h1>
     
 
@@ -235,10 +235,12 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>摘要:endorsed:可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/javase-endorsed/#more">查看更多</a>
-            </p>
+            
+            <p>摘要:endorsed:可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天突然看到这样的一个面试题：能否自已写个类也叫java.lang.String？能否自已写个类也叫java.util.ArrayList？<br>第一个问题，答案相对简单：<br>自己定义java.lang.String类语法上没有错误，但由于JVM类加载器的父委托机制，JVM只会加载jre.jar中的java.lang.String。<br>如果调用自定义String类中方法，会出现三种情况：<br>1&gt;调用的方法在jdk中String类中存在，将不会报错也没有任务影响，并且执行的是jdk中的String类方法；<br>2&gt;调用的方法在jdk中String类中不存在，但在自定义String中存在，将抛出java.lang.NoSuchMethodError异常。<br>3&gt;调用的方法在jdk中String类中存在，但在自定义String中不存在，编辑出错，运行抛出java.lang.Error: Unresolved compilation problem</p>
+<p>第二个问题，虽然也存在类加载的问题，但是java提供了endorsed技术：<br>关于endorsed：可以的简单理解为-Djava.endorsed.dirs指定的目录面放置的jar文件，将有覆盖系统API的功能。可以牵强的理解为，将自己修改后的API打入到虚拟机指定的启动API中，取而代之。但是能够覆盖的类是有限制的，其中不包括java.lang包中的类。</p>
+<p>注意：<br>1&gt;endorsed目录：.[jdk安装目录]./jre/lib/endorsed，不是jdk/lib/endorsed，目录中放的是Jar包，不是.java或.class文件，哪怕只重写了一个类也要打包成jar包。<br>2&gt;可以在dos模式查看修改后的效果(javac、java)，在eclipse需要将运行选项中的JRE栏设置为jre(若设置为jdk将看不到效果)。<br>3&gt;重写的类必须满足jdk中的规范，例如：自定义的ArrayList类也必须实现List等接口。</p>
+
         
         </div>
         <footer class="article-footer">
@@ -322,407 +324,32 @@
         </footer>
     </div>
     
-</article>
-
-
-
-    <article id="post-3.1 Docker介绍" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
         
-        
-            <header class="article-header">
-                
+<nav id="article-nav">
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/3.1 Docker介绍/">Docker介绍</a>
-        </h1>
     
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/3.1 Docker介绍/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2017/01/18/3.1 Docker介绍/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Docker介绍</div>
         </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/docker/">docker</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:Docker是一个用于开发、交付和运行应用的开放平台<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/3.1 Docker介绍/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/18/3.1 Docker介绍/" data-id="ciy292ciw000058s1pm6i5li8" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
     
-        <a href="http://itliusir.github.io/2017/01/18/3.1 Docker介绍/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/3.1 Docker介绍/">评论</a>
-    
+</nav>
 
-        </footer>
-    </div>
+
     
 </article>
 
 
-
-    <article id="post-3.2 Docker的安装" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/3.2 Docker的安装/">Docker的安装</a>
-        </h1>
+    <section id="comments">
     
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/3.2 Docker的安装/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
 
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/docker/">docker</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:Docker的安装<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/3.2 Docker的安装/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/" data-id="ciy29bir100003ks1s6ab1f8d" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
     
-        <a href="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/3.2 Docker的安装/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-Springboot1" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/Springboot1/">关于SpringBoot bean无法注入的问题</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/Springboot1/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/springboot/">springboot</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/Springboot1/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/18/Springboot1/" data-id="ciy2uuqpc00002ws1u4q43h1w" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/01/18/Springboot1/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/Springboot1/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
+    </section>
 
 </section>
             
@@ -895,11 +522,13 @@
     <script>
     var disqus_config = function () {
         
-        this.page.identifier = 'undefined';
+            this.page.url = 'http://itliusir.github.io/2017/01/18/javase-endorsed/';
+        
+        this.page.identifier = 'javase-endorsed';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
-        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/count.js';
+        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
