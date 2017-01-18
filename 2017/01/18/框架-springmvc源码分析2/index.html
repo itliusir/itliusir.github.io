@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:上一篇文章《SpringMVC源码剖析（一）- 从抽象和接口说起》中，我介绍了一次典型的SpringMVC请求处理过程中，相继粉墨登场的各种核心类和接口。我刻意忽略了源码中的处理细节，只列出最简单的类甚至是接口类，目的就是让大家先从最高层次的抽象意义上来审视SpringMVC这个框架；我也刻意将SpringMVC和Struts2做对比，目的是让大家看到，SpringMVC究竟吸取了Sturt">
-<meta property="og:updated_time" content="2017-01-18T11:56:09.443Z">
+<meta property="og:updated_time" content="2017-01-18T12:18:34.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC源码剖析（二）- DispatcherServlet的前世今生">
 <meta name="twitter:description" content="摘要:上一篇文章《SpringMVC源码剖析（一）- 从抽象和接口说起》中，我介绍了一次典型的SpringMVC请求处理过程中，相继粉墨登场的各种核心类和接口。我刻意忽略了源码中的处理细节，只列出最简单的类甚至是接口类，目的就是让大家先从最高层次的抽象意义上来审视SpringMVC这个框架；我也刻意将SpringMVC和Struts2做对比，目的是让大家看到，SpringMVC究竟吸取了Sturt">
@@ -151,7 +151,7 @@
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                18
+                17
                 <span>标签</span>
             </div>
         </div>
@@ -249,31 +249,12 @@
 <p>那么作为Spring产品族的新成员，SpringMVC在设计的时候，相信设计者们不做它想，这一个“配置元素的对象化”功能既然不可避免，那么使用Spring IOC容器，通过bean配置文件来配置SpringMVC，绝对是不二之选。不可能像Struts2一样，内部再搞一个别的容器，因为Spring容器本身已经是被高度设计，而且已经在java世界获得巨大成功。从推广的角度上来说，如果对spring容器的所有知识，都可以完整的应用到SpringMVC，那么对于开发者无疑是一个极大的吸引力。</p>
 <p>剩下的问题就只有：到底该如何将Spring容器和SpringMVC的初始化过程整合起来呢？</p>
 <p>答案就是WebApplicationContext接口，更具体点说，是XmlWebApplicationContext这个Spring上下文实现类。SpringMVC也使用了这一个为了将Spring容器和Web环境整合而特意设计的Spring上下文类。我们打开WebApplicationContext的源码：</p>
-<p>package org.springframework.web.context;</p>
-<p>import javax.servlet.ServletContext;</p>
-<p>import org.springframework.context.ApplicationContext;</p>
-<p>public interface WebApplicationContext extends ApplicationContext {</p>
-<pre><code>String ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationContext.class.getName() + &quot;.ROOT&quot;;
-
-String SCOPE_REQUEST = &quot;request&quot;;
-
-String SCOPE_SESSION = &quot;session&quot;;
-
-String SCOPE_GLOBAL_SESSION = &quot;globalSession&quot;;
-
-String SCOPE_APPLICATION = &quot;application&quot;;
-
-String SERVLET_CONTEXT_BEAN_NAME = &quot;servletContext&quot;;
-
-String CONTEXT_PARAMETERS_BEAN_NAME = &quot;contextParameters&quot;;
-
-String CONTEXT_ATTRIBUTES_BEAN_NAME = &quot;contextAttributes&quot;;
-
-ServletContext getServletContext();
-</code></pre><p>}<br>发现它是继承于ApplicationContext这个普通Spring容器所使用的上下文接口类，除了一些常量的声明，只多了一个可以获取到ServletContext的getServletContext()方法。回到上面提到的“行为和契约的描述”上，我们可以大胆的断言，Spring容器和Web环境的整合，是在ServletContext上做文章。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.springframework.web.context;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.servlet.ServletContext;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WebApplicationContext</span> <span class="keyword">extends</span> <span class="title">ApplicationContext</span> </span>&#123;</div><div class="line"></div><div class="line">	String ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationContext.class.getName() + <span class="string">".ROOT"</span>;</div><div class="line"></div><div class="line">	String SCOPE_REQUEST = <span class="string">"request"</span>;</div><div class="line"></div><div class="line">	String SCOPE_SESSION = <span class="string">"session"</span>;</div><div class="line"></div><div class="line">	String SCOPE_GLOBAL_SESSION = <span class="string">"globalSession"</span>;</div><div class="line"></div><div class="line">	String SCOPE_APPLICATION = <span class="string">"application"</span>;</div><div class="line"></div><div class="line">	String SERVLET_CONTEXT_BEAN_NAME = <span class="string">"servletContext"</span>;</div><div class="line"></div><div class="line">	String CONTEXT_PARAMETERS_BEAN_NAME = <span class="string">"contextParameters"</span>;</div><div class="line"></div><div class="line">	String CONTEXT_ATTRIBUTES_BEAN_NAME = <span class="string">"contextAttributes"</span>;</div><div class="line"></div><div class="line">	<span class="function">ServletContext <span class="title">getServletContext</span><span class="params">()</span></span>;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>发现它是继承于ApplicationContext这个普通Spring容器所使用的上下文接口类，除了一些常量的声明，只多了一个可以获取到ServletContext的getServletContext()方法。回到上面提到的“行为和契约的描述”上，我们可以大胆的断言，Spring容器和Web环境的整合，是在ServletContext上做文章。</p>
 <p>打开所有使用了Spring的Web项目的web.xml文件，必定有这样一段配置：</p>
-<p><listener><br>        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class><br>    </listener><br>ContextLoaderListener实现了ServletContextListener接口，在Servlet容器启动的时候，会初始化一个WebApplicationContext的实现类，并将其作为ServletContext的一个属性设置到Servlet环境中，摘抄源码如下： </p>
-<p>servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);<br>WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE的值，在上面WebApplicationContext的源码中的第一个常量中就被声明，是WebApplicationContext.class.getName() + “.ROOT”，更直接一点，它是“org.springframework.web.context.WebApplicationContext.ROOT”。ContextLoaderListener所初始化的这个Spring容器上下文，被称为根上下文。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>ContextLoaderListener实现了ServletContextListener接口，在Servlet容器启动的时候，会初始化一个WebApplicationContext的实现类，并将其作为ServletContext的一个属性设置到Servlet环境中，摘抄源码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, <span class="keyword">this</span>.context);</div></pre></td></tr></table></figure></p>
+<p>WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE的值，在上面WebApplicationContext的源码中的第一个常量中就被声明，是WebApplicationContext.class.getName() + “.ROOT”，更直接一点，它是“org.springframework.web.context.WebApplicationContext.ROOT”。ContextLoaderListener所初始化的这个Spring容器上下文，被称为根上下文。</p>
 <p>SpringMVC在DispatcherServlet的初始化过程中，同样会初始化一个WebApplicationContext的实现类，作为自己独有的上下文，这个独有的上下文，会将上面的根上下文作为自己的父上下文，来存放SpringMVC的配置元素，然后同样作为ServletContext的一个属性，被设置到ServletContext中，只不过它的key就稍微有点不同，key和具体的DispatcherServlet注册在web.xml文件中的名字有关，从这一点也决定了，我们可以在web.xml文件中注册多个DispatcherServlet，因为Servlet容器中注册的Servlet名字肯定不一样，设置到Servlet环境中的key也肯定不同。</p>
 <p>由于在Spring容器中，子上下文可以访问到所有父上下文中的信息，而父上下文访问不到子上下文的信息，这个根上下文，就很适合作为多个子上下文配置的集中点。</p>
 <p>3.前端控制器</p>
@@ -367,19 +348,19 @@ ServletContext getServletContext();
         
 <nav id="article-nav">
     
-        <a href="/2017/01/18/框架-springmvc源码分析1/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/01/18/3.3 Docker镜像的删除/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">上一篇</strong>
             <div class="article-nav-title">
                 
-                    SpringMVC源码剖析（一）- 从抽象和接口说起
+                    Docker镜像的删除
                 
             </div>
         </a>
     
     
-        <a href="/2017/01/18/框架-mybatis防止sql注入/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/01/18/框架-springmvc源码分析1/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">java持久层框架mybatis如何防止sql注入</div>
+            <div class="article-nav-title">SpringMVC源码剖析（一）- 从抽象和接口说起</div>
         </a>
     
 </nav>
@@ -409,25 +390,6 @@ ServletContext getServletContext();
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc源码分析5/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析5/" class="title">SpringMVC源码剖析（五)-消息转换器HttpMessageConverter</a></p>
-                            <p class="item-date"><time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time></p>
-                        </div>
-                    </li>
                 
                     <li>
                         
@@ -489,7 +451,7 @@ ServletContext getServletContext();
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc-bug/" class="thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析2/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -500,7 +462,26 @@ ServletContext getServletContext();
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc-bug/" class="title">No mapping found for HTTP request with URI… in Dis</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析2/" class="title">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a></p>
+                            <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析1/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析1/" class="title">SpringMVC源码剖析（一）- 从抽象和接口说起</a></p>
                             <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
                         </div>
                     </li>
@@ -514,7 +495,7 @@ ServletContext getServletContext();
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -532,7 +513,7 @@ ServletContext getServletContext();
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -541,7 +522,7 @@ ServletContext getServletContext();
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
+            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
         </div>
     </div>
 

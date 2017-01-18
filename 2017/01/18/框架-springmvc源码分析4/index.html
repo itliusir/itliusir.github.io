@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析4/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:SpringMVC完成初始化流程之后，就进入Servlet标准生命周期的第二个阶段，即“service”阶段。在“service”阶段中，每一次Http请求到来，容器都会启动一个请求线程，通过service()方法，委派到doGet()或者doPost()这些方法，完成Http请求的处理。">
-<meta property="og:updated_time" content="2017-01-18T11:54:11.469Z">
+<meta property="og:updated_time" content="2017-01-18T12:22:09.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC源码剖析（四）- DispatcherServlet请求转发的实现">
 <meta name="twitter:description" content="摘要:SpringMVC完成初始化流程之后，就进入Servlet标准生命周期的第二个阶段，即“service”阶段。在“service”阶段中，每一次Http请求到来，容器都会启动一个请求线程，通过service()方法，委派到doGet()或者doPost()这些方法，完成Http请求的处理。">
@@ -151,7 +151,7 @@
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                18
+                17
                 <span>标签</span>
             </div>
         </div>
@@ -241,313 +241,24 @@
 <p>Struts2采取的是一种完全和Web容器隔离和解耦的事件机制。诸如Action对象、Result对象、Interceptor对象，这些都是完全脱离Servlet容器的编程元素。Struts2将数据流和事件处理完全剥离开来，从Http请求中读取数据后，下面的事件处理流程就只依赖于这些数据，而完全不知道有Web环境的存在。</p>
 <p>反观SpringMVC，无论HandlerMapping对象、HandlerAdapter对象还是View对象，这些核心的接口所定义的方法中，HttpServletRequest和HttpServletResponse对象都是直接作为方法的参数出现的。这也就意味着，框架的设计者，直接将SpringMVC框架和容器绑定到了一起。或者说，整个SpringMVC框架，都是依托着Servlet容器元素来设计的。下面就来看一下，源码中是如何体现这一点的。</p>
 <p>1.请求转发的入口</p>
-<p>就像任何一个注册在容器中的Servlet一样，DispatcherServlet也是通过自己的service()方法来接收和转发Http请求到具体的doGet()或doPost()这些方法的。以一次典型的GET请求为例，经过HttpServlet基类中service()方法的委派，请求会被转发到doGet()方法中。doGet()方法，在DispatcherServlet的父类FrameworkServlet类中被覆写。</p>
-<p>@Override<br>protected final void doGet(HttpServletRequest request, HttpServletResponse response)<br>        throws ServletException, IOException {</p>
-<pre><code>processRequest(request, response);
-</code></pre><p>}</p>
-<p>可以看到，这里只是简单的转发到processRequest()这个方法。</p>
-<p>protected final void processRequest(HttpServletRequest request, HttpServletResponse response)<br>        throws ServletException, IOException {</p>
-<pre><code>long startTime = System.currentTimeMillis();
-Throwable failureCause = null;
-
-// Expose current LocaleResolver and request as LocaleContext.
-LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
-LocaleContextHolder.setLocaleContext(buildLocaleContext(request), this.threadContextInheritable);
-
-// Expose current RequestAttributes to current thread.
-RequestAttributes previousRequestAttributes = RequestContextHolder.getRequestAttributes();
-ServletRequestAttributes requestAttributes = null;
-if (previousRequestAttributes == null || previousRequestAttributes.getClass().equals(ServletRequestAttributes.class)) {
-    requestAttributes = new ServletRequestAttributes(request);
-    RequestContextHolder.setRequestAttributes(requestAttributes, this.threadContextInheritable);
-}
-
-if (logger.isTraceEnabled()) {
-    logger.trace(&quot;Bound request context to thread: &quot; + request);
-}
-
-try {
-    doService(request, response);
-}
-catch (ServletException ex) {
-    failureCause = ex;
-    throw ex;
-}
-catch (IOException ex) {
-    failureCause = ex;
-    throw ex;
-}
-catch (Throwable ex) {
-    failureCause = ex;
-    throw new NestedServletException(&quot;Request processing failed&quot;, ex);
-}
-
-finally {
-    // Clear request attributes and reset thread-bound context.
-    LocaleContextHolder.setLocaleContext(previousLocaleContext, this.threadContextInheritable);
-    if (requestAttributes != null) {
-        RequestContextHolder.setRequestAttributes(previousRequestAttributes, this.threadContextInheritable);
-        requestAttributes.requestCompleted();
-    }
-    if (logger.isTraceEnabled()) {
-        logger.trace(&quot;Cleared thread-bound request context: &quot; + request);
-    }
-
-    if (logger.isDebugEnabled()) {
-        if (failureCause != null) {
-            this.logger.debug(&quot;Could not complete request&quot;, failureCause);
-        }
-        else {
-            this.logger.debug(&quot;Successfully completed request&quot;);
-        }
-    }
-    if (this.publishEvents) {
-        // Whether or not we succeeded, publish an event.
-        long processingTime = System.currentTimeMillis() - startTime;
-        this.webApplicationContext.publishEvent(
-                new ServletRequestHandledEvent(this,
-                        request.getRequestURI(), request.getRemoteAddr(),
-                        request.getMethod(), getServletConfig().getServletName(),
-                        WebUtils.getSessionId(request), getUsernameForRequest(request),
-                        processingTime, failureCause));
-    }
-}
-</code></pre><p>}<br>代码有点长，理解的要点是以doService()方法为区隔，前一部分是将当前请求的Locale对象和属性，分别设置到LocaleContextHolder和RequestContextHolder这两个抽象类中的ThreadLocal对象中，也就是分别将这两个东西和请求线程做了绑定。在doService()处理结束后，再恢复回请求前的LocaleContextHolder和RequestContextHolder，也即解除线程绑定。每次请求处理结束后，容器上下文都发布了一个ServletRequestHandledEvent事件，你可以注册监听器来监听该事件。</p>
+<p>就像任何一个注册在容器中的Servlet一样，DispatcherServlet也是通过自己的service()方法来接收和转发Http请求到具体的doGet()或doPost()这些方法的。以一次典型的GET请求为例，经过HttpServlet基类中service()方法的委派，请求会被转发到doGet()方法中。doGet()方法，在DispatcherServlet的父类FrameworkServlet类中被覆写。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></div><div class="line">		<span class="keyword">throws</span> ServletException, IOException &#123;</div><div class="line"></div><div class="line">	processRequest(request, response);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看到，这里只是简单的转发到processRequest()这个方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">processRequest</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></div><div class="line">		<span class="keyword">throws</span> ServletException, IOException &#123;</div><div class="line"></div><div class="line">	<span class="keyword">long</span> startTime = System.currentTimeMillis();</div><div class="line">	Throwable failureCause = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">	<span class="comment">// Expose current LocaleResolver and request as LocaleContext.</span></div><div class="line">	LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();</div><div class="line">	LocaleContextHolder.setLocaleContext(buildLocaleContext(request), <span class="keyword">this</span>.threadContextInheritable);</div><div class="line"></div><div class="line">	<span class="comment">// Expose current RequestAttributes to current thread.</span></div><div class="line">	RequestAttributes previousRequestAttributes = RequestContextHolder.getRequestAttributes();</div><div class="line">	ServletRequestAttributes requestAttributes = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (previousRequestAttributes == <span class="keyword">null</span> || previousRequestAttributes.getClass().equals(ServletRequestAttributes.class)) &#123;</div><div class="line">		requestAttributes = <span class="keyword">new</span> ServletRequestAttributes(request);</div><div class="line">		RequestContextHolder.setRequestAttributes(requestAttributes, <span class="keyword">this</span>.threadContextInheritable);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</div><div class="line">		logger.trace(<span class="string">"Bound request context to thread: "</span> + request);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		doService(request, response);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">catch</span> (ServletException ex) &#123;</div><div class="line">		failureCause = ex;</div><div class="line">		<span class="keyword">throw</span> ex;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">		failureCause = ex;</div><div class="line">		<span class="keyword">throw</span> ex;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">catch</span> (Throwable ex) &#123;</div><div class="line">		failureCause = ex;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> NestedServletException(<span class="string">"Request processing failed"</span>, ex);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		<span class="comment">// Clear request attributes and reset thread-bound context.</span></div><div class="line">		LocaleContextHolder.setLocaleContext(previousLocaleContext, <span class="keyword">this</span>.threadContextInheritable);</div><div class="line">		<span class="keyword">if</span> (requestAttributes != <span class="keyword">null</span>) &#123;</div><div class="line">			RequestContextHolder.setRequestAttributes(previousRequestAttributes, <span class="keyword">this</span>.threadContextInheritable);</div><div class="line">			requestAttributes.requestCompleted();</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</div><div class="line">			logger.trace(<span class="string">"Cleared thread-bound request context: "</span> + request);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">			<span class="keyword">if</span> (failureCause != <span class="keyword">null</span>) &#123;</div><div class="line">				<span class="keyword">this</span>.logger.debug(<span class="string">"Could not complete request"</span>, failureCause);</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				<span class="keyword">this</span>.logger.debug(<span class="string">"Successfully completed request"</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.publishEvents) &#123;</div><div class="line">			<span class="comment">// Whether or not we succeeded, publish an event.</span></div><div class="line">			<span class="keyword">long</span> processingTime = System.currentTimeMillis() - startTime;</div><div class="line">			<span class="keyword">this</span>.webApplicationContext.publishEvent(</div><div class="line">					<span class="keyword">new</span> ServletRequestHandledEvent(<span class="keyword">this</span>,</div><div class="line">							request.getRequestURI(), request.getRemoteAddr(),</div><div class="line">							request.getMethod(), getServletConfig().getServletName(),</div><div class="line">							WebUtils.getSessionId(request), getUsernameForRequest(request),</div><div class="line">							processingTime, failureCause));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码有点长，理解的要点是以doService()方法为区隔，前一部分是将当前请求的Locale对象和属性，分别设置到LocaleContextHolder和RequestContextHolder这两个抽象类中的ThreadLocal对象中，也就是分别将这两个东西和请求线程做了绑定。在doService()处理结束后，再恢复回请求前的LocaleContextHolder和RequestContextHolder，也即解除线程绑定。每次请求处理结束后，容器上下文都发布了一个ServletRequestHandledEvent事件，你可以注册监听器来监听该事件。</p>
 <p>可以看到，processRequest()方法只是做了一些线程安全的隔离，真正的请求处理，发生在doService()方法中。点开FrameworkServlet类中的doService()方法。</p>
 <p>protected abstract void doService(HttpServletRequest request, HttpServletResponse response)<br>        throws Exception;<br>又是一个抽象方法，这也是SpringMVC类设计中的惯用伎俩：父类抽象处理流程，子类给予具体的实现。真正的实现是在DispatcherServlet类中。</p>
-<p>让我们接着看DispatcherServlet类中实现的doService()方法。</p>
-<p>@Override<br>protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {<br>    if (logger.isDebugEnabled()) {<br>        String requestUri = urlPathHelper.getRequestUri(request);<br>        logger.debug(“DispatcherServlet with name ‘“ + getServletName() + “‘ processing “ + request.getMethod() +<br>                “ request for [“ + requestUri + “]”);<br>    }</p>
-<pre><code>// Keep a snapshot of the request attributes in case of an include,
-// to be able to restore the original attributes after the include.
-Map&lt;String, Object&gt; attributesSnapshot = null;
-if (WebUtils.isIncludeRequest(request)) {
-    logger.debug(&quot;Taking snapshot of request attributes before include&quot;);
-    attributesSnapshot = new HashMap&lt;String, Object&gt;();
-    Enumeration&lt;?&gt; attrNames = request.getAttributeNames();
-    while (attrNames.hasMoreElements()) {
-        String attrName = (String) attrNames.nextElement();
-        if (this.cleanupAfterInclude || attrName.startsWith(&quot;org.springframework.web.servlet&quot;)) {
-            attributesSnapshot.put(attrName, request.getAttribute(attrName));
-        }
-    }
-}
-
-// Make framework objects available to handlers and view objects.
-request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
-request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
-request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
-request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());
-
-FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);
-if (inputFlashMap != null) {
-    request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));
-}
-request.setAttribute(OUTPUT_FLASH_MAP_ATTRIBUTE, new FlashMap());
-request.setAttribute(FLASH_MAP_MANAGER_ATTRIBUTE, this.flashMapManager);
-
-try {
-    doDispatch(request, response);
-}
-finally {
-    // Restore the original attribute snapshot, in case of an include.
-    if (attributesSnapshot != null) {
-        restoreAttributesAfterInclude(request, attributesSnapshot);
-    }
-}
-</code></pre><p>}<br>几个requet.setAttribute()方法的调用，将前面在初始化流程中实例化的对象设置到http请求的属性中，供下一步处理使用，其中有容器的上下文对象、本地化解析器等SpringMVC特有的编程元素。不同于Struts2中的ValueStack，SpringMVC的数据并没有从HttpServletRequest对象中抽离出来再存进另外一个编程元素，这也跟SpringMVC的设计思想有关。因为从一开始，SpringMVC的设计者就认为，不应该将请求处理过程和Web容器完全隔离。</p>
+<p>让我们接着看DispatcherServlet类中实现的doService()方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doService</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">	<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">		String requestUri = urlPathHelper.getRequestUri(request);</div><div class="line">		logger.debug(<span class="string">"DispatcherServlet with name '"</span> + getServletName() + <span class="string">"' processing "</span> + request.getMethod() +</div><div class="line">				<span class="string">" request for ["</span> + requestUri + <span class="string">"]"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// Keep a snapshot of the request attributes in case of an include,</span></div><div class="line">	<span class="comment">// to be able to restore the original attributes after the include.</span></div><div class="line">	Map&lt;String, Object&gt; attributesSnapshot = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (WebUtils.isIncludeRequest(request)) &#123;</div><div class="line">		logger.debug(<span class="string">"Taking snapshot of request attributes before include"</span>);</div><div class="line">		attributesSnapshot = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</div><div class="line">		Enumeration&lt;?&gt; attrNames = request.getAttributeNames();</div><div class="line">		<span class="keyword">while</span> (attrNames.hasMoreElements()) &#123;</div><div class="line">			String attrName = (String) attrNames.nextElement();</div><div class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.cleanupAfterInclude || attrName.startsWith(<span class="string">"org.springframework.web.servlet"</span>)) &#123;</div><div class="line">				attributesSnapshot.put(attrName, request.getAttribute(attrName));</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// Make framework objects available to handlers and view objects.</span></div><div class="line">	request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());</div><div class="line">	request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, <span class="keyword">this</span>.localeResolver);</div><div class="line">	request.setAttribute(THEME_RESOLVER_ATTRIBUTE, <span class="keyword">this</span>.themeResolver);</div><div class="line">	request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());</div><div class="line"></div><div class="line">	FlashMap inputFlashMap = <span class="keyword">this</span>.flashMapManager.retrieveAndUpdate(request, response);</div><div class="line">	<span class="keyword">if</span> (inputFlashMap != <span class="keyword">null</span>) &#123;</div><div class="line">		request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));</div><div class="line">	&#125;</div><div class="line">	request.setAttribute(OUTPUT_FLASH_MAP_ATTRIBUTE, <span class="keyword">new</span> FlashMap());</div><div class="line">	request.setAttribute(FLASH_MAP_MANAGER_ATTRIBUTE, <span class="keyword">this</span>.flashMapManager);</div><div class="line"></div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		doDispatch(request, response);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		<span class="comment">// Restore the original attribute snapshot, in case of an include.</span></div><div class="line">		<span class="keyword">if</span> (attributesSnapshot != <span class="keyword">null</span>) &#123;</div><div class="line">			restoreAttributesAfterInclude(request, attributesSnapshot);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>几个requet.setAttribute()方法的调用，将前面在初始化流程中实例化的对象设置到http请求的属性中，供下一步处理使用，其中有容器的上下文对象、本地化解析器等SpringMVC特有的编程元素。不同于Struts2中的ValueStack，SpringMVC的数据并没有从HttpServletRequest对象中抽离出来再存进另外一个编程元素，这也跟SpringMVC的设计思想有关。因为从一开始，SpringMVC的设计者就认为，不应该将请求处理过程和Web容器完全隔离。</p>
 <p>所以，你可以看到，真正发生请求转发的方法doDispatch()中，它的参数是HttpServletRequest和HttpServletResponse对象。这给我们传递的意思也很明确，从request中能获取到一切请求的数据，从response中，我们又可以往服务器端输出任何响应，Http请求的处理，就应该围绕这两个对象来设计。我们不妨可以将SpringMVC这种设计方案，是从Struts2的过度设计中吸取教训，而向Servlet编程的一种回归和简化。</p>
 <p>2.请求转发的抽象描述</p>
 <p>接下来让我们看看doDispatch()这个整个请求转发流程中最核心的方法。DispatcherServlet所接收的Http请求，经过层层转发，最终都是汇总到这个方法中来进行最后的请求分发和处理。doDispatch()这个方法的内容，就是SpringMVC整个框架的精华所在。它通过高度抽象的接口，描述出了一个MVC（Model-View-Controller）设计模式的实现方案。Model、View、Controller三种层次的编程元素，在SpringMVC中都有大量的实现类，各种处理细节也是千差万别。但是，它们最后都是由，也都能由doDispatch()方法来统一描述，这就是接口和抽象的威力，万变不离其宗。</p>
 <p>先来看一下doDispatch()方法的庐山真面目。</p>
-<p>protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {<br>    HttpServletRequest processedRequest = request;<br>    HandlerExecutionChain mappedHandler = null;<br>    int interceptorIndex = -1;</p>
-<pre><code>try {
-    ModelAndView mv;
-    boolean errorView = false;
-
-    try {
-        processedRequest = checkMultipart(request);
-
-        // Determine handler for the current request.
-        mappedHandler = getHandler(processedRequest, false);
-        if (mappedHandler == null || mappedHandler.getHandler() == null) {
-            noHandlerFound(processedRequest, response);
-            return;
-        }
-
-        // Determine handler adapter for the current request.
-        HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
-
-        // Process last-modified header, if supported by the handler.
-        String method = request.getMethod();
-        boolean isGet = &quot;GET&quot;.equals(method);
-        if (isGet || &quot;HEAD&quot;.equals(method)) {
-            long lastModified = ha.getLastModified(request, mappedHandler.getHandler());
-            if (logger.isDebugEnabled()) {
-                String requestUri = urlPathHelper.getRequestUri(request);
-                logger.debug(&quot;Last-Modified value for [&quot; + requestUri + &quot;] is: &quot; + lastModified);
-            }
-            if (new ServletWebRequest(request, response).checkNotModified(lastModified) &amp;&amp; isGet) {
-                return;
-            }
-        }
-
-        // Apply preHandle methods of registered interceptors.
-        HandlerInterceptor[] interceptors = mappedHandler.getInterceptors();
-        if (interceptors != null) {
-            for (int i = 0; i &lt; interceptors.length; i++) {
-                HandlerInterceptor interceptor = interceptors[i];
-                if (!interceptor.preHandle(processedRequest, response, mappedHandler.getHandler())) {
-                    triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, null);
-                    return;
-                }
-                interceptorIndex = i;
-            }
-        }
-
-        // Actually invoke the handler.
-        mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
-
-        // Do we need view name translation?
-        if (mv != null &amp;&amp; !mv.hasView()) {
-            mv.setViewName(getDefaultViewName(request));
-        }
-
-        // Apply postHandle methods of registered interceptors.
-        if (interceptors != null) {
-            for (int i = interceptors.length - 1; i &gt;= 0; i--) {
-                HandlerInterceptor interceptor = interceptors[i];
-                interceptor.postHandle(processedRequest, response, mappedHandler.getHandler(), mv);
-            }
-        }
-    }
-    catch (ModelAndViewDefiningException ex) {
-        logger.debug(&quot;ModelAndViewDefiningException encountered&quot;, ex);
-        mv = ex.getModelAndView();
-    }
-    catch (Exception ex) {
-        Object handler = (mappedHandler != null ? mappedHandler.getHandler() : null);
-        mv = processHandlerException(processedRequest, response, handler, ex);
-        errorView = (mv != null);
-    }
-
-    // Did the handler return a view to render?
-    if (mv != null &amp;&amp; !mv.wasCleared()) {
-        render(mv, processedRequest, response);
-        if (errorView) {
-            WebUtils.clearErrorRequestAttributes(request);
-        }
-    }
-    else {
-        if (logger.isDebugEnabled()) {
-            logger.debug(&quot;Null ModelAndView returned to DispatcherServlet with name &apos;&quot; + getServletName() +
-                    &quot;&apos;: assuming HandlerAdapter completed request handling&quot;);
-        }
-    }
-
-    // Trigger after-completion for successful outcome.
-    triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, null);
-}
-
-catch (Exception ex) {
-    // Trigger after-completion for thrown exception.
-    triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);
-    throw ex;
-}
-catch (Error err) {
-    ServletException ex = new NestedServletException(&quot;Handler processing failed&quot;, err);
-    // Trigger after-completion for thrown exception.
-    triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);
-    throw ex;
-}
-
-finally {
-    // Clean up any resources used by a multipart request.
-    if (processedRequest != request) {
-        cleanupMultipart(processedRequest);
-    }
-}
-</code></pre><p>}<br>真是千呼万唤始出来，犹抱琵琶半遮面。我们在第一篇《SpringMVC源码剖析（一）- 从抽象和接口说起》中所描述的各种编程元素，依次出现在该方法中。HandlerMapping、HandlerAdapter、View这些接口的设计，我们在第一篇中已经讲过。现在我们来重点关注一下HandlerExecutionChain这个对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doDispatch</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">	HttpServletRequest processedRequest = request;</div><div class="line">	HandlerExecutionChain mappedHandler = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">int</span> interceptorIndex = -<span class="number">1</span>;</div><div class="line"></div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		ModelAndView mv;</div><div class="line">		<span class="keyword">boolean</span> errorView = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			processedRequest = checkMultipart(request);</div><div class="line"></div><div class="line">			<span class="comment">// Determine handler for the current request.</span></div><div class="line">			mappedHandler = getHandler(processedRequest, <span class="keyword">false</span>);</div><div class="line">			<span class="keyword">if</span> (mappedHandler == <span class="keyword">null</span> || mappedHandler.getHandler() == <span class="keyword">null</span>) &#123;</div><div class="line">				noHandlerFound(processedRequest, response);</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">// Determine handler adapter for the current request.</span></div><div class="line">			HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());</div><div class="line"></div><div class="line">			<span class="comment">// Process last-modified header, if supported by the handler.</span></div><div class="line">			String method = request.getMethod();</div><div class="line">			<span class="keyword">boolean</span> isGet = <span class="string">"GET"</span>.equals(method);</div><div class="line">			<span class="keyword">if</span> (isGet || <span class="string">"HEAD"</span>.equals(method)) &#123;</div><div class="line">				<span class="keyword">long</span> lastModified = ha.getLastModified(request, mappedHandler.getHandler());</div><div class="line">				<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">					String requestUri = urlPathHelper.getRequestUri(request);</div><div class="line">					logger.debug(<span class="string">"Last-Modified value for ["</span> + requestUri + <span class="string">"] is: "</span> + lastModified);</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (<span class="keyword">new</span> ServletWebRequest(request, response).checkNotModified(lastModified) &amp;&amp; isGet) &#123;</div><div class="line">					<span class="keyword">return</span>;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">// Apply preHandle methods of registered interceptors.</span></div><div class="line">			HandlerInterceptor[] interceptors = mappedHandler.getInterceptors();</div><div class="line">			<span class="keyword">if</span> (interceptors != <span class="keyword">null</span>) &#123;</div><div class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; interceptors.length; i++) &#123;</div><div class="line">					HandlerInterceptor interceptor = interceptors[i];</div><div class="line">					<span class="keyword">if</span> (!interceptor.preHandle(processedRequest, response, mappedHandler.getHandler())) &#123;</div><div class="line">						triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, <span class="keyword">null</span>);</div><div class="line">						<span class="keyword">return</span>;</div><div class="line">					&#125;</div><div class="line">					interceptorIndex = i;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">// Actually invoke the handler.</span></div><div class="line">			mv = ha.handle(processedRequest, response, mappedHandler.getHandler());</div><div class="line"></div><div class="line">			<span class="comment">// Do we need view name translation?</span></div><div class="line">			<span class="keyword">if</span> (mv != <span class="keyword">null</span> &amp;&amp; !mv.hasView()) &#123;</div><div class="line">				mv.setViewName(getDefaultViewName(request));</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">// Apply postHandle methods of registered interceptors.</span></div><div class="line">			<span class="keyword">if</span> (interceptors != <span class="keyword">null</span>) &#123;</div><div class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = interceptors.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">					HandlerInterceptor interceptor = interceptors[i];</div><div class="line">					interceptor.postHandle(processedRequest, response, mappedHandler.getHandler(), mv);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (ModelAndViewDefiningException ex) &#123;</div><div class="line">			logger.debug(<span class="string">"ModelAndViewDefiningException encountered"</span>, ex);</div><div class="line">			mv = ex.getModelAndView();</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">			Object handler = (mappedHandler != <span class="keyword">null</span> ? mappedHandler.getHandler() : <span class="keyword">null</span>);</div><div class="line">			mv = processHandlerException(processedRequest, response, handler, ex);</div><div class="line">			errorView = (mv != <span class="keyword">null</span>);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">// Did the handler return a view to render?</span></div><div class="line">		<span class="keyword">if</span> (mv != <span class="keyword">null</span> &amp;&amp; !mv.wasCleared()) &#123;</div><div class="line">			render(mv, processedRequest, response);</div><div class="line">			<span class="keyword">if</span> (errorView) &#123;</div><div class="line">				WebUtils.clearErrorRequestAttributes(request);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">				logger.debug(<span class="string">"Null ModelAndView returned to DispatcherServlet with name '"</span> + getServletName() +</div><div class="line">						<span class="string">"': assuming HandlerAdapter completed request handling"</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">// Trigger after-completion for successful outcome.</span></div><div class="line">		triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">		<span class="comment">// Trigger after-completion for thrown exception.</span></div><div class="line">		triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);</div><div class="line">		<span class="keyword">throw</span> ex;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">catch</span> (Error err) &#123;</div><div class="line">		ServletException ex = <span class="keyword">new</span> NestedServletException(<span class="string">"Handler processing failed"</span>, err);</div><div class="line">		<span class="comment">// Trigger after-completion for thrown exception.</span></div><div class="line">		triggerAfterCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);</div><div class="line">		<span class="keyword">throw</span> ex;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		<span class="comment">// Clean up any resources used by a multipart request.</span></div><div class="line">		<span class="keyword">if</span> (processedRequest != request) &#123;</div><div class="line">			cleanupMultipart(processedRequest);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>真是千呼万唤始出来，犹抱琵琶半遮面。我们在第一篇《SpringMVC源码剖析（一）- 从抽象和接口说起》中所描述的各种编程元素，依次出现在该方法中。HandlerMapping、HandlerAdapter、View这些接口的设计，我们在第一篇中已经讲过。现在我们来重点关注一下HandlerExecutionChain这个对象。</p>
 <p>从上面的代码中，很明显可以看出一条线索，整个方法是围绕着如何获取HandlerExecutionChain对象，执行HandlerExecutionChain对象得到相应的视图对象，再对视图进行渲染这条主线来展开的。HandlerExecutionChain对象显得异常重要。</p>
 <p>因为Http请求要进入SpringMVC的处理体系，必须由HandlerMapping接口的实现类映射Http请求，得到一个封装后的HandlerExecutionChain对象。再由HandlerAdapter接口的实现类来处理这个HandlerExecutionChain对象所包装的处理对象，来得到最后渲染的视图对象。</p>
 <p>视图对象是用ModelAndView对象来描述的，名字已经非常直白，就是数据和视图，其中的数据，由HttpServletRequest的属性得到，视图就是由HandlerExecutionChain封装的处理对象处理后得到。当然HandlerExecutionChain中的拦截器列表HandlerInterceptor，会在处理过程的前后依次被调用，为处理过程留下充足的扩展点。</p>
-<p>所有的SpringMVC框架元素，都是围绕着HandlerExecutionChain这个执行链来发挥效用。我们来看看，HandlerExecutionChain类的代码。</p>
-<p>package org.springframework.web.servlet;</p>
-<p>import java.util.ArrayList;<br>import java.util.Arrays;<br>import java.util.List;</p>
-<p>import org.springframework.util.CollectionUtils;</p>
-<p>public class HandlerExecutionChain {</p>
-<pre><code>private final Object handler;
-
-private HandlerInterceptor[] interceptors;
-
-private List&lt;HandlerInterceptor&gt; interceptorList;
-
-public HandlerExecutionChain(Object handler) {
-    this(handler, null);
-}
-
-public HandlerExecutionChain(Object handler, HandlerInterceptor[] interceptors) {
-    if (handler instanceof HandlerExecutionChain) {
-        HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;
-        this.handler = originalChain.getHandler();
-        this.interceptorList = new ArrayList&lt;HandlerInterceptor&gt;();
-        CollectionUtils.mergeArrayIntoCollection(originalChain.getInterceptors(), this.interceptorList);
-        CollectionUtils.mergeArrayIntoCollection(interceptors, this.interceptorList);
-    }
-    else {
-        this.handler = handler;
-        this.interceptors = interceptors;
-    }
-}
-
-public Object getHandler() {
-    return this.handler;
-}
-
-public void addInterceptor(HandlerInterceptor interceptor) {
-    initInterceptorList();
-    this.interceptorList.add(interceptor);
-}
-
-public void addInterceptors(HandlerInterceptor[] interceptors) {
-    if (interceptors != null) {
-        initInterceptorList();
-        this.interceptorList.addAll(Arrays.asList(interceptors));
-    }
-}
-
-private void initInterceptorList() {
-    if (this.interceptorList == null) {
-        this.interceptorList = new ArrayList&lt;HandlerInterceptor&gt;();
-    }
-    if (this.interceptors != null) {
-        this.interceptorList.addAll(Arrays.asList(this.interceptors));
-        this.interceptors = null;
-    }
-}
-
-public HandlerInterceptor[] getInterceptors() {
-    if (this.interceptors == null &amp;&amp; this.interceptorList != null) {
-        this.interceptors = this.interceptorList.toArray(new HandlerInterceptor[this.interceptorList.size()]);
-    }
-    return this.interceptors;
-}
-
-@Override
-public String toString() {
-    if (this.handler == null) {
-        return &quot;HandlerExecutionChain with no handler&quot;;
-    }
-    StringBuilder sb = new StringBuilder();
-    sb.append(&quot;HandlerExecutionChain with handler [&quot;).append(this.handler).append(&quot;]&quot;);
-    if (!CollectionUtils.isEmpty(this.interceptorList)) {
-        sb.append(&quot; and &quot;).append(this.interceptorList.size()).append(&quot; interceptor&quot;);
-        if (this.interceptorList.size() &gt; 1) {
-            sb.append(&quot;s&quot;);
-        }
-    }
-    return sb.toString();
-}
-</code></pre><p>}<br>一个拦截器列表，一个执行对象，这个类的内容十分的简单，它蕴含的设计思想，却十分的丰富。</p>
+<p>所有的SpringMVC框架元素，都是围绕着HandlerExecutionChain这个执行链来发挥效用。我们来看看，HandlerExecutionChain类的代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.springframework.web.servlet;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.util.CollectionUtils;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerExecutionChain</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Object handler;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> HandlerInterceptor[] interceptors;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> List&lt;HandlerInterceptor&gt; interceptorList;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HandlerExecutionChain</span><span class="params">(Object handler)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>(handler, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HandlerExecutionChain</span><span class="params">(Object handler, HandlerInterceptor[] interceptors)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (handler <span class="keyword">instanceof</span> HandlerExecutionChain) &#123;</div><div class="line">			HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;</div><div class="line">			<span class="keyword">this</span>.handler = originalChain.getHandler();</div><div class="line">			<span class="keyword">this</span>.interceptorList = <span class="keyword">new</span> ArrayList&lt;HandlerInterceptor&gt;();</div><div class="line">			CollectionUtils.mergeArrayIntoCollection(originalChain.getInterceptors(), <span class="keyword">this</span>.interceptorList);</div><div class="line">			CollectionUtils.mergeArrayIntoCollection(interceptors, <span class="keyword">this</span>.interceptorList);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>.handler = handler;</div><div class="line">			<span class="keyword">this</span>.interceptors = interceptors;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">getHandler</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.handler;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptor</span><span class="params">(HandlerInterceptor interceptor)</span> </span>&#123;</div><div class="line">		initInterceptorList();</div><div class="line">		<span class="keyword">this</span>.interceptorList.add(interceptor);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(HandlerInterceptor[] interceptors)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (interceptors != <span class="keyword">null</span>) &#123;</div><div class="line">			initInterceptorList();</div><div class="line">			<span class="keyword">this</span>.interceptorList.addAll(Arrays.asList(interceptors));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initInterceptorList</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.interceptorList == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">this</span>.interceptorList = <span class="keyword">new</span> ArrayList&lt;HandlerInterceptor&gt;();</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.interceptors != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">this</span>.interceptorList.addAll(Arrays.asList(<span class="keyword">this</span>.interceptors));</div><div class="line">			<span class="keyword">this</span>.interceptors = <span class="keyword">null</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> HandlerInterceptor[] getInterceptors() &#123;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.interceptors == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.interceptorList != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">this</span>.interceptors = <span class="keyword">this</span>.interceptorList.toArray(<span class="keyword">new</span> HandlerInterceptor[<span class="keyword">this</span>.interceptorList.size()]);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.interceptors;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.handler == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">return</span> <span class="string">"HandlerExecutionChain with no handler"</span>;</div><div class="line">		&#125;</div><div class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</div><div class="line">		sb.append(<span class="string">"HandlerExecutionChain with handler ["</span>).append(<span class="keyword">this</span>.handler).append(<span class="string">"]"</span>);</div><div class="line">		<span class="keyword">if</span> (!CollectionUtils.isEmpty(<span class="keyword">this</span>.interceptorList)) &#123;</div><div class="line">			sb.append(<span class="string">" and "</span>).append(<span class="keyword">this</span>.interceptorList.size()).append(<span class="string">" interceptor"</span>);</div><div class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.interceptorList.size() &gt; <span class="number">1</span>) &#123;</div><div class="line">				sb.append(<span class="string">"s"</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> sb.toString();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>一个拦截器列表，一个执行对象，这个类的内容十分的简单，它蕴含的设计思想，却十分的丰富。</p>
 <p>1.拦截器组成的列表，在执行对象被调用的前后，会依次执行。这里可以看成是一个的AOP环绕通知，拦截器可以对处理对象随心所欲的进行处理和增强。这里明显是吸收了Struts2中拦截器的设计思想。这种AOP环绕式的扩展点设计，也几乎成为所有框架必备的内容。</p>
 <p>2.实际的处理对象，即handler对象，是由Object对象来引用的。</p>
 <p>private final Object handler;<br>之所以要用一个java世界最基础的Object对象引用来引用这个handler对象，是因为连特定的接口也不希望绑定在这个handler对象上，从而使handler对象具有最大程度的选择性和灵活性。</p>
@@ -642,15 +353,6 @@ public String toString() {
         
 <nav id="article-nav">
     
-        <a href="/2017/01/18/框架-springmvc源码分析5/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    SpringMVC源码剖析（五)-消息转换器HttpMessageConverter
-                
-            </div>
-        </a>
-    
     
         <a href="/2017/01/18/框架-springmvc源码分析3/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
@@ -684,25 +386,6 @@ public String toString() {
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc源码分析5/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析5/" class="title">SpringMVC源码剖析（五)-消息转换器HttpMessageConverter</a></p>
-                            <p class="item-date"><time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time></p>
-                        </div>
-                    </li>
                 
                     <li>
                         
@@ -764,7 +447,7 @@ public String toString() {
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc-bug/" class="thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析2/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -775,7 +458,26 @@ public String toString() {
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc-bug/" class="title">No mapping found for HTTP request with URI… in Dis</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析2/" class="title">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a></p>
+                            <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析1/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析1/" class="title">SpringMVC源码剖析（一）- 从抽象和接口说起</a></p>
                             <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
                         </div>
                     </li>
@@ -789,7 +491,7 @@ public String toString() {
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -807,7 +509,7 @@ public String toString() {
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -816,7 +518,7 @@ public String toString() {
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
+            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
         </div>
     </div>
 

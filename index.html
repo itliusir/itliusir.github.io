@@ -150,7 +150,7 @@
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                18
+                17
                 <span>标签</span>
             </div>
         </div>
@@ -193,139 +193,6 @@
 
             
             <section id="main">
-    <article id="post-框架-springmvc源码分析5" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/框架-springmvc源码分析5/">SpringMVC源码剖析（五)-消息转换器HttpMessageConverter</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/框架-springmvc源码分析5/">
-            <time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/框架-springmvc源码分析5/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/" data-id="ciy2wndby00101ks1ic3e27y2" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-框架-springmvc源码分析4" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -725,7 +592,7 @@
 
 
 
-    <article id="post-框架-springmvc-bug" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-框架-springmvc源码分析2" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -733,7 +600,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/框架-springmvc-bug/">No mapping found for HTTP request with URI… in Dis</a>
+            <a class="article-title" href="/2017/01/18/框架-springmvc源码分析2/">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a>
         </h1>
     
 
@@ -742,7 +609,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/框架-springmvc-bug/">
+        <a href="/2017/01/18/框架-springmvc源码分析2/">
             <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
         </a>
     </div>
@@ -757,7 +624,7 @@
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a>
+        <a class="tag-link" href="/tags/DispatcherServlet/">DispatcherServlet</a>
     </div>
 
                     </div>
@@ -767,9 +634,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’<br></p>
+            <p><p>摘要:上一篇文章《SpringMVC源码剖析（一）- 从抽象和接口说起》中，我介绍了一次典型的SpringMVC请求处理过程中，相继粉墨登场的各种核心类和接口。我刻意忽略了源码中的处理细节，只列出最简单的类甚至是接口类，目的就是让大家先从最高层次的抽象意义上来审视SpringMVC这个框架；<br>我也刻意将SpringMVC和Struts2做对比，目的是让大家看到，SpringMVC究竟吸取了Sturts2设计思想中的哪些精华，又弥补了它的哪些遗憾。<br></p>
             <p class="article-more-link">
-                <a href="/2017/01/18/框架-springmvc-bug/#more">查看更多</a>
+                <a href="/2017/01/18/框架-springmvc源码分析2/#more">查看更多</a>
             </p>
         
         </div>
@@ -780,7 +647,7 @@
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/" data-id="ciy2vre2d00074os1bvgubz4j" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/" data-id="ciy2wnday00051ks1bje1p5x3" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -848,7 +715,7 @@
 
             
     
-        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/">评论</a>
+        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/">评论</a>
     
 
         </footer>
@@ -991,7 +858,7 @@
 
 
 
-    <article id="post-框架-springmvc源码分析2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-框架-springmvc-bug" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -999,7 +866,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/框架-springmvc源码分析2/">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a>
+            <a class="article-title" href="/2017/01/18/框架-springmvc-bug/">No mapping found for HTTP request with URI… in Dis</a>
         </h1>
     
 
@@ -1008,7 +875,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/框架-springmvc源码分析2/">
+        <a href="/2017/01/18/框架-springmvc-bug/">
             <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
         </a>
     </div>
@@ -1023,7 +890,7 @@
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/DispatcherServlet/">DispatcherServlet</a>
+        <a class="tag-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a>
     </div>
 
                     </div>
@@ -1033,9 +900,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>摘要:上一篇文章《SpringMVC源码剖析（一）- 从抽象和接口说起》中，我介绍了一次典型的SpringMVC请求处理过程中，相继粉墨登场的各种核心类和接口。我刻意忽略了源码中的处理细节，只列出最简单的类甚至是接口类，目的就是让大家先从最高层次的抽象意义上来审视SpringMVC这个框架；<br>我也刻意将SpringMVC和Struts2做对比，目的是让大家看到，SpringMVC究竟吸取了Sturts2设计思想中的哪些精华，又弥补了它的哪些遗憾。<br></p>
+            <p><p>摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’<br></p>
             <p class="article-more-link">
-                <a href="/2017/01/18/框架-springmvc源码分析2/#more">查看更多</a>
+                <a href="/2017/01/18/框架-springmvc-bug/#more">查看更多</a>
             </p>
         
         </div>
@@ -1046,7 +913,7 @@
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/" data-id="ciy2wnday00051ks1bje1p5x3" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/" data-id="ciy2vre2d00074os1bvgubz4j" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1114,7 +981,257 @@
 
             
     
-        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/">评论</a>
+        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-框架-springmvc源码分析5" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>��t i t l e :   S p r i n g M V C �nxVR�g��N) - �mo<code>l�bchVH t t p M e s s a g e C o n v e r t e r 
+ d a t e :   2 0 1 7 - 0 1 - 1 8   2 0 : 4 0 : 0 0 
+ c a t e g o r i e s : 
+     -   Fh�g
+     -   S p r i n g M V C 
+ t a g s : 
+      -   H t t p M e s s a g e C o n v e r t e r 
+ - - - 
+ Xd��: (WS p r i n g M V C -N��S�NO(u@ R e q u e s t B o d y �T@ R e s p o n s e B o d y $N*N�l���R+R�[b��Bl�b�e0R�[a��T�[a�0R�T�^�b�e�vl�bc��^B\ُ�yup;m�v�mo</code>l�bc:g6R�1\/fS p r i n g 3 . x -N�e_eQ�vH t t p M e s s a g e C o n v e r t e r sS�mo<code>l�bchV:g6R0
+ &lt; ! - - m o r e - - &gt; 
+ ck�e: 
+ - - - 
+ H t t p ��Bl�v�ba�
+ 
+ ؏/f�V0R��Bl- �T�^�_N1\/f㉐g��BlSO�6qTԏ�V�T�^�b�eُ*N g�W,g�vH t t p ��BlǏz-Neg0b�N�wS��(Ws e r v l e t h�Q-N��S�N(uj a v a x . s e r v l e t . S e r v l e t R e q u e s t �c�S-N�v�NN�e�l�
+ 
+ p u b l i c   S e r v l e t I n p u t S t r e a m   g e t I n p u t S t r e a m ( )   t h r o w s   I O E x c e p t i o n ;   
+ eg�_0R N*NS e r v l e t I n p u t S t r e a m 0ُ*NS e r v l e t I n p u t S t r e a m -N��S�N���S0R N*N�S�Y��Bl�b�e�v@b    g�Q�[0T7h�v�(Wj a v a x . s e r v l e t . S e r v l e t R e s p o n s e �c�S-N��S�N(u�NN�e�l�
+ 
+ p u b l i c   S e r v l e t O u t p u t S t r e a m   g e t O u t p u t S t r e a m ( )   t h r o w s   I O E x c e p t i o n ; 
+ eg�_0R N*NS e r v l e t O u t p u t S t r e a m �ُ*NS e r v l e t O u t p u t S t e a m ��~b��j a v a -N�vO u t p u t S t r e a m ��S�N��</code>O���QH t t p �v�T�^�b�e�Q�[0<br> <br> ��b�N\Ջ@w�PS p r i n g M V C �v����� N7heg<code>� NN0b�N�wS��H t t p ��Bl�T�T�^�b�e,g(�
+N��/f N2NW[&amp;{2N�S_��Bl�b�eeg0Rj a v a NLu��[O��\ňb:N N*NS e r v l e t I n p u t S t r e a m �v��eQAm��Ob�N���S�b�e0�T�^�b�eR/f�Ǐ N*NS e r v l e t O u t p u t S t r e a m �v���QAm�eg���Q�T�^�b�e0
+ 
+ b�N�NAm-N��S�����S0R�S�Y�vW[&amp;{2N�b�e�T7h�b�N�_���QAm-N�_N�S���Q�S�Y�vW[&amp;{0�(Wj a v a NLu-N�YtN�R;������/f�N N*N*N    gN�RaIN�v�[a�:NYt�~�^�v���HN(W�b�e0R��S p r i n g M V C �T�NS p r i n g M V C �Q�S���X[(W N*NW[&amp;{2N0Rj a v a �[a��v;��b�0ُ NǏz�
+N�S��1u _�S�Kb�]l�bc0b�N�wS��(WS t r u t s 2 -N�Ǒ(u�NO G N L eg�^�[ُ*N���(WS p r i n g M V C -N��[/fH t t p M e s s a g e C o n v e r t e r :g6R0b�NHQegw$N*N�c�S0
+ 
+ H t t p I n p u t M e s s a g e 
+ 
+ ُ*N{|/fS p r i n g M V C �Q���[ N!kH t t p ��Bl�b�e�v�ba��(WH t t p M e s s a g e C o n v e r t e r �vr e a d ( ) �e�l-N�    g N*NH t t p I n p u t M e s s a g e �vb_�S��[ck/fS p r i n g M V C �v�mo</code>l�bchV@b\O(u�v�SSO ��Bl�mo<code> �v�Q落ba���mo</code>l�bchV�N ��Bl�mo<code> -N    cgqĉR�c�S�mo</code>�l�bc:N�e�lb<em>�S-N�Xf�v�[a�0<br> <code> </code> <code> j a v a 
+ p a c k a g e   o r g . s p r i n g f r a m e w o r k . h t t p ; 
+ 
+ i m p o r t   j a v a . i o . I O E x c e p t i o n ; 
+ i m p o r t   j a v a . i o . I n p u t S t r e a m ; 
+ 
+ p u b l i c   i n t e r f a c e   H t t p I n p u t M e s s a g e   e x t e n d s   H t t p M e s s a g e   { 
+ 
+         I n p u t S t r e a m   g e t B o d y ( )   t h r o w s   I O E x c e p t i o n ; 
+ 
+ } 
+ </code> <code> </code> <br> H t t p O u t p u t M e s s a g e <br> <br> ُ<em>N{|/fS p r i n g M V C �Q���[ N!kH t t p �T�^�b�e�v�ba��(WH t t p M e s s a g e C o n v e r t e r �vw r i t e ( ) �e�l-N�    g N</em>NH t t p O u t p u t M e s s a g e �vb</em>�S��[ck/fS p r i n g M V C �v�mo<code>l�bchV@b\O(u�v�SSO �T�^�mo</code> �v�Q落ba���mo<code>l�bchV\ �T�^�mo</code>     cgq N�[�vĉR�Q0R�T�^�b�e-N0<br> <code> </code> <code> j a v a 
+ p a c k a g e   o r g . s p r i n g f r a m e w o r k . h t t p ; 
+ 
+ i m p o r t   j a v a . i o . I O E x c e p t i o n ; 
+ i m p o r t   j a v a . i o . O u t p u t S t r e a m ; 
+ 
+ p u b l i c   i n t e r f a c e   H t t p O u t p u t M e s s a g e   e x t e n d s   H t t p M e s s a g e   { 
+ 
+         O u t p u t S t r e a m   g e t B o d y ( )   t h r o w s   I O E x c e p t i o n ; 
+ 
+ } 
+ </code> <code> </code> <br> H t t p M e s s a g e C o n v e r t e r <br> <br> �[�mo<code>l�bchV gؚB\!k�v�c�S�ba���c���N N*N�mo</code>l�bchV�v N,�yr�<em>�b�N�S�N�Nُ<em>N�c�S-N�[IN�v�e�l�eg���<code>S p r i n g 3 . x �v������[ُ N:g6R�v</code>�Ǐz0<br> <code> </code> <code> j a v a 
+ p a c k a g e   o r g . s p r i n g f r a m e w o r k . h t t p . c o n v e r t e r ; 
+ 
+ i m p o r t   j a v a . i o . I O E x c e p t i o n ; 
+ i m p o r t   j a v a . u t i l . L i s t ; 
+ 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . h t t p . H t t p I n p u t M e s s a g e ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . h t t p . H t t p O u t p u t M e s s a g e ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . h t t p . M e d i a T y p e ; 
+ 
+ p u b l i c   i n t e r f a c e   H t t p M e s s a g e C o n v e r t e r &lt; T &gt;   { 
+ 
+         b o o l e a n   c a n R e a d ( C l a s s &lt; ? &gt;   c l a z z ,   M e d i a T y p e   m e d i a T y p e ) ; 
+ 
+         b o o l e a n   c a n W r i t e ( C l a s s &lt; ? &gt;   c l a z z ,   M e d i a T y p e   m e d i a T y p e ) ; 
+ 
+         L i s t &lt; M e d i a T y p e &gt;   g e t S u p p o r t e d M e d i a T y p e s ( ) ; 
+ 
+         T   r e a d ( C l a s s &lt; ?   e x t e n d s   T &gt;   c l a z z ,   H t t p I n p u t M e s s a g e   i n p u t M e s s a g e ) 
+                         t h r o w s   I O E x c e p t i o n ,   H t t p M e s s a g e N o t R e a d a b l e E x c e p t i o n ; 
+ 
+         v o i d   w r i t e ( T   t ,   M e d i a T y p e   c o n t e n t T y p e ,   H t t p O u t p u t M e s s a g e   o u t p u t M e s s a g e ) 
+                         t h r o w s   I O E x c e p t i o n ,   H t t p M e s s a g e N o t W r i t a b l e E x c e p t i o n ; 
+ 
+ } 
+ </code> <code> </code> <br> H t t p M e s s a g e C o n v e r t e r �c�S�v�[IN�Q�s�Nb�[�vc a n R e a d ( ) �r e a d ( ) �Tc a n W r i t e ( ) �w r i t e ( ) �e�l�M e d i a T y p e /f�[��Bl�vM e d i a   T y p e ^\’`�v\ň0&gt;N</em>N�OP[�S</em>b�N�Xf�NNb�ُ<em>NYt�e�l0<br> <code> </code> <code> j a v a 
+ @ R e q u e s t M a p p i n g ( v a l u e = &quot; / s t r i n g &quot; ,   m e t h o d = R e q u e s t M e t h o d . P O S T ) 
+ p u b l i c   @ R e s p o n s e B o d y   S t r i n g   r e a d S t r i n g ( @ R e q u e s t B o d y   S t r i n g   s t r i n g )   { 
+         r e t u r n   &quot; R e a d   s t r i n g   &#39; &quot;   +   s t r i n g   +   &quot; &#39; &quot; ; 
+ } 
+ </code> <code> </code> <br> (WS p r i n g M V C ۏeQr e a d S t r i n g �e�lMR�O9hnc@ R e q u e s t B o d y �l��    ��b�S_�vH t t p M e s s a g e C o n v e r t e r �[�s{|eg\��Bl�Spe㉐g0Rs t r i n g �Sϑ-N�wQSOeg��/fO(u�NS t r i n g H t t p M e s s a g e C o n v e r t e r {|��[�vc a n R e a d ( ) �e�lԏ�Vt r u e �6qT�[�vr e a d ( ) �e�lO�N��Bl-N���Q��Bl�Spe��~�[0Rr e a d S t r i n g ( ) �e�l�vs t r i n g �Sϑ-N0<br> <br> S_S p r i n g M V C gbL�r e a d S t r i n g �e�lT�1u�Nԏ�V&lt;PhƋ�N@ R e s p o n s e B o d y �S p r i n g M V C \O(uS t r i n g H t t p M e s s a g e C o n v e r t e r �vw r i t e ( ) �e�l�\�~�g\O:NS t r i n g &lt;P�QeQ�T�^�b�e�S_6q�dk�ec a n W r i t e ( ) �e�lԏ�Vt r u e 0<br> <br> <br> R e q u e s t R e s p o n s e B o d y M e t h o d P r o c e s s o r <br> <br> \<br>N��ǏzƖ-N�c���v N</em>N{|/fo r g . s p r i n g f r a m e w o r k . w e b . s e r v l e t . m v c . m e t h o d . a n n o t a t i o n . R e q u e s t R e s p o n s e B o d y M e t h o d P r o c e s s o r �ُ<em>N{|T�e�[�s�NH a n d l e r M e t h o d A r g u m e n t R e s o l v e r �TH a n d l e r M e t h o d R e t u r n V a l u e H a n d l e r $N</em>N�c�S0MR�/f\��Bl�b�e�~�[0RYt�e�lb<em>�S�vV{eu�c�S�T�R/f�[Yt�e�lԏ�V&lt;PۏL�Yt�vV{eu�c�S0$N<em>N�c�S�v�nx�YN�<br> <code> </code> <code> j a v a 
+ p a c k a g e   o r g . s p r i n g f r a m e w o r k . w e b . m e t h o d . s u p p o r t ; 
+ 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . c o r e . M e t h o d P a r a m e t e r ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . w e b . b i n d . W e b D a t a B i n d e r ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . w e b . b i n d . s u p p o r t . W e b D a t a B i n d e r F a c t o r y ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . w e b . c o n t e x t . r e q u e s t . N a t i v e W e b R e q u e s t ; 
+ 
+ p u b l i c   i n t e r f a c e   H a n d l e r M e t h o d A r g u m e n t R e s o l v e r   { 
+ 
+         b o o l e a n   s u p p o r t s P a r a m e t e r ( M e t h o d P a r a m e t e r   p a r a m e t e r ) ; 
+ 
+         O b j e c t   r e s o l v e A r g u m e n t ( M e t h o d P a r a m e t e r   p a r a m e t e r , 
+                                                       M o d e l A n d V i e w C o n t a i n e r   m a v C o n t a i n e r , 
+                                                       N a t i v e W e b R e q u e s t   w e b R e q u e s t , 
+                                                       W e b D a t a B i n d e r F a c t o r y   b i n d e r F a c t o r y )   t h r o w s   E x c e p t i o n ; 
+ 
+ } 
+ </code> <code> </code> <br> <br> <code> </code> <code> j a v a 
+ p a c k a g e   o r g . s p r i n g f r a m e w o r k . w e b . m e t h o d . s u p p o r t ; 
+ 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . c o r e . M e t h o d P a r a m e t e r ; 
+ i m p o r t   o r g . s p r i n g f r a m e w o r k . w e b . c o n t e x t . r e q u e s t . N a t i v e W e b R e q u e s t ; 
+ 
+ p u b l i c   i n t e r f a c e   H a n d l e r M e t h o d R e t u r n V a l u e H a n d l e r   { 
+ 
+         b o o l e a n   s u p p o r t s R e t u r n T y p e ( M e t h o d P a r a m e t e r   r e t u r n T y p e ) ; 
+ 
+         v o i d   h a n d l e R e t u r n V a l u e ( O b j e c t   r e t u r n V a l u e , 
+                                                       M e t h o d P a r a m e t e r   r e t u r n T y p e , 
+                                                       M o d e l A n d V i e w C o n t a i n e r   m a v C o n t a i n e r , 
+                                                       N a t i v e W e b R e q u e s t   w e b R e q u e s t )   t h r o w s   E x c e p t i o n ; 
+ 
+ } 
+ </code> <code> </code> <br> R e q u e s t R e s p o n s e B o d y M e t h o d P r o c e s s o r ُ</em>N{|�T�eEQS</em>�N�e�l�Spe㉐g�Tԏ�V&lt;PYt$N�y҉r�0b�N�N�[�v�nx-N��S�N~b0R<br>Nb�$N<em>N�c�S�v�e�l�[�s0<br> <br> �[H a n d l e r M e t h o d A r g u m e n t R e s o l v e r �c�S�v�[�s�<br> <code> </code> <code> j a v a 
+ p u b l i c   b o o l e a n   s u p p o r t s P a r a m e t e r ( M e t h o d P a r a m e t e r   p a r a m e t e r )   { 
+         r e t u r n   p a r a m e t e r . h a s P a r a m e t e r A n n o t a t i o n ( R e q u e s t B o d y . c l a s s ) ; 
+ } 
+ 
+ p u b l i c   O b j e c t   r e s o l v e A r g u m e n t ( M e t h o d P a r a m e t e r   p a r a m e t e r ,   M o d e l A n d V i e w C o n t a i n e r   m a v C o n t a i n e r , 
+                 N a t i v e W e b R e q u e s t   w e b R e q u e s t ,   W e b D a t a B i n d e r F a c t o r y   b i n d e r F a c t o r y )   t h r o w s   E x c e p t i o n   { 
+ 
+         O b j e c t   a r g u m e n t   =   r e a d W i t h M e s s a g e C o n v e r t e r s ( w e b R e q u e s t ,   p a r a m e t e r ,   p a r a m e t e r . g e t G e n e r i c P a r a m e t e r T y p e ( ) ) ; 
+ 
+         S t r i n g   n a m e   =   C o n v e n t i o n s . g e t V a r i a b l e N a m e F o r P a r a m e t e r ( p a r a m e t e r ) ; 
+         W e b D a t a B i n d e r   b i n d e r   =   b i n d e r F a c t o r y . c r e a t e B i n d e r ( w e b R e q u e s t ,   a r g u m e n t ,   n a m e ) ; 
+ 
+         i f   ( a r g u m e n t   ! =   n u l l )   { 
+                 v a l i d a t e ( b i n d e r ,   p a r a m e t e r ) ; 
+         } 
+ 
+         m a v C o n t a i n e r . a d d A t t r i b u t e ( B i n d i n g R e s u l t . M O D E L _ K E Y _ P R E F I X   +   n a m e ,   b i n d e r . g e t B i n d i n g R e s u l t ( ) ) ; 
+ 
+         r e t u r n   a r g u m e n t ; 
+ } 
+ </code> <code> </code> <br> �[H a n d l e r M e t h o d R e t u r n V a l u e H a n d l e r �c�S�v�[�s<br> <code> </code> <code> j a v a 
+ p u b l i c   b o o l e a n   s u p p o r t s R e t u r n T y p e ( M e t h o d P a r a m e t e r   r e t u r n T y p e )   { 
+         r e t u r n   r e t u r n T y p e . g e t M e t h o d A n n o t a t i o n ( R e s p o n s e B o d y . c l a s s )   ! =   n u l l ; 
+ } 
+ 
+         p u b l i c   v o i d   h a n d l e R e t u r n V a l u e ( O b j e c t   r e t u r n V a l u e ,   M e t h o d P a r a m e t e r   r e t u r n T y p e , 
+                 M o d e l A n d V i e w C o n t a i n e r   m a v C o n t a i n e r ,   N a t i v e W e b R e q u e s t   w e b R e q u e s t ) 
+                 t h r o w s   I O E x c e p t i o n ,   H t t p M e d i a T y p e N o t A c c e p t a b l e E x c e p t i o n   { 
+ 
+         m a v C o n t a i n e r . s e t R e q u e s t H a n d l e d ( t r u e ) ; 
+         i f   ( r e t u r n V a l u e   ! =   n u l l )   { 
+                 w r i t e W i t h M e s s a g e C o n v e r t e r s ( r e t u r n V a l u e ,   r e t u r n T y p e ,   w e b R e q u e s t ) ; 
+         } 
+ } 
+ </code> <code> </code> <br> w�[<br>Nb��v�Nx�te</em>NH t t p M e s s a g e C o n v e r t e r �mo<code>l�bc�v    ��~�]�~^�8^npf0�V:N$N*N�c�S�v�[�s�R+R/f�N/f&amp;T    g@ R e q u e s t B o d y �T@ R e s p o n s e B o d y :Nag�N�6qTR+R�(uH t t p M e s s a g e C o n v e r t e r egۏL��mo</code>�v���Q0<br> <br> �Y�g<code>O�</code>���<code>HN7hߍ*�0RR e q u e s t R e s p o n s e B o d y M e t h o d P r o c e s s o r -N���</code>O    cgqMRb��Q�{ZS�e�v<code>���6qT0Ȓُs p r i n g - m v c - s h o w c a s e N}��nx�Veg��[vQ-NH t t p M e s s a g e C o n v e r t e r �vsQ�v�OP[ۏL�d e b u g ��S��</code>O��N�R+Y��v�O<code>O N�[O    g^\�N���]�v6e���v0
+ 
+ </code>�<br> <br>  <em>\��(W��</em>�O�v,g(��eP��� �<em>�O�S/f<em>Ns^�S��mo<code>(WvQ-NAml� 0(Wb�N�[S p r i n g M V C �nxR�g�vǏz-N�b�N�S�N�NH t t p M e s s a g e C o n v e r t e r :g6R-N���</code>0R{|&lt;O�vS�t0(WS p r i n g M V C �v�����&lt;w-N� N!k��Bl�b�e�T N!k�T�^�b�e�R+R���ba�:N N</em>N��Bl�mo<code>H t t p I n p u t M e s s a g e �T N*N�T�^�mo</code>H t t p O u t p u t M e s s a g e 0<br> <br> Yt��Bl�e�1uT��v�mo`l�bchV\��Bl�b�e�~�[:N�e�l-N�vb</em>�S�[a��(Wُ̑�T N*N�[a�1\    g�S���Q�sY�y<br>NT�v�mo<code>b__��k�Yj s o n �Tx m l 0T7h�S_�T�^��Bl�e��e�l�vԏ�V&lt;P_NT7h�S����ԏ�V:N
+NT�v�mo</code>b<em></em>��k�Yj s o n �Tx m l 0<br> <br> (WS p r i n g M V C -N����[<br>NT�v�mo<code>b__�b�N    g
+NT�vH t t p M e s s a g e C o n v e r t e r �[�s{|egYtT�y�mo</code>b<em></em>0FO/f��S��ُ�N�mo<code>@bt�+T�v     gHe�Oo</code> /f N���v���HNT�y<br>NT�v�mo<code>l�bchV���OubT7h�vl�bc�~�g0���NT�y�mo</code>��㉐g�~���v<br>NT�1\��O\=�(W<br>NT�vH t t p M e s s a g e C o n v e r t e r �[�s{|-N�N0</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/" data-id="ciy2wndby00101ks1ic3e27y2" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/">评论</a>
     
 
         </footer>
@@ -1539,25 +1656,6 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc源码分析5/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析5/" class="title">SpringMVC源码剖析（五)-消息转换器HttpMessageConverter</a></p>
-                            <p class="item-date"><time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
                             <a href="/2017/01/18/框架-springmvc源码分析4/" class="thumbnail">
     
     
@@ -1615,7 +1713,7 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/2017/01/18/框架-springmvc-bug/" class="thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析2/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -1626,7 +1724,26 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
-                            <p class="item-title"><a href="/2017/01/18/框架-springmvc-bug/" class="title">No mapping found for HTTP request with URI… in Dis</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析2/" class="title">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a></p>
+                            <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/18/框架-springmvc源码分析1/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a></p>
+                            <p class="item-title"><a href="/2017/01/18/框架-springmvc源码分析1/" class="title">SpringMVC源码剖析（一）- 从抽象和接口说起</a></p>
                             <p class="item-date"><time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time></p>
                         </div>
                     </li>
@@ -1640,7 +1757,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -1658,7 +1775,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -1667,7 +1784,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
+            <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a>
         </div>
     </div>
 
