@@ -146,11 +146,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                4
+                2
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                2
+                1
                 <span>标签</span>
             </div>
         </div>
@@ -235,33 +235,10 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <h2 id="Docker概览"><a href="#Docker概览" class="headerlink" title="Docker概览"></a>Docker概览</h2><p>Docker是一个用于开发、交付和运行应用的开放平台，Docker被设计用于更快地交付应用。Docker可以将应用程序和基础设施层隔离，并且可以将基础设施当作程序一样进行管理。使用Docker，可以更快地打包代码、测试以及部署，并且可以减少从编写到部署运行代码的周期。</p>
-<p>Docker将内核容器特性（LXC）、工作流和工具集成，以帮助管理和部署应用。</p>
-<h2 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h2><p>核心是，Docker了一种在安全隔离的容器中运行近乎所有应用的方式，这种隔离性和安全性允许你在同一个主机上同时运行多个容器，而容器的这种轻量级特性，无需消耗运行hpervisor所需的额外负载，意味着你可以节省更多的硬件资源。</p>
-<p>基于容器虚拟化的工具或平台可提供：</p>
-<ul>
-<li>将应用（包括支撑组件）放入Docker容器中</li>
-<li>分发和交付这些容器给团队，便于后续的开发和测试</li>
-<li>将容器部署到生产环境中，生产环境可以是本地的数据中心，也可以在云端。</li>
-</ul>
-<p>自从上世纪 90 年代硬件虚拟化被主流的技术广泛普及之后，对数据中心而言，发生的最大的变革莫过于容器和容器管理工具，例如：Docker。在过去的一年内，Docker 技术已经逐渐走向成熟，并且推动了大型初创公司例如 Twitter 和 Airbnb 的发展，甚至在银行、连锁超市、甚至 NASA 的数据中心都赢得了一席之地。当我几年前第一次直到 Docker 的时候，我还对 Docker 的未来持怀疑的态度，我认为他们是把以前的 Linux 容器的概念拿出来包装了一番推向市场。但是使用 Docker 成功进行了几个项目 例如 Spantree 之后，我改变了我的看法：Docker 帮助我们节省了大量的时间和经历，并且已经成为我们技术团队中不可或缺的工具。<br>GitHub 上面每天都会催生出各式各样的工具、形态各异的语言和千奇百怪的概念。如果你和我一样，没有时间去把他们全部都测试一遍，甚至没有时间去亲自测试 Docker，那么你可以看一下我的这篇文章：我将会用我们在 Docker 中总结的经验来告诉你什么是 Docker、为什么 Docker 会这么火。</p>
-<p><strong>Docker 是容器管理工具</strong><br>Docker 是一个轻量级、便携式、与外界隔离的容器，也是一个可以在容器中很方便地构建、传输、运行应用的引擎。和传统的虚拟化技术不同的是，Docker 引擎并不虚拟出一台虚拟机，而是直接使用宿主机的内核和硬件，直接在宿主机上运行容器内应用。也正是得益于此，Docker 容器内运行的应用和宿主机上运行的应用性能差距几乎可以忽略不计。<br>但是 Docker 本身并不是一个容器系统，而是一个基于原有的容器化工具 LXC 用来创建虚拟环境的工具。类似 LXC 的工具已经在生产环境中使用多年，Docker 则基于此提供了更加友好的镜像管理工具和部署工具。</p>
-<p><strong>Docker 不是虚拟化引擎</strong><br>Docker 第一次发布的时候，很多人都拿 Docker 和虚拟机 VMware、KVM 和 VirtualBox 比较。尽管从功能上看，Docker 和虚拟化技术致力于解决的问题都差不多，但是 Docker 却是采取了另一种非常不同的方式。虚拟机是虚拟出一套硬件，虚拟机的系统进行的磁盘操作，其实都是在对虚拟出来的磁盘进行操作。当运行 CPU 密集型的任务时，是虚拟机把虚拟系统里的 CPU 指令“翻译”成宿主机的CPU指令并进行执行。两个磁盘层，两个处理器调度器，两个操作系统消耗的内存，所有虚拟出的这些都会带来相当多的性能损失，一台虚拟机所消耗的硬件资源和对应的硬件相当，一台主机上跑太多的虚拟机之后就会过载。而 Docker 就没有这种顾虑。Docker 运行应用采取的是“容器”的解决方案：使用 namespace 和 CGroup 进行资源限制，和宿主机共享内核，不虚拟磁盘，所有的容器磁盘操作其实都是对 /var/lib/docker/ 的操作。简言之，Docker 其实只是在宿主机中运行了一个受到限制的应用程序。<br>从上面不难看出，容器和虚拟机的概念并不相同，容器也并不能取代虚拟机。在容器力所不能及的地方，虚拟机可以大显身手。例如：宿主机是 Linux，只能通过虚拟机运行 Windows，Docker 便无法做到。再例如，宿主机是 Windows，Windows 并不能直接运行 Docker，Windows上的 Docker 其实是运行在 VirtualBox 虚拟机里的。</p>
-<p><strong>Docker 使用层级的文件系统</strong><br>前面提到过，Docker 和现有容器技术 LXC 等相比，优势之一就是 Docker 提供了镜像管理。对于 Docker 而言，镜像是一个静态的、只读的容器文件系统的快照。然而不仅如此，Docker 中所有的磁盘操作都是对特定的Copy-On-Write文件系统进行的。下面通过一个例子解释一下这个问题。<br>例如我们要建立一个容器运行 JAVA Web 应用，那么我们应该使用一个已经安装了 JAVA 的镜像。在 Dockerfile（一个用于生成镜像的指令文件）中，应该指明“基于 JAVA 镜像”，这样 Docker 就会去 Docker Hub Registry 上下载提前构建好的 JAVA 镜像。然后再 Dockerfile 中指明下载并解压 Apache Tomcat 软件到 /opt/tomcat 文件夹中。这条命令并不会对原有的 JAVA 镜像产生任何影响，而仅仅是在原有镜像上面添加了一个改动层。当一个容器启动时，容器内的所有改动层都会启动，容器会从第一层中运行 /usr/bin/java 命令，并且调用另外一层中的 /opt/tomcat/bin 命令。实际上，Dockerfile 中每一条指令都会产生一个新的改动层，即便只有一个文件被改动。如果用过 Git 就能更清楚地认识这一点，每条指令就像是每次 commit，都会留下记录。但是对于 Docker 来说，这种文件系统提供了更大的灵活性，也可以更方便地管理应用程序。<br>我们Spantree的团队有一个自己维护的含有 Tomcat 的镜像。发布新版本也非常简单：使用 Dockerfile 将新版本拷贝进镜像从而创建一个新镜像，然后给新镜像贴上版本的标签。不同版本的镜像的不同之处仅仅是一个 90 MB 大小的 WAR 文件，他们所基于的主镜像都是相同的。如果使用虚拟机去维护这些不同的版本的话，还要消耗掉很多不同的磁盘去存储相同的系统，而使用 Docker 就只需要很小的磁盘空间。即便我们同时运行这个镜像的很多实例，我们也只需要一个基础的 JAVA / TOMCAT 镜像。</p>
-<p><strong>Docker 可以节约时间</strong><br>很多年前我在为一个连锁餐厅开发软件时，仅仅是为了描述如何搭建环境都需要写一个 12 页的 Word 文档。例如本地 Oracle 数据库，特定版本的 JAVA，以及其他七七八八的系统工具和共享库、软件包。整个搭建过程浪费掉了我们团队每个人几乎一天的时间，如果用金钱衡量的话，花掉了我们上万美金的时间成本。虽然客户已经对这种事情习以为常，甚至认为这是引入新成员、让成员适应环境、让自己的员工适应我们的软件所必须的成本，但是相比较起来，我们宁愿把更多的时间花在为客户构建可以增进业务的功能上面。<br>如果当时有 Docker，那么构建环境就会像使用自动化搭建工具 Puppet / Chef / Salt / Ansible 一样简单，我们也可以把整个搭建时间周期从一天缩短为几分钟。但是和这些工具不同的地方在于，Docker 可以不仅仅可以搭建整个环境，还可以将整个环境保存成磁盘文件，然后复制到别的地方。需要从源码编译 Node.js 吗？Docker 做得到。Docker 不仅仅可以构建一个 Node.js 环境，还可以将整个环境做成镜像，然后保存到任何地方。当然，由于 Docker 是一个容器，所以不用担心容器内执行的东西会对宿主机产生任何的影响。<br>现在新加入我们团队的人只需要运行 docker-compose up 命令，便可以喝杯咖啡，然后开始工作了。</p>
-<p><strong>Docker 可以节省开销</strong><br>当然，时间就是金钱。除了时间外，Docker 还可以节省在基础设施硬件上的开销。高德纳和麦肯锡的研究表明，数据中心的利用率在 6% - 12% 左右。不仅如此，如果采用虚拟机的话，你还需要被动地监控和设置每台虚拟机的 CPU 硬盘和内存的使用率，因为采用了静态分区(static partitioning)所以资源并不能完全被利用。。而容器可以解决这个问题：容器可以在实例之间进行内存和磁盘共享。你可以在同一台主机上运行多个服务、可以不用去限制容器所消耗的资源、可以去限制资源、可以在不需要的时候停止容器，也不用担心启动已经停止的程序时会带来过多的资源消耗。凌晨三点的时候只有很少的人会去访问你的网站，同时你需要比较多的资源执行夜间的批处理任务，那么可以很简单的便实现资源的交换。<br>虚拟机所消耗的内存、硬盘、CPU 都是固定的，一般动态调整都需要重启虚拟机。而用 Docker 的话，你可以进行资源限制，得益于 CGroup，可以很方便动态调整资源限制，让然也可以不进行资源限制。Docker 容器内的应用对宿主机而言只是两个隔离的应用程序，并不是两个虚拟机，所以宿主机也可以自行去分配资源。</p>
-<p>注：</p>
-<blockquote>
-<p> 部分翻译自：<a href="https://docs.docker.com/engine/understanding-docker/" target="_blank" rel="external">https://docs.docker.com/engine/understanding-docker/</a></p>
-<p> 部分参考：<a href="http://zhidao.baidu.com/link?url=4FOwNhnpVC3FP0hOxaC4vrl3fFG27lWRpDEaZ3KJBVL0E29C5O-ty4zqze1On52Uk4kcNrnPd3VEKpKvRs4pNEV-lgo78lmP1_FXffMerdG" target="_blank" rel="external">http://zhidao.baidu.com/link?url=4FOwNhnpVC3FP0hOxaC4vrl3fFG27lWRpDEaZ3KJBVL0E29C5O-ty4zqze1On52Uk4kcNrnPd3VEKpKvRs4pNEV-lgo78lmP1_FXffMerdG</a></p>
-</blockquote>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p>Docker介绍：<a href="http://www.lupaworld.com/article-243555-1.html" target="_blank" rel="external">http://www.lupaworld.com/article-243555-1.html</a></p>
-<p>Docker介绍：<a href="http://www.docker.org.cn/book/docker/what-is-docker-16.html" target="_blank" rel="external">http://www.docker.org.cn/book/docker/what-is-docker-16.html</a></p>
-<p>Docker官方文档：<a href="https://docs.docker.com/engine/understanding-docker/" target="_blank" rel="external">https://docs.docker.com/engine/understanding-docker/</a></p>
-<p>Docker中文文档：<a href="http://git.oschina.net/widuu/chinese_docker" target="_blank" rel="external">http://git.oschina.net/widuu/chinese_docker</a></p>
-<p>Docker介绍：<a href="https://segmentfault.com/a/1190000002609286" target="_blank" rel="external">https://segmentfault.com/a/1190000002609286</a></p>
-
+            <p><p>摘要:Docker是一个用于开发、交付和运行应用的开放平台<br></p>
+            <p class="article-more-link">
+                <a href="/2017/01/18/3.1 Docker介绍/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -391,100 +368,10 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <p>Docker的安装是比较简单的，笔者原本不想过多提及；但是看到有不少读者对Docker的安装提出了疑问，故此进行一个安装的总结。</p>
-<p>对于Linux用户可以借助其发行版的Linux包管理工具安装，对于Windows和MAC用户相对麻烦一些，笔者下面以Windows7系统为例，讲述安装过程。<strong>笔者强烈建议大家使用Linux系统进入本章的学习</strong>，第一是比较符合目前Docker的市场趋势，第二Docker本身就是基于Linux的LXC技术。</p>
-<h2 id="CentOS-7-0下Docker的安装"><a href="#CentOS-7-0下Docker的安装" class="headerlink" title="CentOS 7.0下Docker的安装"></a>CentOS 7.0下Docker的安装</h2><ol>
-<li><p>查看内核版本(Docker需要64位版本，同时内核版本在3.10以上，如果版本低于3.10，需要升级内核)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r</div></pre></td></tr></table></figure>
-</li>
-<li><p>更新yum包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure>
-</li>
-<li><p>添加yum仓库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-&apos;EOF&apos;</div><div class="line">[dockerrepo]</div><div class="line">name=Docker Repository</div><div class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/7/</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=https://yum.dockerproject.org/gpg</div><div class="line">EOF</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install docker-engine</div></pre></td></tr></table></figure>
-</li>
-<li><p>启动Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service docker start</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用Docker国内镜像（为Docker镜像下载提速，非必须）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://fe8a7d6e.m.daocloud.io</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>参考：</p>
-<blockquote>
-<p>官方文档：<a href="https://docs.docker.com/engine/installation/linux/centos/" target="_blank" rel="external">https://docs.docker.com/engine/installation/linux/centos/</a></p>
-</blockquote>
-<h2 id="CentOS-6-5下Docker的安装"><a href="#CentOS-6-5下Docker的安装" class="headerlink" title="CentOS 6.5下Docker的安装"></a>CentOS 6.5下Docker的安装</h2><p>Docker容器最早受到RHEL完善的支持是从最近的CentOS 7.0开始的，官方说明是只能运行于64位架构平台，内核版本为2.6.32-431及以上（即 &gt;= CentOS 6.5，运行docker时实际提示3.10.0及以上）。<br>需要注意的是CentOS 6.5与7.0的安装是有一点点不同的，CentOS 6.x上Docker的安装包叫docker-io，并且来源于Fedora epel库，这个仓库维护了大量的没有包含在发行版中的软件，所以先要安装EPEL，而CentOS 7.x的Docker直接包含在官方镜像源的Extras仓库（CentOS-Base.repo下的[extras]节enable=1启用）。</p>
-<p>下面就CentOS 6.5讲解Docker的安装过程，以下是软件版本：</p>
-<table>
-<thead>
-<tr>
-<th>Linux版本</th>
-<th>Docker版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CentOS 6.5 X64（只能X64）</td>
-<td>1.7.1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="升级内核"><a href="#升级内核" class="headerlink" title="升级内核"></a>升级内核</h3><p>查看内核版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r</div></pre></td></tr></table></figure>
-<p>结果：<code>2.6.32-431.el6.x86_64</code>，不满足上文的需求，故此需要升级内核。</p>
-<p>升级步骤：</p>
-<ol>
-<li><p>导入公钥数字证书</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装ELRepo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh http://www.elrepo.org/elrepo-release-6-5.el6.elrepo.noarch.rpm</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装kernel长期版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum --enablerepo=elrepo-kernel install kernel-lt -y 	# lt表示long-term的意思，长期维护版本，也可以将kernel-lt改为kernel-ml，安装主线版本</div></pre></td></tr></table></figure>
-</li>
-<li><p>编辑grub.conf文件，修改Grub引导顺序，确认刚安装好的内核在哪个位置，然后设置default值（从0开始），一般新安装的内核在第一个位置，所以设置default=0。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">vim /etc/grub.conf</div><div class="line"></div><div class="line"># 以下是/etc/grub.conf的内容</div><div class="line">default=0		# 修改该值即可</div><div class="line">timeout=5</div><div class="line">splashimage=(hd0,0)/grub/splash.xpm.gz</div><div class="line">hiddenmenu</div><div class="line">title CentOS (3.10.103-1.el6.elrepo.x86_64)</div></pre></td></tr></table></figure>
-</li>
-<li><p>重启并查看内核版本，将会发现内核已经更新。</p>
-</li>
-</ol>
-<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><ol>
-<li><p>禁用selinux，因为selinux和LXC有冲突，故而需要禁用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/selinux/config的内容</div><div class="line"></div><div class="line"># 以下是/etc/selinux/config的内容</div><div class="line">#     enforcing - SELinux security policy is enforced.</div><div class="line">#     permissive - SELinux prints warnings instead of enforcing.</div><div class="line">#     disabled - No SELinux policy is loaded.</div><div class="line">SELINUX=disabled  # 将SELINUX设为disabled，注意修改后最好重启下机器。</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装 Fedora EPEL</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y docker-io</div></pre></td></tr></table></figure>
-</li>
-<li><p>以守护模式运行Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker -d</div></pre></td></tr></table></figure>
-</li>
-<li><p>如果不报错，那就是启动成功了，如果报以下异常：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker: relocation error: docker: symbol dm_task_get_info_with_deferred_remove, version Base not defined in file libdevmapper.so.1.02 with link time reference</div><div class="line">INFO[0000] Listening for HTTP on unix (/var/run/docker.sock)</div></pre></td></tr></table></figure>
-<p>执行以下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum upgrade device-mapper-libs</div></pre></td></tr></table></figure>
-</li>
-<li><p>将Docker开机启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig docker on</div></pre></td></tr></table></figure>
-</li>
-<li><p>重启机器</p>
-</li>
-</ol>
-<h2 id="其他平台的安装"><a href="#其他平台的安装" class="headerlink" title="其他平台的安装"></a>其他平台的安装</h2><p>请参考：<a href="https://docs.docker.com/engine/installation/" target="_blank" rel="external">https://docs.docker.com/engine/installation/</a></p>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><blockquote>
-<p>Windows：<a href="https://docs.docker.com/engine/installation/windows/" target="_blank" rel="external">https://docs.docker.com/engine/installation/windows/</a></p>
-<p>MAC： <a href="https://docs.docker.com/engine/installation/mac/" target="_blank" rel="external">https://docs.docker.com/engine/installation/mac/</a></p>
-<p>CentOS：<a href="https://docs.docker.com/engine/installation/linux/centos/" target="_blank" rel="external">https://docs.docker.com/engine/installation/linux/centos/</a></p>
-</blockquote>
-
+            <p><p>摘要:Docker的安装<br></p>
+            <p class="article-more-link">
+                <a href="/2017/01/18/3.2 Docker的安装/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -571,272 +458,6 @@
 </article>
 
 
-
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/17/hello-world/">coding</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/17/hello-world/">
-            <time datetime="2017-01-17T11:50:06.000Z" itemprop="datePublished">2017-01-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Log/">Log</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Log/log/">log</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/hello/">hello</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>info:<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/17/hello-world/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/17/hello-world/" data-id="ciy1gkzbe000060s12bkqjpyp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/01/17/hello-world/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/17/hello-world/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-coding" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/17/coding/">coding</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/17/coding/">
-            <time datetime="2017-01-17T11:50:06.000Z" itemprop="datePublished">2017-01-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Log/">Log</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Log/log/">log</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/hello/">hello</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>info:<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/17/coding/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/17/coding/" data-id="ciy1gkzbe000160s12mrfzx6c" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/01/17/coding/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/17/coding/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
 </section>
             
                 <aside id="sidebar">
@@ -885,44 +506,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/01/17/hello-world/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Log/">Log</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Log/log/">log</a></p>
-                            <p class="item-title"><a href="/2017/01/17/hello-world/" class="title">coding</a></p>
-                            <p class="item-date"><time datetime="2017-01-17T11:50:06.000Z" itemprop="datePublished">2017-01-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/01/17/coding/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Log/">Log</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Log/log/">log</a></p>
-                            <p class="item-title"><a href="/2017/01/17/coding/" class="title">coding</a></p>
-                            <p class="item-date"><time datetime="2017-01-17T11:50:06.000Z" itemprop="datePublished">2017-01-17</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -932,7 +515,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/">Log</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Log/log/">log</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">2</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">2</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -941,7 +524,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -950,7 +533,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a><span class="tag-list-count">2</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -959,7 +542,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/hello/" style="font-size: 10px;">hello</a>
+            <a href="/tags/docker/" style="font-size: 10px;">docker</a>
         </div>
     </div>
 
