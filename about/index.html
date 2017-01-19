@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>浅析Mybatis的缺陷问题 | liusir|blog</title>
+    <title>liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Mybatis是目前比较流行的持久层框架，其具有轻量级、易用、SQL与代码通过配置分离、支持灵活的SQL语句编写等优势，值得开发人员学习。但是作为一个应具备严谨研发精神的开发人员，不能一叶障目更不能人云亦云，对技术要自己的客观判断，正所谓没有调查研究就没有发言权">
-<meta property="og:type" content="article">
-<meta property="og:title" content="浅析Mybatis的缺陷问题">
-<meta property="og:url" content="http://itliusir.github.io/2017/01/18/框架-mybatis/index.html">
+    <meta name="description" content="���ߣ������� �����Ͳ�������ǧ�����С�����Գɽ���                                                –��־Ҫ��ΪCTO��ʵϰ�������� ���������󣬿�����ת�ء�����">
+<meta property="og:type" content="website">
+<meta property="og:title" content="liusir|blog">
+<meta property="og:url" content="http://itliusir.github.io/about/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Mybatis是目前比较流行的持久层框架，其具有轻量级、易用、SQL与代码通过配置分离、支持灵活的SQL语句编写等优势，值得开发人员学习。但是作为一个应具备严谨研发精神的开发人员，不能一叶障目更不能人云亦云，对技术要自己的客观判断，正所谓没有调查研究就没有发言权">
-<meta property="og:updated_time" content="2017-01-18T11:34:37.967Z">
+<meta property="og:description" content="���ߣ������� �����Ͳ�������ǧ�����С�����Գɽ���                                                –��־Ҫ��ΪCTO��ʵϰ�������� ���������󣬿�����ת�ء�����">
+<meta property="og:updated_time" content="2017-01-19T08:36:51.879Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅析Mybatis的缺陷问题">
-<meta name="twitter:description" content="摘要:Mybatis是目前比较流行的持久层框架，其具有轻量级、易用、SQL与代码通过配置分离、支持灵活的SQL语句编写等优势，值得开发人员学习。但是作为一个应具备严谨研发精神的开发人员，不能一叶障目更不能人云亦云，对技术要自己的客观判断，正所谓没有调查研究就没有发言权">
+<meta name="twitter:title" content="liusir|blog">
+<meta name="twitter:description" content="���ߣ������� �����Ͳ�������ǧ�����С�����Գɽ���                                                –��־Ҫ��ΪCTO��ʵϰ�������� ���������󣬿�����ת�ء�����">
     
 
     
@@ -193,52 +193,15 @@
 </aside>
 
             
-            <section id="main"><article id="post-框架-mybatis" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
     <div class="article-inner">
         
-        
-            <header class="article-header">
-                
-    
-        <h1 class="article-title" itemprop="name">
-            浅析Mybatis的缺陷问题
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/框架-mybatis/">
-            <time datetime="2017-01-18T11:40:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/mybatis/">mybatis</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/ORM/">ORM</a>, <a class="tag-link" href="/tags/mybatis缺陷/">mybatis缺陷</a>
-    </div>
-
-                    </div>
-                
-            </header>
         
         
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要:Mybatis是目前比较流行的持久层框架，其具有轻量级、易用、SQL与代码通过配置分离、支持灵活的SQL语句编写等优势，值得开发人员学习。<br>但是作为一个应具备严谨研发精神的开发人员，不能一叶障目更不能人云亦云，对技术要自己的客观判断，正所谓没有调查研究就没有发言权<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>Mybatis并不尽善尽美，其自身的设计、编码有很多不足，甚至是缺陷，在当今互联网大行其道之下，Mybatis的灵活轻量，快速实现应用等优点，被人为无限的放大了，这些都掩盖了其本身的诸多缺陷，其实MyBatis只是一个简单SQL分离映射框架，并配以简单的数据源管理能力，严格意义上来说，其根本就不能被称为真正实现ORM（对象与关系映射）的持久化框架，其本身的能力与Hibernate这样的完善ORM框架无法同日而语，可以肯定地说，使用Hibernate架构出的系统或平台在同等条件下，一定会比基于Mybatis的稳定和高效，但是Hibernate完善的实现了ORM且遵循JPA标准，机制健全因此难免实现复杂，这造成了使用较为困难门槛较MyBatis高，对开发人员和架构设计人员的技术水准要求也较高，因此使得一些诸如MyBatis全面优于Hibernate的奇谈怪论沉渣泛起，我就经常听到这样的评说，有些还出于一些资深的开发人员。其实我想说，如果你不懂ORM原理，并且没有从代码实现级别研究过Hibernate和MyBatis，而且没有多年的相关使用和开发经验，你根本就没有资格做出这样的评价。此篇文章，我肯定不会夸奖MyBatis，我会例数其缺陷，为那些功力尚浅的开发人员泼一盆清醒的凉水。<br>1.Mybatis使用DTD作为XML配置文件的校验文件，但是很明显，DTD差不多是快被淘汰的技术了，功能非常有限，扩展性非常差，扩展性非常差，扩展性非常差，可读性也不好，Spring能够从DTD到XSD华丽转身，但Mybatis始终没这个魄力。<br>2.版本兼容性做的不好，就拿3.3.0—&gt;3.4.0来说，按业界通用规范，第2级版本号升级，可以添加功能，但是要保证向下兼容性，然而Mybatis的做法并不完全是这样的，看一下关键接StatementHandler的关键方法prepare：<br>// 3.3.0 Statement prepare(Connection connection) throws SQLException;<br>// 3.4.0 Statement prepare(Connection connection, Integer transactionTimeout) throws SQLException;<br>这里没有添加一个方法，而是直接在原方法中添加了一个参数，类似例子还有不少。<br>3.Mybatis的插件，采用一个通用的Interceptor接口，配以@Intercepts、@Signature等注解，实现对多个组件的多种方法的拦截，看似非常灵活，在我看来其实是结构不够清晰，实际开发时，你会把对StatementHandler和ResultSetHandler的拦截增强放在一个类里面吗？肯定不会（会？你当单一职责原则、开闭原则都是一句戏言和废话吗！），那有什么必要强制使用同一个接口呢？<br>另外，使用@Signature注解来设置需要被拦截的组件方法，如果注解有错，编译也是不会报错的，而只能等到运行时才能发现。<br>4.Mybatis的缓存简直就是鸡肋，而且不管有没有配置需要使用缓存、是否更新缓存，都要去计算CacheKey，不使用缓存、也不更新缓存的情况下，这种计算完全是浪费。相比Hibernate完善的1级与2级缓存管理，以及配套的对象游离态、持久态、自由态3中清晰的对象状态定义，很完整并且智能化的实现了持久化对象缓存的管理。<br>5、数据库产品的兼容性：Mybatis把SQL的控制权交给了开发人员，于是从道德上占据了制高点——你写的不兼容，那是你自己的水平不行！但，这是一个真正的优秀框架的正确姿势吗？为什么就不能提供一些辅助性的兼容实施？比如说在Oracle中被奉为神明的DECODE函数，是否可以在SqlMapper中提供一个<decode>标签，在后面默默的修改成CASE WHEN？或者说，官方不提供没有关系，但你得提供扩展方式啊，于是又回到了：扩展性非常差，扩展性非常差，扩展性非常差。重要的事说三遍。<br>6、MyBatis不具备直接支持实现分页查询的能力，其只具备逻辑分页功能（在内存中基于游标标记的假分页），因此会非常容易造成在数据量较大的情况下出现内存溢出。如果想实现像Hibernate一样的基于目标数据库特性的直接分页查询的能力，就必须使用相关的MyBatis插件，目前这个领域鱼龙混杂，引入任何插件都要会存在不确定风险，而且都要经过较长周期和严谨的测试。<br>7、mybatis二级缓存对细粒度的数据级别的缓存实现不好比如这样的需求：对商品信息进行缓存，由于商品信息查询访问量大，但是要求用户每次都能查询最新的商品信息，此时如果使用mybatis的二级缓存就无法实现当一个商品变化时只刷新该商品的缓存信息而不刷新其它商品的信息，因为mybaits的二级缓存区域以mapper为单位划分，当一个商品信息变化会将所有商品信息的缓存数据全部清空。解决此类问题需要在业务层根据需求对数据有针对性缓存。<br>所以，各位同仁们，请擦亮眼睛，保持一颗严谨和客观冷静地心，要以真正的研发精神审视这纷繁的花花世界，还是那句话——没有调查研究，就没有发言权！</decode></p>
-
+            <div style="font-size:12px;border-bottom: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; BACKGROUND: #f6f6f6; HEIGHT: 120px; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid"><br><div style="MARGIN-TOP: 10px; FLOAT: left; MARGIN-LEFT: 5px; MARGIN-RIGHT: 10px"><br><div style="LINE-HEIGHT: 200%; MARGIN-TOP: 10px; COLOR: #000000"><br>���ߣ�<br><a href="https://itliusir.github.io/">������</a> <br><br><br><br>�����Ͳ�������ǧ�����С�����Գɽ���<br>                                                –��־Ҫ��ΪCTO��ʵϰ��<br>������ <a href="https://itliusir.github.io/">������</a>���󣬿�����ת�ء�����<br></div><br></div></div>
         
         </div>
         <footer class="article-footer">
@@ -248,7 +211,7 @@
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-mybatis/" data-id="ciy44jaip000e38s1yq0cq3vu" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/about/index.html" data-id="ciy44jai6000138s1j3cg9kyj" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -316,32 +279,13 @@
 
             
     
-        <a href="http://itliusir.github.io/2017/01/18/框架-mybatis/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/2017/01/18/框架-mybatis/">评论</a>
+        <a href="http://itliusir.github.io/about/index.html#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://itliusir.github.io/about/index.html">评论</a>
     
 
         </footer>
     </div>
     
         
-<nav id="article-nav">
-    
-        <a href="/2017/01/18/框架-mybatis防止sql注入/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    java持久层框架mybatis如何防止sql注入
-                
-            </div>
-        </a>
-    
-    
-        <a href="/2017/01/18/javase-ThreadLocal/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">ThreadLocal 内存泄漏问题分析</div>
-        </a>
-    
-</nav>
-
 
     
 </article>
@@ -550,9 +494,9 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'http://itliusir.github.io/2017/01/18/框架-mybatis/';
+            this.page.url = 'http://itliusir.github.io/about/index.html';
         
-        this.page.identifier = '框架-mybatis';
+        this.page.identifier = 'undefined';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
