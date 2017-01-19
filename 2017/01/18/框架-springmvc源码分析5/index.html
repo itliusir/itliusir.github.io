@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。">
-<meta property="og:updated_time" content="2017-01-19T13:30:24.121Z">
+<meta property="og:updated_time" content="2017-01-19T13:33:59.303Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC源码剖析（五）-消息转换器HttpMessageConverter">
 <meta name="twitter:description" content="摘要:在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。">
@@ -257,7 +257,9 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 <p><strong>对HandlerMethodReturnValueHandler接口的实现</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsReturnType</span><span class="params">(MethodParameter returnType)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> returnType.getMethodAnnotation(ResponseBody.class) != <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleReturnValue</span><span class="params">(Object returnValue, MethodParameter returnType,</span></span></div><div class="line">        ModelAndViewContainer mavContainer, NativeWebRequest webRequest)</div><div class="line">        <span class="keyword">throws</span> IOException, HttpMediaTypeNotAcceptableException &#123;</div><div class="line"></div><div class="line">    mavContainer.setRequestHandled(<span class="keyword">true</span>);</div><div class="line">    <span class="keyword">if</span> (returnValue != <span class="keyword">null</span>) &#123;</div><div class="line">        writeWithMessageConverters(returnValue, returnType, webRequest);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>看完上面的代码，整个HttpMessageConverter消息转换的脉络已经非常清晰。因为两个接口的实现，分别是以是否有@RequestBody和@ResponseBody为条件，然后分别调用HttpMessageConverter来进行消息的读写。</p>
 <p>如果你想问，怎么样跟踪到RequestResponseBodyMethodProcessor中，请你按照前面几篇博文的思路，然后到这里spring-mvc-showcase下载源码回来，对其中HttpMessageConverter相关的例子进行debug，只要你肯下功夫，相信你一定会有属于自己的收获的。</p>
-<p>思考</p>
+<ul>
+<li><strong>思考</strong></li>
+</ul>
 <p>张小龙在谈微信的本质时候说：“微信只是个平台，消息在其中流转”。在我们对SpringMVC源码分析的过程中，我们可以从HttpMessageConverter机制中领悟到类似的道理。在SpringMVC的设计者眼中，一次请求报文和一次响应报文，分别被抽象为一个请求消息HttpInputMessage和一个响应消息HttpOutputMessage。</p>
 <p>处理请求时，由合适的消息转换器将请求报文绑定为方法中的形参对象，在这里，同一个对象就有可能出现多种不同的消息形式，比如json和xml。同样，当响应请求时，方法的返回值也同样可能被返回为不同的消息形式，比如json和xml。</p>
 <p>在SpringMVC中，针对不同的消息形式，我们有不同的HttpMessageConverter实现类来处理各种消息形式。但是，只要这些消息所蕴含的“有效信息”是一致的，那么各种不同的消息转换器，都会生成同样的转换结果。至于各种消息间解析细节的不同，就被屏蔽在不同的HttpMessageConverter实现类中了。</p>
