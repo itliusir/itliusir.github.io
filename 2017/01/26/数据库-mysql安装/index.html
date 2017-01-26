@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>标签: springboot | liusir|blog</title>
+    <title>MySQL5.7安装常见问题 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="coding">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.github.io/tags/springboot/index.html">
+    <meta name="description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL5.7安装常见问题">
+<meta property="og:url" content="http://itliusir.github.io/2017/01/26/数据库-mysql安装/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="coding">
+<meta property="og:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
+<meta property="og:updated_time" content="2017-01-26T07:59:55.695Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="coding">
+<meta name="twitter:title" content="MySQL5.7安装常见问题">
+<meta name="twitter:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
     
 
     
@@ -189,50 +190,231 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#springboot</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-数据库-mysql安装" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/01/18/Springboot1/">关于SpringBoot bean无法注入的问题</a>
+        <h1 class="article-title" itemprop="name">
+            MySQL5.7安装常见问题
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/Springboot1/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2017/01/26/数据库-mysql安装/">
+            <time datetime="2017-01-26T07:22:00.000Z" itemprop="datePublished">2017-01-26</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/数据库/">数据库</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/MySQL/">MySQL</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/springboot/">springboot</a>
+        <a class="tag-link" href="/tags/MySQL5-7安装/">MySQL5.7安装</a>
     </div>
 
-                </div>
-            </div>
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="MySQL的安装"><a href="#MySQL的安装" class="headerlink" title="MySQL的安装"></a>MySQL的安装</h2><ol>
+<li>去官网下载zip格式的Mysql Server的压缩包（绿色版），根据个人电脑选择x86或者x64版本，点击最下面的跳过登录下载。</li>
+<li><p>解压，复制my-dafault.ini到bin目录下，重命名为my.ini。可以根据需要复制以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[mysql]</div><div class="line"><span class="comment"># 设置mysql客户端默认字符集</span></div><div class="line">default-character-set=utf8 </div><div class="line">[mysqld]</div><div class="line"><span class="comment">#设置3306端口</span></div><div class="line">port = 3306 </div><div class="line"><span class="comment"># 设置mysql的安装目录</span></div><div class="line">basedir=D:\mysql\mysql-5.6.35-winx64</div><div class="line"><span class="comment"># 设置mysql数据库的数据的存放目录</span></div><div class="line">datadir=D:\mysql\mysql-5.6.35-winx64\data</div><div class="line"><span class="comment"># 允许最大连接数</span></div><div class="line">max_connections=200</div><div class="line"><span class="comment"># 服务端使用的字符集默认为8比特编码的latin1字符集</span></div><div class="line">character-set-server=utf8</div><div class="line"><span class="comment"># 创建新表时将使用的默认存储引擎</span></div><div class="line">default-storage-engine=INNODB</div></pre></td></tr></table></figure>
+</li>
+<li><p>从MySQL5.7开始，MySQL没有5.6那么易用，没有data文件夹使网上很多配置方法都会失效，<strong>如果不进行初始化的话，mysql服务是无法启动的</strong></p>
+<ol>
+<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	mysqld --initialize --user=mysql --console</div><div class="line">``` </div><div class="line">2. 该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：</div><div class="line">```shell</div><div class="line">	localhost: xxxxxx</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>配置环境变量，将bin所在的文件夹路径添加到path的最后，例如：    path=..xxx；D:\mysql\mysql-5.6.35-winx64\bin\my.ini</p>
+</li>
+<li>运行cmd，输入net start mysql启动mysql服务，再输入mysql -u root -p,然后输入临时密码。修改密码：set password=password(‘新密码’);，然后回车，注意分号不要忽略。<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2></li>
+<li><p>关闭服务<br>以管理员身份运行cmd，执行：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">net stop mysql</div></pre></td></tr></table></figure>
+</li>
+<li><p>卸载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqld -remove [服务名]</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除文件</p>
+</li>
+<li>删除注册表信息<br>清除注册表中的该MySQL服务，有几个地方:<br>a、HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\Eventlog\Application\MySQL 目录删除<br>b、HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\Eventlog\Application\MySQL 目录删除<br>c、HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\MySQL 目录删除<br>注册表中的ControlSet001、ControlSet002不一定是001和002，可能是ControlSet005、006之类，删除的时候都删除就可以 。<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2></li>
+<li><p>data文件错误<br>MySQL服务正在启动..<br>MySQL服务无法启动。</p>
+<p>服务没有报告任何错误。<br><strong>原因：</strong><br>原因：一般初始化之前已存在data文件就会出现这个错误，或者data文件缺少了某些文件</p>
+<p><strong>解决：</strong><br>先执行mysqld -remove，然后把data文件删除，如果删除不了重启一下就可以了，之后重新进行安装就没问题了。如果想保留之前的data文件，可以先把data文件拷贝到其他地方，安装好之后再将原data文件中多的文件拷贝进去就行了</p>
+</li>
+<li><p>密码错误（<strong>Error password Error 1045…Access denied</strong>）<br><strong>原因1：</strong><br>使用mysqld –initialize方法安装会生成一个随机字符串组成的密码，这个密码在错误日志D:\mysql\mysql-5.6.35-winx64\data\xxx.err（xxx是用户名）可以找到。<br><strong>原因2：</strong><br>忘记密码<br><strong>解决：</strong>如果忘记密码或找不到随机密码，可以通过以下方法跳过权限修改密码<br>以管理员身份运行cmd，执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">net stop mysql//关闭服务</div><div class="line">mysqld --skip-grant-tables;//设置mysql登录--skip-grant-tables模式</div></pre></td></tr></table></figure>
+<p>打开一个新的cmd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql//直接登录mysql</div><div class="line">   update mysql.user set authentication_string=password(&apos;123456&apos;) where user=&apos;root&apos; and Host = &apos;localhost&apos;;//修改密码</div><div class="line">   //特别提醒注意的一点是，新版的mysql数据库下的user表中已经没有Password字段了，而是将加密后的用户密码存储于authentication_string字段</div><div class="line">   flush privileges;//刷新权限，退出--skip-grant-tables模式，很重要！</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>重启电脑，然后mysql就可以连接了<br>但是此时操作似乎功能不完全，还要在登录状态下修改一次密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;123456&apos;;</div><div class="line">还可以这样：</div><div class="line">set password for &apos;root&apos;@&apos;localhost&apos;=password(&apos;123456&apos;)；</div><div class="line">或这样：</div><div class="line">set password=password(&apos;123456&apos;);</div></pre></td></tr></table></figure></p>
+<p><strong>其实mysql的安装卸载过程很简单，一般出了问题之后，把data文件备份后重装，然后把原data中的数据库文件拷贝回来就可以了。</strong></p>
+
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
 </div>
+
+    <a data-url="http://itliusir.github.io/2017/01/26/数据库-mysql安装/" data-id="ciye3bevi0000tos1q1cch46f" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/01/26/数据库-mysql安装/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/01/26/数据库-mysql安装/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/01/18/框架-springmvc源码分析5/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">SpringMVC源码剖析（五）-消息转换器HttpMessageConverter</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2017/01/26/数据库-mysql安装/" data-title="MySQL5.7安装常见问题" data-url="http://itliusir.github.io/2017/01/26/数据库-mysql安装/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
 </section>
             
                 <aside id="sidebar">
