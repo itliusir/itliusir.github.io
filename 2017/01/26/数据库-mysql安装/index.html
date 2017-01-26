@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.github.io/2017/01/26/数据库-mysql安装/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
-<meta property="og:updated_time" content="2017-01-26T07:59:55.695Z">
+<meta property="og:updated_time" content="2017-01-26T08:03:51.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL5.7安装常见问题">
 <meta name="twitter:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
@@ -241,7 +241,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </li>
 <li><p>从MySQL5.7开始，MySQL没有5.6那么易用，没有data文件夹使网上很多配置方法都会失效，<strong>如果不进行初始化的话，mysql服务是无法启动的</strong></p>
 <ol>
-<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	mysqld --initialize --user=mysql --console</div><div class="line">``` </div><div class="line">2. 该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：</div><div class="line">```shell</div><div class="line">	localhost: xxxxxx</div></pre></td></tr></table></figure>
+<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">		mysqld --initialize --user=mysql --console</div><div class="line">``` </div><div class="line">	2. 该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：</div><div class="line">```shell</div><div class="line">	localhost: xxxxxx</div></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
