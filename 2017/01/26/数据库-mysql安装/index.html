@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.github.io/2017/01/26/数据库-mysql安装/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
-<meta property="og:updated_time" content="2017-01-26T08:11:18.939Z">
+<meta property="og:updated_time" content="2017-01-26T08:14:01.327Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL5.7安装常见问题">
 <meta name="twitter:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
@@ -241,9 +241,15 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </li>
 <li><p>从MySQL5.7开始，MySQL没有5.6那么易用，没有data文件夹使网上很多配置方法都会失效，<strong>如果不进行初始化的话，mysql服务是无法启动的</strong></p>
 <ol>
-<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">   mysqld --initialize --user=mysql --console</div><div class="line">``` </div><div class="line"></div><div class="line">	2. 该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：localhost: xxxxxx</div><div class="line">   </div><div class="line">4. 配置环境变量，将bin所在的文件夹路径添加到path的最后，例如：	path=..xxx；D:\mysql\mysql-5.6.35-winx64\bin\my.ini</div><div class="line">5. 运行cmd，输入net start mysql启动mysql服务，再输入mysql -u root -p,然后输入临时密码。修改密码：<span class="built_in">set</span> password=password(<span class="string">'新密码'</span>);，然后回车，注意分号不要忽略。</div><div class="line"><span class="comment">## 卸载</span></div><div class="line">1. 关闭服务</div><div class="line">以管理员身份运行cmd，执行：</div><div class="line">```shell</div><div class="line">    net stop mysql</div></pre></td></tr></table></figure>
-</li>
+<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<br>mysqld –initialize –user=mysql –console</li>
+<li>该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：localhost: xxxxxx</li>
 </ol>
+</li>
+<li><p>配置环境变量，将bin所在的文件夹路径添加到path的最后，例如：    path=..xxx；D:\mysql\mysql-5.6.35-winx64\bin\my.ini</p>
+</li>
+<li>运行cmd，输入net start mysql启动mysql服务，再输入mysql -u root -p,然后输入临时密码。修改密码：set password=password(‘新密码’);，然后回车，注意分号不要忽略。<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2></li>
+<li><p>关闭服务<br>以管理员身份运行cmd，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">net stop mysql</div></pre></td></tr></table></figure>
 </li>
 <li><p>卸载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqld -remove [服务名]</div></pre></td></tr></table></figure>
