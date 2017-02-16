@@ -3,17 +3,20 @@
 <head>
     <meta charset="utf-8">
     
-    <title>标签: docker镜像 | liusir|blog</title>
+    <title>Spring Boot 静态资源处理 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="coding">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.github.io/tags/docker镜像/index.html">
+    <meta name="description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 静态资源处理">
+<meta property="og:url" content="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="coding">
+<meta property="og:description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png">
+<meta property="og:updated_time" content="2017-02-16T03:48:41.312Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="coding">
+<meta name="twitter:title" content="Spring Boot 静态资源处理">
+<meta name="twitter:description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png">
     
 
     
@@ -189,50 +192,208 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#docker镜像</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-Springboot3-静态资源处理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/01/18/3.3 Docker镜像的删除/">Docker镜像的删除</a>
+        <h1 class="article-title" itemprop="name">
+            Spring Boot 静态资源处理
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/3.3 Docker镜像的删除/">
-            <time datetime="2017-01-18T12:20:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2017/02/14/Springboot3-静态资源处理/">
+            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/docker镜像/">docker镜像</a>, <a class="tag-link" href="/tags/docker镜像删除/">docker镜像删除</a>
+        <a class="tag-link" href="/tags/addResourceHandlers/">addResourceHandlers</a>, <a class="tag-link" href="/tags/静态资源处理/">静态资源处理</a>
     </div>
 
-                </div>
-            </div>
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。<br>但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="首先解析-EnableWebMvc-、WebMvcConfigurationSupport和WebMvcConfigurerAdapter"><a href="#首先解析-EnableWebMvc-、WebMvcConfigurationSupport和WebMvcConfigurerAdapter" class="headerlink" title="首先解析@EnableWebMvc 、WebMvcConfigurationSupport和WebMvcConfigurerAdapter"></a>首先解析@EnableWebMvc 、WebMvcConfigurationSupport和WebMvcConfigurerAdapter</h1><p> #<br>在spring-boot+spring mvc 的项目中，有些时候我们需要自己配置一些项目的设置，就会涉及到这三个，那么，他们之间有什么关系呢？首先，@EnableWebMvc=WebMvcConfigurationSupport，使用了@EnableWebMvc注解等于扩展了WebMvcConfigurationSupport但是没有重写任何方法，所以有以下几种使用方式：</p>
+<ol>
+<li>@EnableWebMvc+extends WebMvcConfigurerAdapter，在扩展的类中重写父类的方法即可，这种方式会屏蔽springboot的@EnableAutoConfiguration中的设置</li>
+<li>extends WebMvcConfigurationSupport，在扩展的类中重写父类的方法即可，这种方式会屏蔽springboot的@EnableAutoConfiguration中的设置</li>
+<li>extends WebMvcConfigurerAdapter，在扩展的类中重写父类的方法即可，这种方式依旧使用springboot的@EnableAutoConfiguration中的设置</li>
+</ol>
+<p>具体哪种方法适合，看个人对于项目的需求和要把控的程度，在WebMvcConfigurationSupport（@EnableWebMvc）和@EnableAutoConfiguration这两种方式都有一些默认的设定，而WebMvcConfigurationAdapter则是一个abstract class。<br>具体如何类内如何进行个性化的设置，可以参考以下文章： </p>
+<p><a href="http://www.jianshu.com/p/ffe56d9553fd" target="_blank" rel="external">Spring Boot：定制HTTP消息转换器</a> </p>
+<p><a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/EnableWebMvc.html" target="_blank" rel="external">EnableWebMvc官方文档</a></p>
+<h1 id="然后重写addResourceHandlers方法"><a href="#然后重写addResourceHandlers方法" class="headerlink" title="然后重写addResourceHandlers方法"></a>然后重写addResourceHandlers方法</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//例如对Swagger资源处理</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</div><div class="line">	registry.addResourceHandler(<span class="string">"/swagger-ui.html"</span>).addResourceLocations(</div><div class="line">			<span class="string">"classpath:/META-INF/resources/"</span>);</div><div class="line">	registry.addResourceHandler(<span class="string">"/webjars/**"</span>).addResourceLocations(</div><div class="line">			<span class="string">"classpath:/META-INF/resources/webjars/"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至于是继承WebMvcConfigurationSupport还是WebMvcConfigurerAdapter看个人需求。</p>
+<h1 id="Swagger路径问题"><a href="#Swagger路径问题" class="headerlink" title="Swagger路径问题"></a>Swagger路径问题</h1><p>在使用Swagger时候是正常可以访问的在加入Security后发现若不排除Swagger-ui.html则资源权限不足401的问题，最后发现路径并不是springfox-swagger-ui.jar下的webjar/xxx，而是/swagger-resources/xx和/v2/xx:<br><img src="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png" alt=""><br>这样就可以正常访问Swagger的ui界面啦</p>
+
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
 </div>
+
+    <a data-url="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/" data-id="ciz7ul0dk000070s19frxefu5" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/02/14/Springboot2-Swagger/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Spring Boot中使用Swagger2构建强大的RESTful API文档</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2017/02/14/Springboot3-静态资源处理/" data-title="Spring Boot 静态资源处理" data-url="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
 </section>
             
                 <aside id="sidebar">
