@@ -190,139 +190,6 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
             
             <section id="main">
-    <article id="post-Springboot3-静态资源处理" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/02/14/Springboot3-静态资源处理/">Spring Boot 静态资源处理</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/02/14/Springboot3-静态资源处理/">
-            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/addResourceHandlers/">addResourceHandlers</a>, <a class="tag-link" href="/tags/静态资源处理/">静态资源处理</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。<br>但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter<br></p>
-            <p class="article-more-link">
-                <a href="/2017/02/14/Springboot3-静态资源处理/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/" data-id="ciz7ul0dk000070s19frxefu5" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-Springboot2-Swagger" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -378,7 +245,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/02/14/Springboot2-Swagger/" data-id="ciz540uai000098s1veew8k0f" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/02/14/Springboot2-Swagger/" data-id="ciz9jcj42000alos1r5akdk9e" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -456,6 +323,139 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 
 
+    <article id="post-Springboot3-静态资源处理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/02/14/Springboot3-静态资源处理/">Spring Boot 静态资源处理</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/02/14/Springboot3-静态资源处理/">
+            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/addResourceHandlers/">addResourceHandlers</a>, <a class="tag-link" href="/tags/静态资源处理/">静态资源处理</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。<br>但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter<br></p>
+            <p class="article-more-link">
+                <a href="/2017/02/14/Springboot3-静态资源处理/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/" data-id="ciz9jcj46000blos17ctorokt" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/02/14/Springboot3-静态资源处理/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-javase-Java变量的可见性" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -511,7 +511,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/02/07/javase-Java变量的可见性/" data-id="ciyv7hqnh000008s1rrrhljeh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/02/07/javase-Java变量的可见性/" data-id="ciz9jcj49000elos1wdlykppb" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -644,7 +644,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/26/数据库-mysql安装/" data-id="ciye3bevi0000tos1q1cch46f" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/26/数据库-mysql安装/" data-id="ciz9jcj4v000rlos1h8jlugsq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -777,7 +777,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/" data-id="ciy44jaj7000x38s1c8t4435e" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析5/" data-id="ciz9jcj5i001flos1f4q1ueg4" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -910,7 +910,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析4/" data-id="ciy44jaj5000u38s1p8s5g909" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析4/" data-id="ciz9jcj5a0018los1d7546mwu" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1043,7 +1043,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析3/" data-id="ciy44jaj9001138s1i913r5aq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析3/" data-id="ciz9jcj530011los1qanvgw3t" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1176,7 +1176,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/3.3 Docker镜像的删除/" data-id="ciy44jai2000038s1hquunybw" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/3.3 Docker镜像的删除/" data-id="ciz9jcj3c0000los1qqne7vqw" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1254,6 +1254,139 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 
 
+    <article id="post-框架-springmvc源码分析2" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/01/18/框架-springmvc源码分析2/">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/01/18/框架-springmvc源码分析2/">
+            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/DispatcherServlet/">DispatcherServlet</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>摘要:上一篇文章《SpringMVC源码剖析（一）- 从抽象和接口说起》中，我介绍了一次典型的SpringMVC请求处理过程中，相继粉墨登场的各种核心类和接口。我刻意忽略了源码中的处理细节，只列出最简单的类甚至是接口类，目的就是让大家先从最高层次的抽象意义上来审视SpringMVC这个框架；<br>我也刻意将SpringMVC和Struts2做对比，目的是让大家看到，SpringMVC究竟吸取了Sturts2设计思想中的哪些精华，又弥补了它的哪些遗憾。<br></p>
+            <p class="article-more-link">
+                <a href="/2017/01/18/框架-springmvc源码分析2/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/" data-id="ciz9jcj5f001clos17ix6zmrq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析2/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-框架-springmvc源码分析1" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1309,7 +1442,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析1/" data-id="ciy44jaix000m38s1yoeelm0f" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc源码分析1/" data-id="ciz9jcj550014los1skhkq0qv" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1387,139 +1520,6 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 
 
-    <article id="post-框架-springmvc-bug" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/18/框架-springmvc-bug/">No mapping found for HTTP request with URI… in Dis</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/框架-springmvc-bug/">
-            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’<br></p>
-            <p class="article-more-link">
-                <a href="/2017/01/18/框架-springmvc-bug/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/" data-id="ciy44jaj3000q38s1nm1ra0to" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.github.io/2017/01/18/框架-springmvc-bug/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
     </nav>
@@ -1536,25 +1536,6 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/2017/02/14/Springboot3-静态资源处理/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a></p>
-                            <p class="item-title"><a href="/2017/02/14/Springboot3-静态资源处理/" class="title">Spring Boot 静态资源处理</a></p>
-                            <p class="item-date"><time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
                             <a href="/2017/02/14/Springboot2-Swagger/" class="thumbnail">
     
     
@@ -1567,6 +1548,25 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a></p>
                             <p class="item-title"><a href="/2017/02/14/Springboot2-Swagger/" class="title">Spring Boot中使用Swagger2构建强大的RESTful API文档</a></p>
+                            <p class="item-date"><time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/02/14/Springboot3-静态资源处理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a></p>
+                            <p class="item-title"><a href="/2017/02/14/Springboot3-静态资源处理/" class="title">Spring Boot 静态资源处理</a></p>
                             <p class="item-date"><time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time></p>
                         </div>
                     </li>
@@ -1635,27 +1635,9 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">分类</h3>
-        <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li></ul>
-        </div>
-    </div>
-
-    
-        
-    <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
             <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">17</span></li></ul>
-        </div>
-    </div>
-
-    
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">标签</h3>
-        <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java内存管理/">Java内存管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java变量的可见性/">Java变量的可见性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL5-7安装/">MySQL5.7安装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadLocal/">ThreadLocal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/addResourceHandlers/">addResourceHandlers</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker私服/">docker私服</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像/">docker镜像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker镜像删除/">docker镜像删除</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/endorsed/">endorsed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis缺陷/">mybatis缺陷</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile的可见性/">volatile的可见性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/静态资源处理/">静态资源处理</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
