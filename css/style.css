@@ -820,12 +820,12 @@ code {
 }
 .article-title {
   font-size: 2em;
-  color: #565a5f;
+  color: #009688;
   text-decoration: none;
   line-height: 1.3em;
 }
 a.article-title:visited {
-  color: #565a5f;
+  color: #009688;
 }
 a.article-title:hover {
   color: #38b7ea;
@@ -1757,7 +1757,7 @@ ol.toc {
   padding: 15px 5px;
 }
 .widget a {
-  color: #777;
+  color: #009688;
   text-decoration: none;
 }
 .widget a:hover {
@@ -1791,7 +1791,7 @@ ol.toc {
 .widget ol li a,
 .widget ul .category-list-child a,
 .widget ol .category-list-child a {
-  color: #777;
+  color: #008e7a;
 }
 .widget ul ul,
 .widget ol ul,
