@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>ThreadLocal 内存泄漏问题分析 | liusir|blog</title>
+    <title>Builder模式 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:ThreadLocal 的作用是提供线程内的局部变量，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度。但是如果滥用ThreadLocal，就可能会导致内存泄漏。下面，我们将围绕三个方面来分析ThreadLocal 内存泄漏的问题">
+    <meta name="description" content="摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ThreadLocal 内存泄漏问题分析">
-<meta property="og:url" content="http://itliusir.com/2017/01/18/javase-ThreadLocal/index.html">
+<meta property="og:title" content="Builder模式">
+<meta property="og:url" content="http://itliusir.com/2017/03/17/javase-Builder/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:ThreadLocal 的作用是提供线程内的局部变量，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度。但是如果滥用ThreadLocal，就可能会导致内存泄漏。下面，我们将围绕三个方面来分析ThreadLocal 内存泄漏的问题">
-<meta property="og:updated_time" content="2017-01-18T11:30:57.388Z">
+<meta property="og:description" content="摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。">
+<meta property="og:updated_time" content="2017-03-17T07:39:39.755Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ThreadLocal 内存泄漏问题分析">
-<meta name="twitter:description" content="摘要:ThreadLocal 的作用是提供线程内的局部变量，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度。但是如果滥用ThreadLocal，就可能会导致内存泄漏。下面，我们将围绕三个方面来分析ThreadLocal 内存泄漏的问题">
+<meta name="twitter:title" content="Builder模式">
+<meta name="twitter:description" content="摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。">
     
 
     
@@ -190,7 +190,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </aside>
 
             
-            <section id="main"><article id="post-javase-ThreadLocal" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-javase-Builder" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -198,7 +198,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
                 
     
         <h1 class="article-title" itemprop="name">
-            ThreadLocal 内存泄漏问题分析
+            Builder模式
         </h1>
     
 
@@ -207,8 +207,8 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/javase-ThreadLocal/">
-            <time datetime="2017-01-18T11:30:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2017/03/17/javase-Builder/">
+            <time datetime="2017-03-17T07:04:00.000Z" itemprop="datePublished">2017-03-17</time>
         </a>
     </div>
 
@@ -216,13 +216,13 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
+        <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/ThreadLocal/">ThreadLocal</a>, <a class="tag-link" href="/tags/内存泄露/">内存泄露</a>
+        <a class="tag-link" href="/tags/Builder模式/">Builder模式</a>
     </div>
 
                     </div>
@@ -233,24 +233,20 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要:ThreadLocal 的作用是提供线程内的局部变量，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度。<br>但是如果滥用ThreadLocal，就可能会导致内存泄漏。下面，我们将围绕三个方面来分析ThreadLocal 内存泄漏的问题<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>ThreadLocal的实现是这样的：每个Thread 维护一个 ThreadLocalMap 映射表，这个映射表的 key 是 ThreadLocal实例本身，value 是真正需要存储的 Object。</p>
-<p>也就是说 ThreadLocal 本身并不存储值，它只是作为一个 key 来让线程从 ThreadLocalMap 获取 value。值得注意的是图中的虚线，表示 ThreadLocalMap 是使用 ThreadLocal 的弱引用作为 Key 的，弱引用的对象在 GC 时会被回收。</p>
-<p>#ThreadLocal为什么会内存泄漏</p>
-<p>ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用来引用它，那么系统 GC 的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value永远无法回收，造成内存泄漏。</p>
-<p>其实，ThreadLocalMap的设计中已经考虑到这种情况，也加上了一些防护措施：在ThreadLocal的get(),set(),remove()的时候都会清除线程ThreadLocalMap里所有key为null的value。</p>
-<p>但是这些被动的预防措施并不能保证不会内存泄漏：</p>
-<p>使用static的ThreadLocal，延长了ThreadLocal的生命周期，可能导致的内存泄漏。<br>分配使用了ThreadLocal又不再调用get(),set(),remove()方法，那么就会导致内存泄漏。</p>
-<p>##为什么使用弱引用</p>
-<p>从表面上看内存泄漏的根源在于使用了弱引用。网上的文章大多着重分析ThreadLocal使用了弱引用会导致内存泄漏，但是另一个问题也同样值得思考：为什么使用弱引用而不是强引用？</p>
-<p>我们先来看看官方文档的说法：</p>
-<p>To help deal with very large and long-lived usages, the hash table entries use WeakReferences for keys.<br>为了应对非常大和长时间的用途，哈希表使用弱引用的 key。</p>
-<p>下面我们分两种情况讨论：</p>
-<p>key 使用强引用：引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。<br>key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。<br>比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。</p>
-<p>因此，ThreadLocal内存泄漏的根源是：由于ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key就会导致内存泄漏，而不是因为弱引用。</p>
-<p>#ThreadLocal 最佳实践</p>
-<p>综合上面的分析，我们可以理解ThreadLocal内存泄漏的前因后果，那么怎么避免内存泄漏呢？</p>
-<p>每次使用完ThreadLocal，都调用它的remove()方法，清除数据。<br>在使用线程池的情况下，没有及时清理ThreadLocal，不仅是内存泄漏的问题，更严重的是可能导致业务逻辑出现问题。所以，使用ThreadLocal就跟加锁完要解锁一样，用完就清理。</p>
+            <p>摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>讲Builder模式之前，我们先来看一下日常使用构造器的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.bean.builder;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bean</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> a;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> b;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> c;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> d;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> e;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> f;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Bean</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c, <span class="keyword">int</span> d, <span class="keyword">int</span> e, <span class="keyword">int</span> f)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.a = a;</div><div class="line">		<span class="keyword">this</span>.b = b;</div><div class="line">		<span class="keyword">this</span>.c = c;</div><div class="line">		<span class="keyword">this</span>.d = d;</div><div class="line">		<span class="keyword">this</span>.e = e;</div><div class="line">		<span class="keyword">this</span>.f = f;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Bean</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c, <span class="keyword">int</span> d, <span class="keyword">int</span> e)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.a = a;</div><div class="line">		<span class="keyword">this</span>.b = b;</div><div class="line">		<span class="keyword">this</span>.c = c;</div><div class="line">		<span class="keyword">this</span>.d = d;</div><div class="line">		<span class="keyword">this</span>.e = e;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Bean</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c, <span class="keyword">int</span> d)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.a = a;</div><div class="line">		<span class="keyword">this</span>.b = b;</div><div class="line">		<span class="keyword">this</span>.c = c;</div><div class="line">		<span class="keyword">this</span>.d = d;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">// ....构造方法</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Bean</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">//省略setter getter方法</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由此可见,若想要灵活的new一个对象需要创建很多个重载的构造器，可读性和可维护性都不是很高。</p>
+<p><strong>使用构建器示例：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.bean.builder;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BuilderBean</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> a;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> b;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> c;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> d;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> e;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> f;</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span></span>&#123;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> a;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> b;</div><div class="line">		</div><div class="line">		<span class="keyword">private</span> <span class="keyword">int</span> c = <span class="number">0</span>;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">int</span> d = <span class="number">0</span>;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">int</span> e = <span class="number">0</span>;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">int</span> f = <span class="number">0</span>;</div><div class="line">		</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Builder</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</div><div class="line">			<span class="keyword">this</span>.a = a;</div><div class="line">			<span class="keyword">this</span>.b = b;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		<span class="function"><span class="keyword">public</span> Builder <span class="title">c</span><span class="params">(<span class="keyword">int</span> val)</span></span>&#123;</div><div class="line">			c = val;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> Builder <span class="title">d</span><span class="params">(<span class="keyword">int</span> val)</span></span>&#123;</div><div class="line">			d = val;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> Builder <span class="title">e</span><span class="params">(<span class="keyword">int</span> val)</span></span>&#123;</div><div class="line">			e = val;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> Builder <span class="title">f</span><span class="params">(<span class="keyword">int</span> val)</span></span>&#123;</div><div class="line">			f = val;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		<span class="function"><span class="keyword">public</span> BuilderBean <span class="title">build</span><span class="params">()</span></span>&#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> BuilderBean(<span class="keyword">this</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">BuilderBean</span><span class="params">(Builder builder)</span></span>&#123;</div><div class="line">		a = builder.a;</div><div class="line">		b = builder.b;</div><div class="line">		c = builder.c;</div><div class="line">		d = builder.d;</div><div class="line">		e = builder.e;</div><div class="line">		f = builder.f;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注意BuilderBean是不可变的，所有的默认参数值都单独放一个地方。builder的setter方法返回builder本身，以便后续继续调用别的方法。下面是客户端的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">BuilderBean bb = <span class="keyword">new</span> BuilderBean.Builder(<span class="number">10</span>, <span class="number">20</span>).</div><div class="line">			c(<span class="number">3</span>).e(<span class="number">5</span>).f(<span class="number">6</span>).build();</div></pre></td></tr></table></figure></p>
+<p>这样的客户端代码很容易编写，更重要的是易于阅读。与构造器相比，builder的微略优势在于，builder可以有多个可变的参数，构造器就像方法一样，只能有一个可变参数。</p>
+<p><strong>Builder模式的优点：</strong></p>
+<pre><code>1. 使用Builder模式必然会导致写两遍相关属性的代码和setter方法，看起来有点吃力不讨好。然而需要看到的是，客户端代码的可用性和可读性得到了大大提高。与此同时，构造函数的参数数量明显减少调用起来非常直观。
+2. Builder模式十分灵活，可以利用单个builder构建多个对象，还可在创建期间进行调整根据对象的不同进行改变。
+</code></pre><p><strong>Builder模式的缺点：</strong></p>
+<pre><code>1. 为了创建对象，必须先创建它的构建器。虽然创建器的开销在实践中可能不那么明显，但是在某些十分注重性能的情况下，可能就成问题了。
+2. Builder模式还比重叠构造器模式更加冗长，最好在4个或4个以上的参数才使用。
+</code></pre><p>在我的Builder实现中，我会用Builder的构造函数而不是set方法传递客户需要的属性。这样做的好处在于，对象总是能被一次完整的实例化，而不是靠开发人员调用时用set方法补充额外的属性完成实例化。这也体现了不可变性带来的好处。然而，相应地也会造成自己设定的属性方法可读性降低。</p>
+<p><strong>总结：</strong><br>如果类的构造器或者静态工厂中具有多个参数，设计这种类时，Builder是种不错的选择，特别是当大多数参数都是可选的时候。与使用传统的重叠构造器模式相比，使用Builder模式的客户端代码更易于编写和阅读，构建器也比JavaBean更加安全。</p>
 
         
         </div>
@@ -261,7 +257,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
 </div>
 
-    <a data-url="http://itliusir.com/2017/01/18/javase-ThreadLocal/" data-id="cj08yzu4w0015scs14uu3wi9u" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://itliusir.com/2017/03/17/javase-Builder/" data-id="cj0dimp390000jks12fnvizzb" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -329,7 +325,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 
             
     
-        <a href="http://itliusir.com/2017/01/18/javase-ThreadLocal/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/01/18/javase-ThreadLocal/">评论</a>
+        <a href="http://itliusir.com/2017/03/17/javase-Builder/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/03/17/javase-Builder/">评论</a>
     
 
         </footer>
@@ -338,19 +334,10 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
         
 <nav id="article-nav">
     
-        <a href="/2017/01/18/frame-mybatis/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    浅析Mybatis的缺陷问题
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/01/18/javase-endorsed/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/02/24/Springboot4-SpringBoot-Configuration/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Java endorsed</div>
+            <div class="article-nav-title">Spring Boot配置属性</div>
         </a>
     
 </nav>
@@ -364,7 +351,7 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
     <section id="comments">
     
         
-    <div class="ds-thread" data-thread-key="2017/01/18/javase-ThreadLocal/" data-title="ThreadLocal 内存泄漏问题分析" data-url="http://itliusir.com/2017/01/18/javase-ThreadLocal/"></div>
+    <div class="ds-thread" data-thread-key="2017/03/17/javase-Builder/" data-title="Builder模式" data-url="http://itliusir.com/2017/03/17/javase-Builder/"></div>
     <style>
         #ds-thread #ds-reset .ds-textarea-wrapper {
             background: none;
