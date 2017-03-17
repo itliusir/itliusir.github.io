@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.com/2017/03/17/javase-Builder/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。">
-<meta property="og:updated_time" content="2017-03-17T07:39:39.755Z">
+<meta property="og:updated_time" content="2017-03-17T07:45:35.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Builder模式">
 <meta name="twitter:description" content="摘要:日常写代码有时候会遇到bean有很多的参数，也即是有多个构造器参数，这个时候我们可以考虑使用构建器。它既能保证像重叠构造器模式那样的安全性，也能保证像JavaBean模式那么好的可读性。这就是Builder模式。">
@@ -240,12 +240,20 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 <p>注意BuilderBean是不可变的，所有的默认参数值都单独放一个地方。builder的setter方法返回builder本身，以便后续继续调用别的方法。下面是客户端的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">BuilderBean bb = <span class="keyword">new</span> BuilderBean.Builder(<span class="number">10</span>, <span class="number">20</span>).</div><div class="line">			c(<span class="number">3</span>).e(<span class="number">5</span>).f(<span class="number">6</span>).build();</div></pre></td></tr></table></figure></p>
 <p>这样的客户端代码很容易编写，更重要的是易于阅读。与构造器相比，builder的微略优势在于，builder可以有多个可变的参数，构造器就像方法一样，只能有一个可变参数。</p>
 <p><strong>Builder模式的优点：</strong></p>
-<pre><code>1. 使用Builder模式必然会导致写两遍相关属性的代码和setter方法，看起来有点吃力不讨好。然而需要看到的是，客户端代码的可用性和可读性得到了大大提高。与此同时，构造函数的参数数量明显减少调用起来非常直观。
-2. Builder模式十分灵活，可以利用单个builder构建多个对象，还可在创建期间进行调整根据对象的不同进行改变。
-</code></pre><p><strong>Builder模式的缺点：</strong></p>
-<pre><code>1. 为了创建对象，必须先创建它的构建器。虽然创建器的开销在实践中可能不那么明显，但是在某些十分注重性能的情况下，可能就成问题了。
-2. Builder模式还比重叠构造器模式更加冗长，最好在4个或4个以上的参数才使用。
-</code></pre><p>在我的Builder实现中，我会用Builder的构造函数而不是set方法传递客户需要的属性。这样做的好处在于，对象总是能被一次完整的实例化，而不是靠开发人员调用时用set方法补充额外的属性完成实例化。这也体现了不可变性带来的好处。然而，相应地也会造成自己设定的属性方法可读性降低。</p>
+<ul>
+<li><p>使用Builder模式必然会导致写两遍相关属性的代码和setter方法，看起来有点吃力不讨好。然而需要看到的是，客户端代码的可用性和可读性得到了大大提高。与此同时，构造函数的参数数量明显减少调用起来非常直观。</p>
+</li>
+<li><p>Builder模式十分灵活，可以利用单个builder构建多个对象，还可在创建期间进行调整根据对象的不同进行改变。</p>
+</li>
+</ul>
+<p><strong>Builder模式的缺点：</strong></p>
+<ul>
+<li><p>为了创建对象，必须先创建它的构建器。虽然创建器的开销在实践中可能不那么明显，但是在某些十分注重性能的情况下，可能就成问题了。</p>
+</li>
+<li><p>Builder模式还比重叠构造器模式更加冗长，最好在4个或4个以上的参数才使用。</p>
+</li>
+</ul>
+<p>在我的Builder实现中，我会用Builder的构造函数而不是set方法传递客户需要的属性。这样做的好处在于，对象总是能被一次完整的实例化，而不是靠开发人员调用时用set方法补充额外的属性完成实例化。这也体现了不可变性带来的好处。然而，相应地也会造成自己设定的属性方法可读性降低。</p>
 <p><strong>总结：</strong><br>如果类的构造器或者静态工厂中具有多个参数，设计这种类时，Builder是种不错的选择，特别是当大多数参数都是可选的时候。与使用传统的重叠构造器模式相比，使用Builder模式的客户端代码更易于编写和阅读，构建器也比JavaBean更加安全。</p>
 
         
