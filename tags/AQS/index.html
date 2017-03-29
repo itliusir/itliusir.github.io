@@ -3,18 +3,17 @@
 <head>
     <meta charset="utf-8">
     
-    <title>No mapping found for HTTP request with URI… in Dis | liusir|blog</title>
+    <title>标签: AQS | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’">
-<meta property="og:type" content="article">
-<meta property="og:title" content="No mapping found for HTTP request with URI… in Dis">
-<meta property="og:url" content="http://itliusir.com/2017/01/18/frame-springmvc-bug/index.html">
+    <meta name="description" content="coding">
+<meta property="og:type" content="website">
+<meta property="og:title" content="liusir|blog">
+<meta property="og:url" content="http://itliusir.com/tags/AQS/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’">
-<meta property="og:updated_time" content="2017-01-18T11:41:02.977Z">
+<meta property="og:description" content="coding">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="No mapping found for HTTP request with URI… in Dis">
-<meta name="twitter:description" content="摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’">
+<meta name="twitter:title" content="liusir|blog">
+<meta name="twitter:description" content="coding">
     
 
     
@@ -190,232 +189,50 @@ _st('install','LAyoQmkBhXtKsEKAqSH1','2.0.0');
 </aside>
 
             
-            <section id="main"><article id="post-frame-springmvc-bug" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
+            <section id="main">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-tag"></i></span>
+        <h1 class="title">#AQS</h1>
+    </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
-        <h1 class="article-title" itemprop="name">
-            No mapping found for HTTP request with URI… in Dis
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/2017/03/29/javase-AQS/">Java同步器AQS分析</a>
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
+                <div class="article-meta">
+                    
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/01/18/frame-springmvc-bug/">
-            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2017/03/29/javase-AQS/">
+            <time datetime="2017-03-29T03:31:00.000Z" itemprop="datePublished">2017-03-29</time>
         </a>
     </div>
 
 
-                        
+                    
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
+        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
     </div>
 
-                        
+                    
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a>
+        <a class="tag-link" href="/tags/AQS/">AQS</a>, <a class="tag-link" href="/tags/CAS/">CAS</a>, <a class="tag-link" href="/tags/Unsafe/">Unsafe</a>
     </div>
 
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>摘要:No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天下午用ie8 使用json时候发现需要导入json官方包json2.js<br>下载地址:<a href="http://download.csdn.net/detail/wqr1128/9042071" target="_blank" rel="external">http://download.csdn.net/detail/wqr1128/9042071</a><br>导入后发现后台报错<br>No mapping found for HTTP request with URI [json2.js] in DispatcherServlet with name ‘springmvc’<br>网上找了一些方案都没解决  后来在 Stack Overflow上找到了解决办法：<br>在springmvc-servlet.xml里加入就ok了<br>|————————————————分割线——————————————————|<br>在springMVC-servlet.xml中配置后，会在Spring MVC上下文中定义一个org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler，它会像一个检查员，对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，如果不是静态资源的请求，才由DispatcherServlet继续处理。</p>
-<p>一般Web应用服务器默认的Servlet名称是”default”，因此DefaultServletHttpRequestHandler可以找到它。如果你所有的Web应用服务器的默认Servlet名称不是”default”，则需要通过default-servlet-name属性显示指定：</p>
-<p>这个标签主要还是为了适应REST风格</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://itliusir.com/2017/01/18/frame-springmvc-bug/" data-id="cj08yzu4g000lscs1j7qmkb10" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://itliusir.com/2017/01/18/frame-springmvc-bug/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/01/18/frame-springmvc-bug/">评论</a>
-    
-
-        </footer>
-    </div>
-	
-		<! -- 添加捐赠图标 -->
-<div class ="post-donate">
-    <div id="donate_board" class="donate_bar center">
-        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
-        <span class="donate_txt">
-           ↑<br>
-		   求鼓励，求支持！
-        </span>
-        <br>
-      </div>  
-	<div id="donate_guide" class="donate_bar center hidden" >
-		<!-- 微信打赏图案 -->
-		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
-    </div>
-	<script type="text/javascript">
-		document.getElementById('btn_donate').onclick = function(){
-			$('#donate_board').addClass('hidden');
-			$('#donate_guide').removeClass('hidden');
-		}
-	</script>
-</div>
-<! -- 添加捐赠图标 -->
-	
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2017/01/18/frame-springmvc2/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    SpringMVC源码剖析（二）- DispatcherServlet的前世今生
-                
+                </div>
             </div>
-        </a>
+        </div>
     
-    
-        <a href="/2017/01/18/frame-mybatis-sql/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">java持久层框架mybatis如何防止sql注入</div>
-        </a>
-    
-</nav>
-
-
-    
-</article>
-
-
-    
-    <section id="comments">
-    
-        
-    <div class="ds-thread" data-thread-key="2017/01/18/frame-springmvc-bug/" data-title="No mapping found for HTTP request with URI… in Dis" data-url="http://itliusir.com/2017/01/18/frame-springmvc-bug/"></div>
-    <style>
-        #ds-thread #ds-reset .ds-textarea-wrapper {
-            background: none;
-        }
-        #ds-reset .ds-avatar img {
-            box-shadow: none;
-        }
-        #ds-reset .ds-gradient-bg {
-            background: #f7f7f7;
-        }
-        #ds-thread #ds-reset li.ds-tab a {
-            border-radius: 3px;
-        }
-        #ds-thread #ds-reset .ds-post-button {
-            color: white;
-            border: none;
-            box-shadow: none;
-            background: #d32;
-            text-shadow: none;
-            font-weight: normal;
-            font-family: 'Microsoft Yahei';
-        }
-        #ds-thread #ds-reset .ds-post-button:hover {
-            color: white;
-            background: #DE594C;
-        }
-        #ds-thread #ds-reset .ds-post-button:active {
-            background: #d32;
-        }
-        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
-            color: white;
-            background: #d32;
-            box-shadow: none;
-            text-shadow: none;
-            font-weight: normal;
-        }
-    </style>
-
-    
-    </section>
-
+</div>
 </section>
             
                 <aside id="sidebar">

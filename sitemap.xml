@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2017/03/29/javase-AQS/</loc>
+    
+    <lastmod>2017-03-29T10:00:46.463Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2017/03/17/javase-Builder/</loc>
     
     <lastmod>2017-03-17T07:52:35.214Z</lastmod>
