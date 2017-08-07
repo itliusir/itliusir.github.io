@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>java持久层框架mybatis如何防止sql注入 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:sql注入大家都不陌生，是一种常见的攻击方式，攻击者在界面的表单信息或url上输入一些奇怪的sql片段，例如”or ‘1’=’1’”这样的语句，有可能入侵参数校验不足的应用程序。所以在我们的应用中需要做一些工作，来防备这样的攻击方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java持久层框架mybatis如何防止sql注入">
+<meta property="og:url" content="http://itliusir.com/2017/frame-mybatis-sql/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:sql注入大家都不陌生，是一种常见的攻击方式，攻击者在界面的表单信息或url上输入一些奇怪的sql片段，例如”or ‘1’=’1’”这样的语句，有可能入侵参数校验不足的应用程序。所以在我们的应用中需要做一些工作，来防备这样的攻击方式。">
+<meta property="og:updated_time" content="2017-01-18T11:38:40.287Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java持久层框架mybatis如何防止sql注入">
+<meta name="twitter:description" content="摘要:sql注入大家都不陌生，是一种常见的攻击方式，攻击者在界面的表单信息或url上输入一些奇怪的sql片段，例如”or ‘1’=’1’”这样的语句，有可能入侵参数校验不足的应用程序。所以在我们的应用中需要做一些工作，来防备这样的攻击方式。">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">不积跬步无以至千里 --立志要成为CTO的实习生</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@ysstech.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-frame-mybatis-sql" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            java持久层框架mybatis如何防止sql注入
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/frame-mybatis-sql/">
+            <time datetime="2017-01-18T11:50:00.000Z" itemprop="datePublished">2017-01-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/mybatis/">mybatis</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/sql注入/">sql注入</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:sql注入大家都不陌生，是一种常见的攻击方式，攻击者在界面的表单信息或url上输入一些奇怪的sql片段，<br>例如”or ‘1’=’1’”这样的语句，有可能入侵参数校验不足的应用程序。所以在我们的应用中需要做一些工作，来防备这样的攻击方式。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>sql注入大家都不陌生，是一种常见的攻击方式，攻击者在界面的表单信息或url上输入一些奇怪的sql片段，例如”or ‘1’=’1’”这样的语句，有可能入侵参数校验不足的应用程序。所以在我们的应用中需要做一些工作，来防备这样的攻击方式。在一些安全性很高的应用中，比如银行软件，经常使用将sql语句全部替换为存储过程这样的方式，来防止sql注入，这当然是一种很安全的方式，但我们平时开发中，可能不需要这种死板的方式。<br>mybatis框架作为一款半自动化的持久层框架，其sql语句都要我们自己来手动编写，这个时候当然需要防止sql注入。其实Mybatis的sql是一个具有“输入+输出”功能，类似于函数的结构，如下：<br>&lt;select id=”getBlogById” resultType=”Blog”<br>parameterType=”int”&gt;<br>       select id,title,author,content<br>       from blog where id=#{id}<br>    &lt;/select&gt;<br>这里，parameterType标示了输入的参数类型，resultType标示了输出的参数类型。回应上文，如果我们想防止sql注入，理所当然地要在输入参数上下功夫。上面代码中高亮部分即输入参数在sql中拼接的部分，传入参数后，打印出执行的sql语句，会看到sql是这样的：<br>select<br>id,title,author,content from blog where id = ?<br>不管输入什么参数，打印出的sql都是这样的。这是因为mybatis启用了预编译功能，在sql执行前，会先将上面的sql发送给数据库进行编译，执行时，直接使用编译好的sql，替换占位符“？”就可以了。因为sql注入只能对编译过程起作用，所以这样的方式就很好地避免了sql注入的问题。<br>mybatis是如何做到sql预编译的呢？其实在框架底层，是jdbc中的PreparedStatement类在起作用，PreparedStatement是我们很熟悉的Statement的子类，它的对象包含了编译好的sql语句。这种“准备好”的方式不仅能提高安全性，而且在多次执行一个sql时，能够提高效率，原因是sql已编译好，再次执行时无需再编译。<br>话说回来，是否我们使用mybatis就一定可以防止sql注入呢？当然不是，请看下面的代码：<br>&lt;select id=”orderBlog” resultType=”Blog”<br>parameterType=”map”&gt;<br>       select id,title,author,content<br>       from blog order by ${orderParam}<br>    &lt;/select&gt;<br>仔细观察，内联参数的格式由”#{xxx}”变为了${xxx}。如果我们给参数”orderParam”赋值为”id”,将sql打印出来，是这样的：<br>select id,title,author,content from<br>blog order by id<br>     显然，这样是无法阻止sql注入的。在mybatis中，”${xxx}”这样格式的参数会直接参与sql编译，从而不能避免注入攻击。但涉及到动态表名和列名时，只能使用”${xxx}”这样的参数格式，所以，这样的参数需要我们在代码中手工进行处理来防止注入。<br>    结论：在编写mybatis的映射语句时，尽量采用”#{xxx}”这样的格式。若不得不使用“${xxx}”这样的参数，要手工地做好过滤工作，来防止sql注入攻击。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2017/frame-mybatis-sql/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/frame-mybatis-sql/">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   求鼓励，求支持！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/frame-springmvc2/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    SpringMVC源码剖析（二）- DispatcherServlet的前世今生
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/frame-mybatis/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">浅析Mybatis的缺陷问题</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2017/frame-mybatis-sql/" data-title="java持久层框架mybatis如何防止sql注入" data-url="http://itliusir.com/2017/frame-mybatis-sql/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">17</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">springboot博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bbs.springcloud.cn/">springcloud社区</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://git.oschina.net/itmuch/spring-cloud-book">docker博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'itliusir'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

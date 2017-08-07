@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Spring Boot 静态资源处理 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 静态资源处理">
+<meta property="og:url" content="http://itliusir.com/2017/Springboot3-Static-Resources/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png">
+<meta property="og:updated_time" content="2017-02-16T03:48:41.312Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot 静态资源处理">
+<meta name="twitter:description" content="摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">不积跬步无以至千里 --立志要成为CTO的实习生</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@ysstech.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Springboot3-Static-Resources" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Spring Boot 静态资源处理
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/Springboot3-Static-Resources/">
+            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/addResourceHandlers/">addResourceHandlers</a>, <a class="tag-link" href="/tags/静态资源处理/">静态资源处理</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:spring Boot 默认的处理方式就已经足够了，默认情况下Spring Boot 使用WebMvcAutoConfiguration中配置的各种属性。<br>但是如果你想要自己配置一些项目的设置，你可以在@Configuration注解的配置类上增加@EnableWebMvc或者继承WebMvcConfigurationSupport和WebMvcConfigurationAdapter<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="首先解析-EnableWebMvc-、WebMvcConfigurationSupport和WebMvcConfigurerAdapter"><a href="#首先解析-EnableWebMvc-、WebMvcConfigurationSupport和WebMvcConfigurerAdapter" class="headerlink" title="首先解析@EnableWebMvc 、WebMvcConfigurationSupport和WebMvcConfigurerAdapter"></a>首先解析@EnableWebMvc 、WebMvcConfigurationSupport和WebMvcConfigurerAdapter</h1><p> #<br>在spring-boot+spring mvc 的项目中，有些时候我们需要自己配置一些项目的设置，就会涉及到这三个，那么，他们之间有什么关系呢？首先，@EnableWebMvc=WebMvcConfigurationSupport，使用了@EnableWebMvc注解等于扩展了WebMvcConfigurationSupport但是没有重写任何方法，所以有以下几种使用方式：</p>
+<ol>
+<li>@EnableWebMvc+extends WebMvcConfigurerAdapter，在扩展的类中重写父类的方法即可，这种方式会屏蔽springboot的@EnableAutoConfiguration中的设置</li>
+<li>extends WebMvcConfigurationSupport，在扩展的类中重写父类的方法即可，这种方式会屏蔽springboot的@EnableAutoConfiguration中的设置</li>
+<li>extends WebMvcConfigurerAdapter，在扩展的类中重写父类的方法即可，这种方式依旧使用springboot的@EnableAutoConfiguration中的设置</li>
+</ol>
+<p>具体哪种方法适合，看个人对于项目的需求和要把控的程度，在WebMvcConfigurationSupport（@EnableWebMvc）和@EnableAutoConfiguration这两种方式都有一些默认的设定，而WebMvcConfigurationAdapter则是一个abstract class。<br>具体如何类内如何进行个性化的设置，可以参考以下文章： </p>
+<p><a href="http://www.jianshu.com/p/ffe56d9553fd" target="_blank" rel="external">Spring Boot：定制HTTP消息转换器</a> </p>
+<p><a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/EnableWebMvc.html" target="_blank" rel="external">EnableWebMvc官方文档</a></p>
+<h1 id="然后重写addResourceHandlers方法"><a href="#然后重写addResourceHandlers方法" class="headerlink" title="然后重写addResourceHandlers方法"></a>然后重写addResourceHandlers方法</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//例如对Swagger资源处理</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</div><div class="line">	registry.addResourceHandler(<span class="string">"/swagger-ui.html"</span>).addResourceLocations(</div><div class="line">			<span class="string">"classpath:/META-INF/resources/"</span>);</div><div class="line">	registry.addResourceHandler(<span class="string">"/webjars/**"</span>).addResourceLocations(</div><div class="line">			<span class="string">"classpath:/META-INF/resources/webjars/"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至于是继承WebMvcConfigurationSupport还是WebMvcConfigurerAdapter看个人需求。</p>
+<h1 id="Swagger路径问题"><a href="#Swagger路径问题" class="headerlink" title="Swagger路径问题"></a>Swagger路径问题</h1><p>在使用Swagger时候是正常可以访问的在加入Security后发现若不排除Swagger-ui.html则资源权限不足401的问题，最后发现路径并不是springfox-swagger-ui.jar下的webjar/xxx，而是/swagger-resources/xx和/v2/xx:<br><img src="http://ok0qzthrb.bkt.clouddn.com/Swagger5.png" alt=""><br>这样就可以正常访问Swagger的ui界面啦</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2017/Springboot3-Static-Resources/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/Springboot3-Static-Resources/">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   求鼓励，求支持！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/Springboot4-SpringBoot-Configuration/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Spring Boot配置属性
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/Springboot2-Swagger/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Spring Boot中使用Swagger2构建强大的RESTful API文档</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2017/Springboot3-Static-Resources/" data-title="Spring Boot 静态资源处理" data-url="http://itliusir.com/2017/Springboot3-Static-Resources/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">17</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">springboot博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bbs.springcloud.cn/">springcloud社区</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://git.oschina.net/itmuch/spring-cloud-book">docker博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'itliusir'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

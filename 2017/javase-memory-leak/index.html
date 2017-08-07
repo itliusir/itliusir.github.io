@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Java内存管理以及内存泄露 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:Java的一个重要优点就是通过垃圾收集器(Garbage Collection，GC)自动管理内存的回收，程序员不需要通过调用函数来释放内存。因此，很多程序员认为Java不存在内存泄漏问题，或者认为即使有内存泄漏也不是程序的责任，而是GC或JVM的问题。其实，这种想法是不正确的，因为Java也存在内存泄露，但它的表现与C++不同。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java内存管理以及内存泄露">
+<meta property="og:url" content="http://itliusir.com/2017/javase-memory-leak/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:Java的一个重要优点就是通过垃圾收集器(Garbage Collection，GC)自动管理内存的回收，程序员不需要通过调用函数来释放内存。因此，很多程序员认为Java不存在内存泄漏问题，或者认为即使有内存泄漏也不是程序的责任，而是GC或JVM的问题。其实，这种想法是不正确的，因为Java也存在内存泄露，但它的表现与C++不同。">
+<meta property="og:updated_time" content="2017-01-18T11:31:14.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java内存管理以及内存泄露">
+<meta name="twitter:description" content="摘要:Java的一个重要优点就是通过垃圾收集器(Garbage Collection，GC)自动管理内存的回收，程序员不需要通过调用函数来释放内存。因此，很多程序员认为Java不存在内存泄漏问题，或者认为即使有内存泄漏也不是程序的责任，而是GC或JVM的问题。其实，这种想法是不正确的，因为Java也存在内存泄露，但它的表现与C++不同。">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">不积跬步无以至千里 --立志要成为CTO的实习生</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@ysstech.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-javase-memory-leak" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Java内存管理以及内存泄露
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/javase-memory-leak/">
+            <time datetime="2017-01-18T11:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Java内存管理/">Java内存管理</a>, <a class="tag-link" href="/tags/内存泄露/">内存泄露</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:Java的一个重要优点就是通过垃圾收集器(Garbage Collection，GC)自动管理内存的回收，程序员不需要通过调用函数来释放内存。<br>因此，很多程序员认为Java不存在内存泄漏问题，或者认为即使有内存泄漏也不是程序的责任，而是GC或JVM的问题。其实，这种想法是不正确的，<br>因为Java也存在内存泄露，但它的表现与C++不同。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>java和c++相比重要优点就是通过垃圾收集器(Garbage Collection，GC)自动管理内存的回收，程序员不需要通过调用函数来释放内存。这样的优点也会害了一部分学而不精的人。因为，很多程序员认为Java有垃圾回收机制，因此不存在内存泄漏问题，或者认为即使有内存泄漏也不是程序的责任，而是GC或JVM的问题。其实，这种想法是不正确的，因为Java也存在内存泄露，但它的表现与C++不同。<br>使用java开发的jsp，servlet等程序众多，成千上万的服务器在运行着java。而且这些程序都是长期运行的，因此内存泄露问题也就变得十分关键，即使每次运行少量泄漏，长期运行之后，系统也是面临崩溃的危险。Java的内存管理就是对象的分配和释放问题。内存的分配需要通过关键字new为每个对象申请内存空间 (基本类型除外)，所有的对象都在堆 (Heap)中分配空间。对象的释放是由GC决定和执行的。这样的设计确实简化了程序员的工作。但同时，它也加重了JVM的工作。这也是编写低劣的Java程序运行速度较慢大量消耗系统资源的原因之一。因为，GC为了能够正确释放对象，GC必须监控每一个对象的运行状态，包括对象的申请、引用、被引用、赋值等，GC都需要进行监控。监视对象状态是为了更加准确地、及时地释放对象，而释放对象的根本原则就是该对象不再被引用。<br>java中内存泄露的对象有两个显著的特点。首先，这些对象是可达的，即在有向图中，存在通路可以与其相连；其次，这些对象是无用的，即程序以后不会再使用这些对象。如果对象满足这两个条件，这些对象就可以判定为Java中的内存泄漏，这些对象不会被GC所回收，然而它却占用内存。GC基本是透明的，不可见的。虽然我们可以运行GC的函数System.gc()，但是根据Java语言规范定义，该函数不保证JVM的垃圾收集器一定会执行。因为，不同的JVM实现者可能使用不同的算法管理GC。通常，GC的线程的优先级别较低。<br>当前最为常见同时又容易被熟视无睹的Java应用内存泄露情景如下：<br>在JDK1.6及以下版本中，如果存在如下类似的代码，那么你想也不要想，100%内存泄露，<br>String str1=new String(“123456789”);<br>str1=str1.subString(2);<br>或<br>String str1=”123456789”;<br>str1=str1.substring(2);<br>相类似上面这种对字符串对象的处理，在日常的应用开发中，可以说比比皆是，但是正是在这样的情况下，内存泄露却实实在在的隐蔽的发生了，这种情况通常在一个应用系统中会有很多，这些积累下来就会泄漏大量内存。不管你是通过对象定义也好、常量定义也好、还是通过方法调用获取一个字符串结果对象也好，只要你直接在这些对象上进行字符串截取，就发生了泄漏。泄漏内存的多少，取决于你的字符串的大小。为什么会这样，原因如下：<br>在JDK1.6及以下版本中，String类的substring方法的实现中，最后在返回结果时的实现如下：<br>return ((beginIndex==0)&amp;&amp;(endIndex==count))?this:new String(offset+beginIndex,endIndex-beginIndex,value);<br>问题出在new String(offset+beginIndex,endIndex-beginIndex,value)的实现，如下：<br>String(int offset,int count,char[] value){<br>this.value=value;<br>this.count=count;<br>this.offset=offset;<br>}<br>String对象中的字符串在具体实现中，被存储在字符数组char[] value中，而在上述的实现中char[] value数组实际上被共享了，即我们对字符串对象的截取，都是通过移动存储字符串值的字符数据的索引下标和偏移量实现的，而字符数组是类变量，会对所有实例所有实例可达，那么在截取后，被截取的字符组成的部分字符数组以至于被共享的整体字符数组在JVM Heap中无法被释放，内存出现了泄漏。我想Java这样设计的初衷，是想通过字符数组共享，达到节省内存消耗的目的，但弄巧成拙出现了内存泄露，这也要引起个开发人员的注意，Sun的Java实现尚且如此，各位的开发实现更要小心加小心，Java并不是免费的午餐。这个问题在JDK1.6及以下版本中可以通过如下方式避免：<br>String str1=new String(“123456789”);<br>str1=new String(str1.subString(2));<br>思路很简单，将截取后对象变成新对象，解除截取后对象对字符数组的共享依赖，进而避免内存泄漏。上述的问题直到JDK1.7才被彻底修复，也就是说，如果是JDK1.7之下的版本开发的应用系统，如果存在上述的写法，一定会内存泄漏，应该采用上面的策略修复；如果是JDK1.7及其之上的版本上述的问题写法是没有问题的。鉴于目前JDK1.6是主流JDK应用，上述问题我认为会大面积的存在。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2017/javase-memory-leak/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://itliusir.com/2017/javase-memory-leak/">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   求鼓励，求支持！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/javase-endorsed/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Java endorsed
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/Springboot1/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">关于SpringBoot bean无法注入的问题</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2017/javase-memory-leak/" data-title="Java内存管理以及内存泄露" data-url="http://itliusir.com/2017/javase-memory-leak/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">17</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/mybatis缺陷/" style="font-size: 10px;">mybatis缺陷</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">springboot博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bbs.springcloud.cn/">springcloud社区</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://git.oschina.net/itmuch/spring-cloud-book">docker博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'itliusir'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
