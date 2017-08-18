@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/about/index.html</loc>
+    
+    <lastmod>2017-08-18T15:52:14.676Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/JVM-MAT/</loc>
+    
+    <lastmod>2017-08-18T15:41:54.844Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2017/javase-List-LinkedList1/</loc>
     
     <lastmod>2017-08-07T08:41:13.427Z</lastmod>
@@ -110,13 +124,6 @@
     <loc>http://itliusir.com/2017/frame-springmvc2/</loc>
     
     <lastmod>2017-01-19T13:23:16.824Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/about/index.html</loc>
-    
-    <lastmod>2017-01-19T09:07:26.442Z</lastmod>
     
   </url>
   
