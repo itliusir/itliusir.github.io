@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:在日常开发中，前台对参数校验后，为了避免用户直接使用http工具直接向后台发起不合法请求，后台往往也需要校验，本文将要介绍的是使用Validator对数据进行校验。">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/bindingResult.png">
-<meta property="og:updated_time" content="2018-01-01T09:02:44.222Z">
+<meta property="og:updated_time" content="2018-01-01T09:07:22.480Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Validator 使用总结">
 <meta name="twitter:description" content="摘要:在日常开发中，前台对参数校验后，为了避免用户直接使用http工具直接向后台发起不合法请求，后台往往也需要校验，本文将要介绍的是使用Validator对数据进行校验。">
@@ -205,7 +205,7 @@
         
             
             <p>摘要:在日常开发中，前台对参数校验后，为了避免用户直接使用http工具直接向后台发起不合法请求，后台往往也需要校验，本文将要介绍的是使用Validator对数据进行校验。<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>首先说下大家常用的hibernate-validator，它是对<a href="http://download.oracle.com/otn-pub/jcp/bean_validation-1.0-fr-oth-JSpec/bean_validation-1_0-final-spec.pdf?AuthParam=1514789471_47bcccd9fcbf6c75c75d928d482e8a44" target="_blank" rel="external">JSR-303</a>/<a href="http://download.oracle.com/otn-pub/jcp/bean_validation-1_1-fr-eval-spec/bean-validation-specification.pdf?AuthParam=1514789533_446ab4aeb510e98388fb5083157715af" target="_blank" rel="external">JSR-349</a>标准的实现，然后spring为了给开发者提供便捷对hibernate-validator进行了二次封装，默认在springmvc模块。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>首先说下大家常用的hibernate-validator，它是对<a href="http://download.oracle.com/otndocs/jcp/bean_validation-1.0-fr-oth-JSpec/" target="_blank" rel="external">JSR-303</a>/<a href="http://download.oracle.com/otndocs/jcp/bean_validation-1_1-fr-eval-spec/" target="_blank" rel="external">JSR-349</a>标准的实现，然后spring为了给开发者提供便捷对hibernate-validator进行了二次封装，默认在springmvc模块。</p>
 <h1 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h1><p>本文所介绍皆在springboot应用的基础上，首先加上web模块：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>可以查看其子依赖，发现web模块默认使用了hibernate-validator：</p>
