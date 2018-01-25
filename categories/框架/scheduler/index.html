@@ -3,18 +3,17 @@
 <head>
     <meta charset="utf-8">
     
-    <title>关于SpringBoot bean无法注入的问题 | liusir|blog</title>
+    <title>分类: scheduler | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
-<meta property="og:type" content="article">
-<meta property="og:title" content="关于SpringBoot bean无法注入的问题">
-<meta property="og:url" content="http://itliusir.com/2017/Springboot1/index.html">
+    <meta name="description" content="君君的个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="liusir|blog">
+<meta property="og:url" content="http://itliusir.com/categories/框架/scheduler/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
-<meta property="og:updated_time" content="2017-01-18T11:15:06.239Z">
+<meta property="og:description" content="君君的个人博客">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于SpringBoot bean无法注入的问题">
-<meta name="twitter:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
+<meta name="twitter:title" content="liusir|blog">
+<meta name="twitter:description" content="君君的个人博客">
     
 
     
@@ -159,139 +158,50 @@
 </aside>
 
             
-            <section id="main"><article id="post-Springboot1" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
+            <section id="main">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-folder"></i></span>
+        <h1 class="title">scheduler</h1>
+    </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
-        <h1 class="article-title" itemprop="name">
-            关于SpringBoot bean无法注入的问题
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/2018/scheduler-xxl-job/">XXL-JOB使用笔记</a>
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
+                <div class="article-meta">
+                    
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot1/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2018/scheduler-xxl-job/">
+            <time datetime="2018-01-25T12:30:00.000Z" itemprop="datePublished">2018-01-25</time>
         </a>
     </div>
 
 
-                        
+                    
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/scheduler/">scheduler</a>
     </div>
 
-                        
+                    
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/springboot/">springboot</a>
+        <a class="tag-link" href="/tags/xxl-job/">xxl-job</a>
     </div>
 
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天初次使用springboot搭建了Demo，联合mybatis时候(因为连接数据库需要创建vo层)出现bean无法导入的问题。网上谷歌了下后来找到了一个很容易忽视的原因。<br>这个是我的包结构，注意Application的位置，刚开始我并没有放在现在这个位置，而是和bean以及接口UserMapper是平行的包下。然后就报了Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}<br>这个错</p>
-<p>关于SpringBoot <wbr>bean无法注入的问题<br>将Application放在了最外层的包才解决问题。</p>
-<p>原因是：SpringBoot项目的Bean装配默认规则是根据Application类所在的包位置从上往下扫描！<br>所以一定要放在最外层！</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-    <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-	<a class="jiathis_button_weixin"></a>
-	<a class="jiathis_button_tsina"></a>
-	<a class="jiathis_button_qzone"></a>
-	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
-	<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
-
-
-</div>
-
-            
-    
-        <a href="http://itliusir.com/2017/Springboot1/#comments" id="sourceId::2017/Springboot1/" class="article-comment-link cy_cmt_count">评论</a>
-    
-
-        </footer>
-    </div>
-	
-		<! -- 添加捐赠图标 -->
-<div class ="post-donate">
-    <div id="donate_board" class="donate_bar center">
-        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
-        <span class="donate_txt">
-           ↑<br>
-		   大吉大利 请我吃鸡！
-        </span>
-        <br>
-      </div>  
-	<div id="donate_guide" class="donate_bar center hidden" >
-		<!-- 微信打赏图案 -->
-		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
-    </div>
-	<script type="text/javascript">
-		document.getElementById('btn_donate').onclick = function(){
-			$('#donate_board').addClass('hidden');
-			$('#donate_guide').removeClass('hidden');
-		}
-	</script>
-</div>
-<! -- 添加捐赠图标 -->
-	
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2017/javase-endorsed/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Java endorsed
-                
+                </div>
             </div>
-        </a>
+        </div>
     
-    
-        <a href="/2017/Docker-registry/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Docker在Ubuntu下私服搭建</div>
-        </a>
-    
-</nav>
-
-
-    
-	
-</article>
-
-
-    
-    <section id="comments">
-    
-    </section>
-
-
-
+</div>
 </section>
             
                 <aside id="sidebar">

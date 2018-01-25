@@ -3,18 +3,25 @@
 <head>
     <meta charset="utf-8">
     
-    <title>关于SpringBoot bean无法注入的问题 | liusir|blog</title>
+    <title>XXL-JOB使用笔记 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
+    <meta name="description" content="摘要:XXL-JOB是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于SpringBoot bean无法注入的问题">
-<meta property="og:url" content="http://itliusir.com/2017/Springboot1/index.html">
+<meta property="og:title" content="XXL-JOB使用笔记">
+<meta property="og:url" content="http://itliusir.com/2018/scheduler-xxl-job/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
-<meta property="og:updated_time" content="2017-01-18T11:15:06.239Z">
+<meta property="og:description" content="摘要:XXL-JOB是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job2.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job3.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job4.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job6.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job5.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job7.png">
+<meta property="og:updated_time" content="2018-01-25T12:34:16.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于SpringBoot bean无法注入的问题">
-<meta name="twitter:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
+<meta name="twitter:title" content="XXL-JOB使用笔记">
+<meta name="twitter:description" content="摘要:XXL-JOB是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job2.png">
     
 
     
@@ -159,7 +166,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Springboot1" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-scheduler-xxl-job" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -167,7 +174,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            关于SpringBoot bean无法注入的问题
+            XXL-JOB使用笔记
         </h1>
     
 
@@ -176,8 +183,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot1/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2018/scheduler-xxl-job/">
+            <time datetime="2018-01-25T12:30:00.000Z" itemprop="datePublished">2018-01-25</time>
         </a>
     </div>
 
@@ -185,13 +192,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/scheduler/">scheduler</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/springboot/">springboot</a>
+        <a class="tag-link" href="/tags/xxl-job/">xxl-job</a>
     </div>
 
                     </div>
@@ -202,10 +209,86 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天初次使用springboot搭建了Demo，联合mybatis时候(因为连接数据库需要创建vo层)出现bean无法导入的问题。网上谷歌了下后来找到了一个很容易忽视的原因。<br>这个是我的包结构，注意Application的位置，刚开始我并没有放在现在这个位置，而是和bean以及接口UserMapper是平行的包下。然后就报了Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}<br>这个错</p>
-<p>关于SpringBoot <wbr>bean无法注入的问题<br>将Application放在了最外层的包才解决问题。</p>
-<p>原因是：SpringBoot项目的Bean装配默认规则是根据Application类所在的包位置从上往下扫描！<br>所以一定要放在最外层！</p>
+            <p>摘要:<code>XXL-JOB</code>是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用<br><a id="more"></a><br>正文:</p>
+<h1 id="XXL-JOB的介绍"><a href="#XXL-JOB的介绍" class="headerlink" title="XXL-JOB的介绍"></a>XXL-JOB的介绍</h1><p><code>XXL-JOB</code>是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用</p>
+<h1 id="XXL-JOB快速入门"><a href="#XXL-JOB快速入门" class="headerlink" title="XXL-JOB快速入门"></a>XXL-JOB快速入门</h1><h2 id="文档地址"><a href="#文档地址" class="headerlink" title="文档地址"></a>文档地址</h2><ul>
+<li><a href="http://www.xuxueli.com/xxl-job/#/" target="_blank" rel="external">中文文档</a></li>
+<li><a href="http://www.xuxueli.com/xxl-job/en/" target="_blank" rel="external">English Documentation</a></li>
+</ul>
+<h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><table>
+<thead>
+<tr>
+<th>源码仓库地址</th>
+<th>Release Download</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/xuxueli/xxl-job" target="_blank" rel="external">https://github.com/xuxueli/xxl-job</a></td>
+<td><a href="https://github.com/xuxueli/xxl-job/releases" target="_blank" rel="external">Download</a></td>
+</tr>
+<tr>
+<td><a href="http://gitee.com/xuxueli0323/xxl-job" target="_blank" rel="external">http://gitee.com/xuxueli0323/xxl-job</a></td>
+<td><a href="http://gitee.com/xuxueli0323/xxl-job/releases" target="_blank" rel="external">Download</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="配置部署”调度中心”"><a href="#配置部署”调度中心”" class="headerlink" title="配置部署”调度中心”"></a>配置部署”调度中心”</h2><h3 id="初始化“调度数据库”"><a href="#初始化“调度数据库”" class="headerlink" title="初始化“调度数据库”"></a>初始化“调度数据库”</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxl-job\doc\db\tables_xxl_job.sql</div></pre></td></tr></table></figure>
+<h3 id="修改数据库配置信息"><a href="#修改数据库配置信息" class="headerlink" title="修改数据库配置信息"></a>修改数据库配置信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxl-job\xxl-job-admin\src\main\resources\xxl-job-admin.properties</div></pre></td></tr></table></figure>
+<h3 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h3><p>在<code>xxl-job</code>根目录下执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean package</div></pre></td></tr></table></figure>
+<h3 id="部署“调度中心”"><a href="#部署“调度中心”" class="headerlink" title="部署“调度中心”"></a>部署“调度中心”</h3><ol>
+<li>找到<code>xxl-job-admin</code>的target目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxl-job\xxl-job-admin\target\xxl-job-admin-1.9.1-SNAPSHOT.war</div></pre></td></tr></table></figure>
+<ol>
+<li><p>更改名字为<code>xxl-job-admin.war</code>,放在tomcat的<code>webapps</code>下,在bin文件夹双击执行<code>startup.bat</code></p>
+</li>
+<li><p>访问<a href="http://localhost:8080/xxl-job-admin" target="_blank" rel="external">http://localhost:8080/xxl-job-admin</a></p>
+</li>
+<li><p>登录(密码在<code>xxl-job-admin.properties</code>)后界面如下图所示:</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job2.png" alt="调度中心"></p>
+</li>
+</ol>
+<h3 id="Docker部署”调度中心”"><a href="#Docker部署”调度中心”" class="headerlink" title="Docker部署”调度中心”"></a>Docker部署”调度中心”</h3><ul>
+<li><p><code>Dockerfile</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FROM tomcat:8</div><div class="line">## db设置为获取环境变量 方便动态传参</div><div class="line">ENV driverClass com.mysql.jdbc.Driver</div><div class="line">ENV url jdbc:mysql://localhost:3306/xxl-job?useUnicode=true&amp;characterEncoding=UTF-8</div><div class="line">ENV user root</div><div class="line">ENV password root</div><div class="line">ADD xxl-job-admin.war /usr/local/tomcat/webapps/</div><div class="line">CMD [&quot;catalina.sh&quot;, &quot;run&quot;]</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>build</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker build -t tomcat/xxl-job-admim .</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>run</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --restart=always -d -p <span class="number">8997</span>:<span class="number">8080</span> tomcat/xxl-job-admim</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>delete image</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rmi tomcat/xxl-job-admim</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>stop container</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop container id</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>delete container</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rm container id</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="配置部署“执行器项目”"><a href="#配置部署“执行器项目”" class="headerlink" title="配置部署“执行器项目”"></a>配置部署“执行器项目”</h2><h3 id="参考官方Demo"><a href="#参考官方Demo" class="headerlink" title="参考官方Demo"></a>参考<a href="https://github.com/xuxueli/xxl-job/tree/master/xxl-job-executor-samples/xxl-job-executor-sample-springboot" target="_blank" rel="external">官方Demo</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxl-job\xxl-job-executor-samples\xxl-job-executor-sample-springboot</div></pre></td></tr></table></figure>
+<p>在根目录 <code>mvn clean package</code>然后执行<code>java -jar xxx.jar</code>或者IDE启动<code>SpringBoot</code></p>
+<h3 id="页面配置"><a href="#页面配置" class="headerlink" title="页面配置"></a>页面配置</h3><ol>
+<li><p>新增执行器</p>
+<p>打开“调度中心”的执行器管理，发现有一个默认的，<code>AppName</code>正对应<code>xxl-job-executor-sample-springboot</code>服务配置的<code>xxl.job.executor.appname</code>，此时可以使用默认的无需添加。</p>
+</li>
+<li><p>新增任务</p>
+<p>打开”调度中心”的任务管理，点击新增任务：</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job3.png" alt="新增任务"></p>
+<p>配置参考如下配置，<code>JobHandler</code>填写<code>xxl-job-executor-sample-springboot</code>的<code>DemoJobHandler.java</code>类上的<code>@JobHandler(value=&quot;demoJobHandler&quot;)</code>value值，Cron表达式可以参考<a href="http://cron.qqe2.com/" target="_blank" rel="external">在线Cron表达式生成器</a></p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job4.png" alt="新增任务"></p>
+<p>保存成功后点击执行按钮</p>
+</li>
+</ol>
+<h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><p>点击任务右侧的日志按钮，可以查看该任务的日志：</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job6.png" alt="日志列表"></p>
+<p>点击执行日志可以看到当前执行的log,对应<code>xxl-job-executor-sample-springboot</code>Demo的<code>DemoJobHandler.java</code>的代码:</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job5.png" alt="log"></p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/xxl-job7.png" alt="log"></p>
 
         
         </div>
@@ -229,7 +312,7 @@
 
             
     
-        <a href="http://itliusir.com/2017/Springboot1/#comments" id="sourceId::2017/Springboot1/" class="article-comment-link cy_cmt_count">评论</a>
+        <a href="http://itliusir.com/2018/scheduler-xxl-job/#comments" id="sourceId::2018/scheduler-xxl-job/" class="article-comment-link cy_cmt_count">评论</a>
     
 
         </footer>
@@ -262,19 +345,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/javase-endorsed/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Java endorsed
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/Docker-registry/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/frame-validator/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Docker在Ubuntu下私服搭建</div>
+            <div class="article-nav-title">Validator 使用总结</div>
         </a>
     
 </nav>
