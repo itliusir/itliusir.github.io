@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job6.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job5.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/xxl-job7.png">
-<meta property="og:updated_time" content="2018-01-25T12:34:16.795Z">
+<meta property="og:updated_time" content="2018-01-29T02:04:16.767Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XXL-JOB使用笔记">
 <meta name="twitter:description" content="摘要:XXL-JOB是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用">
@@ -251,25 +251,21 @@
 </li>
 </ol>
 <h3 id="Docker部署”调度中心”"><a href="#Docker部署”调度中心”" class="headerlink" title="Docker部署”调度中心”"></a>Docker部署”调度中心”</h3><ul>
-<li><p><code>Dockerfile</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FROM tomcat:8</div><div class="line">## db设置为获取环境变量 方便动态传参</div><div class="line">ENV driverClass com.mysql.jdbc.Driver</div><div class="line">ENV url jdbc:mysql://localhost:3306/xxl-job?useUnicode=true&amp;characterEncoding=UTF-8</div><div class="line">ENV user root</div><div class="line">ENV password root</div><div class="line">ADD xxl-job-admin.war /usr/local/tomcat/webapps/</div><div class="line">CMD [&quot;catalina.sh&quot;, &quot;run&quot;]</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>build</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker build -t tomcat/xxl-job-admim .</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>run</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --restart=always -d -p <span class="number">8997</span>:<span class="number">8080</span> tomcat/xxl-job-admim</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>delete image</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rmi tomcat/xxl-job-admim</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>stop container</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop container id</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>delete container</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rm container id</div></pre></td></tr></table></figure>
-</li>
+<li><code>PreBuild.sh</code></li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">docker rm -f $(docker ps -a  | grep &quot;tomcat/xxl-job-admim&quot;| awk &apos;&#123; print $1 &#125;&apos;)  &gt;/dev/null 2&gt;&amp;1</div><div class="line">docker rmi -f tomcat/xxl-job-admim  &gt;/dev/null 2&gt;&amp;1</div></pre></td></tr></table></figure>
+<ul>
+<li><code>Dockerfile</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FROM tomcat:8</div><div class="line">## db设置为获取环境变量 方便动态传参</div><div class="line">ENV driverClass com.mysql.jdbc.Driver</div><div class="line">ENV url jdbc:mysql://localhost:3306/xxl-job?useUnicode=true&amp;characterEncoding=UTF-8</div><div class="line">ENV user root</div><div class="line">ENV password root</div><div class="line">ADD xxl-job-admin.war /usr/local/tomcat/webapps/</div><div class="line">CMD [&quot;catalina.sh&quot;, &quot;run&quot;]</div></pre></td></tr></table></figure>
+<ul>
+<li><code>Dockerbuild.sh</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker build -t tomcat/xxl-job-admim .</div></pre></td></tr></table></figure>
+<ul>
+<li><code>DockerRun.sh</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --restart=always -d -p 8997:8080 tomcat/xxl-job-admim &gt;/dev/null 2&gt;&amp;1</div></pre></td></tr></table></figure>
 <h2 id="配置部署“执行器项目”"><a href="#配置部署“执行器项目”" class="headerlink" title="配置部署“执行器项目”"></a>配置部署“执行器项目”</h2><h3 id="参考官方Demo"><a href="#参考官方Demo" class="headerlink" title="参考官方Demo"></a>参考<a href="https://github.com/xuxueli/xxl-job/tree/master/xxl-job-executor-samples/xxl-job-executor-sample-springboot" target="_blank" rel="external">官方Demo</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxl-job\xxl-job-executor-samples\xxl-job-executor-sample-springboot</div></pre></td></tr></table></figure>
 <p>在根目录 <code>mvn clean package</code>然后执行<code>java -jar xxx.jar</code>或者IDE启动<code>SpringBoot</code></p>
 <h3 id="页面配置"><a href="#页面配置" class="headerlink" title="页面配置"></a>页面配置</h3><ol>
