@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/about/index.html</loc>
+    
+    <lastmod>2018-02-04T13:43:21.270Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/scheduler-xxl-job/</loc>
     
     <lastmod>2018-01-29T02:04:16.767Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://itliusir.com/2017/Docker-Nodejs-Vue/</loc>
     
     <lastmod>2017-11-23T08:23:23.166Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/about/index.html</loc>
-    
-    <lastmod>2017-10-17T05:43:56.556Z</lastmod>
     
   </url>
   
