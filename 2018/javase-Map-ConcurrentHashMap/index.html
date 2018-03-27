@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JDK8的ConcurrentHashMap源码学习笔记 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:继上篇HashMap分析后，接下来分析ConcurrentHashMap的put和扩容…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK8的ConcurrentHashMap源码学习笔记">
+<meta property="og:url" content="http://itliusir.com/2018/javase-Map-ConcurrentHashMap/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:继上篇HashMap分析后，接下来分析ConcurrentHashMap的put和扩容…">
+<meta property="og:updated_time" content="2018-03-27T15:10:36.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDK8的ConcurrentHashMap源码学习笔记">
+<meta name="twitter:description" content="摘要:继上篇HashMap分析后，接下来分析ConcurrentHashMap的put和扩容…">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                35
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                48
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-javase-Map-ConcurrentHashMap" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            JDK8的ConcurrentHashMap源码学习笔记
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/javase-Map-ConcurrentHashMap/">
+            <time datetime="2018-03-27T15:05:00.000Z" itemprop="datePublished">2018-03-27</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:继上篇HashMap分析后，接下来分析ConcurrentHashMap的put和扩容…<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>首要目标:保持并发的可读性,同时最小化更新产生的竞争</li>
+<li>次要目标:保持与<code>HashMap</code>相同或更好的空间消耗,并支持许多线程在空表上的高初始插入率。</li>
+</ul>
+<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><ul>
+<li>使用CAS代替之前版本的分段锁</li>
+<li>红黑树</li>
+</ul>
+<h3 id="putVal-方法"><a href="#putVal-方法" class="headerlink" title="putVal()方法"></a>putVal()方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * sizeCtl：表初始化和调整控制。当负值时，表被初始化或调整大小:-1用于初始化，-(1 +主动调整大小的线程数)用于调整大小，默认为0。初始化完成后，保存下一个元素count值，以调整表的大小。</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Node&lt;K,V&gt;[] initTable() &#123;</div><div class="line">    Node&lt;K,V&gt;[] tab; <span class="keyword">int</span> sc;</div><div class="line">    <span class="comment">//volatile读</span></div><div class="line">    <span class="keyword">while</span> ((tab = table) == <span class="keyword">null</span> || tab.length == <span class="number">0</span>) &#123;</div><div class="line">	    <span class="comment">//如果一个线程发现sizeCtl&lt;0，意味着另外的线程执行CAS操作成功，当前线程只需要让出cpu时间片</span></div><div class="line">        <span class="comment">//volatile读</span></div><div class="line">        <span class="keyword">if</span> ((sc = sizeCtl) &lt; <span class="number">0</span>) </div><div class="line">            Thread.yield(); <span class="comment">// lost initialization race; just spin</span></div><div class="line">        <span class="comment">//第一次put操作的线程会执行Unsafe.compareAndSwapInt方法修改sizeCtl为-1，有且只有一个线程能够修改成功，其它线程通过Thread.yield()让出CPU时间片等待table初始化完成</span></div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (U.compareAndSwapInt(<span class="keyword">this</span>, SIZECTL, sc, -<span class="number">1</span>)) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || tab.length == <span class="number">0</span>) &#123;</div><div class="line">                    <span class="keyword">int</span> n = (sc &gt; <span class="number">0</span>) ? sc : DEFAULT_CAPACITY;</div><div class="line">                    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">                    Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node&lt;?,?&gt;[n];</div><div class="line">                    table = tab = nt;</div><div class="line">                    sc = n - (n &gt;&gt;&gt; <span class="number">2</span>);</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">finally</span> &#123;</div><div class="line">                sizeCtl = sc;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> tab;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用Unsafe.getObjectVolatile()获取数组元素，原因是Java数组是无法表达元素是volatile、final的</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(K key, V value, <span class="keyword">boolean</span> onlyIfAbsent)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span> || value == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</div><div class="line">    <span class="keyword">int</span> hash = spread(key.hashCode());</div><div class="line">    <span class="keyword">int</span> binCount = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (Node&lt;K,V&gt;[] tab = table;;) &#123;</div><div class="line">      Node&lt;K,V&gt; f; <span class="keyword">int</span> n, i, fh;</div><div class="line">      <span class="keyword">if</span> (tab == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</div><div class="line">        <span class="comment">//初始化</span></div><div class="line">        tab = initTable();</div><div class="line">      <span class="comment">//为空，则设置为头节点(CAS)</span></div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ((f = tabAt(tab, i = (n - <span class="number">1</span>) &amp; hash)) == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (casTabAt(tab, i, <span class="keyword">null</span>,</div><div class="line">                     <span class="keyword">new</span> Node&lt;K,V&gt;(hash, key, value, <span class="keyword">null</span>)))</div><div class="line">          <span class="keyword">break</span>;                   <span class="comment">// no lock when adding to empty bin</span></div><div class="line">      &#125;</div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ((fh = f.hash) == MOVED)</div><div class="line">        tab = helpTransfer(tab, f);</div><div class="line">      <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">//节点添加</span></div><div class="line">        V oldVal = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">synchronized</span> (f) &#123;</div><div class="line">          <span class="keyword">if</span> (tabAt(tab, i) == f) &#123;</div><div class="line">            <span class="keyword">if</span> (fh &gt;= <span class="number">0</span>) &#123;</div><div class="line">              binCount = <span class="number">1</span>;</div><div class="line">              <span class="keyword">for</span> (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</div><div class="line">                K ek;</div><div class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</div><div class="line">                    ((ek = e.key) == key ||</div><div class="line">                     (ek != <span class="keyword">null</span> &amp;&amp; key.equals(ek)))) &#123;</div><div class="line">                  oldVal = e.val;</div><div class="line">                  <span class="keyword">if</span> (!onlyIfAbsent)</div><div class="line">                    e.val = value;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                Node&lt;K,V&gt; pred = e;</div><div class="line">                <span class="keyword">if</span> ((e = e.next) == <span class="keyword">null</span>) &#123;</div><div class="line">                  pred.next = <span class="keyword">new</span> Node&lt;K,V&gt;(hash, key,</div><div class="line">                                            value, <span class="keyword">null</span>);</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (f <span class="keyword">instanceof</span> TreeBin) &#123;</div><div class="line">              Node&lt;K,V&gt; p;</div><div class="line">              binCount = <span class="number">2</span>;</div><div class="line">              <span class="keyword">if</span> ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</div><div class="line">                                                    value)) != <span class="keyword">null</span>) &#123;</div><div class="line">                oldVal = p.val;</div><div class="line">                <span class="keyword">if</span> (!onlyIfAbsent)</div><div class="line">                  p.val = value;</div><div class="line">              &#125;</div><div class="line">            &#125;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (binCount != <span class="number">0</span>) &#123;</div><div class="line">          <span class="comment">//达到阈值转为红黑树</span></div><div class="line">          <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD)</div><div class="line">            treeifyBin(tab, i);</div><div class="line">          <span class="keyword">if</span> (oldVal != <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">return</span> oldVal;</div><div class="line">          <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    addCount(<span class="number">1L</span>, binCount);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 如果当前table的个数未达到MIN_TREEIFY_CAPACITY(64)则先进行扩容</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">treeifyBin</span><span class="params">(Node&lt;K,V&gt;[] tab, <span class="keyword">int</span> index)</span> </span>&#123;</div><div class="line">    Node&lt;K,V&gt; b; <span class="keyword">int</span> n, sc;</div><div class="line">    <span class="keyword">if</span> (tab != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">if</span> ((n = tab.length) &lt; MIN_TREEIFY_CAPACITY)</div><div class="line">        tryPresize(n &lt;&lt; <span class="number">1</span>);</div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ((b = tabAt(tab, index)) != <span class="keyword">null</span> &amp;&amp; b.hash &gt;= <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">synchronized</span> (b) &#123;</div><div class="line">          <span class="keyword">if</span> (tabAt(tab, index) == b) &#123;</div><div class="line">            TreeNode&lt;K,V&gt; hd = <span class="keyword">null</span>, tl = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">for</span> (Node&lt;K,V&gt; e = b; e != <span class="keyword">null</span>; e = e.next) &#123;</div><div class="line">              TreeNode&lt;K,V&gt; p =</div><div class="line">                <span class="keyword">new</span> TreeNode&lt;K,V&gt;(e.hash, e.key, e.val,</div><div class="line">                                  <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">              <span class="keyword">if</span> ((p.prev = tl) == <span class="keyword">null</span>)</div><div class="line">                hd = p;</div><div class="line">              <span class="keyword">else</span></div><div class="line">                tl.next = p;</div><div class="line">              tl = p;</div><div class="line">            &#125;</div><div class="line">            setTabAt(tab, index, <span class="keyword">new</span> TreeBin&lt;K,V&gt;(hd));</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 扩容(size = 2n)</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">tryPresize</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">    <span class="comment">//size如果大于max(Int)/2 则直接扩为max(Int),否则为大于3*size + 1的最小二次幂</span></div><div class="line">    <span class="keyword">int</span> c = (size &gt;= (MAXIMUM_CAPACITY &gt;&gt;&gt; <span class="number">1</span>)) ? MAXIMUM_CAPACITY :</div><div class="line">    tableSizeFor(size + (size &gt;&gt;&gt; <span class="number">1</span>) + <span class="number">1</span>);</div><div class="line">    <span class="keyword">int</span> sc;</div><div class="line">    <span class="comment">//volatile读，sizeCtl大于0指没有进行初始化和扩容的操作</span></div><div class="line">    <span class="keyword">while</span> ((sc = sizeCtl) &gt;= <span class="number">0</span>) &#123;</div><div class="line">      Node&lt;K,V&gt;[] tab = table; <span class="keyword">int</span> n;</div><div class="line">      <span class="keyword">if</span> (tab == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>) &#123;</div><div class="line">        n = (sc &gt; c) ? sc : c;</div><div class="line">        <span class="comment">//执行Unsafe.compareAndSwapInt方法修改sizeCtl为-1，有且只有一个线程能够修改成功，其它线程通过Thread.yield()让出CPU时间片等待table初始化完成</span></div><div class="line">        <span class="keyword">if</span> (U.compareAndSwapInt(<span class="keyword">this</span>, SIZECTL, sc, -<span class="number">1</span>)) &#123;</div><div class="line">          <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (table == tab) &#123;</div><div class="line">              <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">              <span class="comment">//初始化</span></div><div class="line">              Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node&lt;?,?&gt;[n];</div><div class="line">              table = nt;</div><div class="line">              sc = n - (n &gt;&gt;&gt; <span class="number">2</span>);</div><div class="line">            &#125;</div><div class="line">          &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            sizeCtl = sc;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="comment">//最大了</span></div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (c &lt;= sc || n &gt;= MAXIMUM_CAPACITY)</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (tab == table) &#123;</div><div class="line">        <span class="keyword">int</span> rs = resizeStamp(n);</div><div class="line">        <span class="keyword">if</span> (sc &lt; <span class="number">0</span>) &#123;</div><div class="line">          <span class="comment">//竞争失败</span></div><div class="line">          Node&lt;K,V&gt;[] nt;</div><div class="line">		 <span class="comment">//正在咨询大佬...</span></div><div class="line">          <span class="keyword">if</span> ((sc &gt;&gt;&gt; RESIZE_STAMP_SHIFT) != rs || sc == rs + <span class="number">1</span> ||</div><div class="line">              sc == rs + MAX_RESIZERS || (nt = nextTable) == <span class="keyword">null</span> ||</div><div class="line">              transferIndex &lt;= <span class="number">0</span>)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">          <span class="keyword">if</span> (U.compareAndSwapInt(<span class="keyword">this</span>, SIZECTL, sc, sc + <span class="number">1</span>))</div><div class="line">            transfer(tab, nt);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//竞争成功</span></div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (U.compareAndSwapInt(<span class="keyword">this</span>, SIZECTL, sc,</div><div class="line">                                     (rs &lt;&lt; RESIZE_STAMP_SHIFT) + <span class="number">2</span>))</div><div class="line">          transfer(tab, <span class="keyword">null</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="transfer-方法"><a href="#transfer-方法" class="headerlink" title="transfer()方法"></a>transfer()方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Node&lt;K,V&gt;[] tab, Node&lt;K,V&gt;[] nextTab)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n = tab.length, stride;</div><div class="line">    <span class="comment">//分片</span></div><div class="line">    <span class="keyword">if</span> ((stride = (NCPU &gt; <span class="number">1</span>) ? (n &gt;&gt;&gt; <span class="number">3</span>) / NCPU : n) &lt; MIN_TRANSFER_STRIDE)</div><div class="line">      stride = MIN_TRANSFER_STRIDE; <span class="comment">// subdivide range</span></div><div class="line">    <span class="comment">//nextTab初始化(CAS保证只有一个线程调用此方法)</span></div><div class="line">    <span class="keyword">if</span> (nextTab == <span class="keyword">null</span>) &#123;            <span class="comment">// initiating</span></div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">//根据当前数组长度n，新建一个两倍长度的数组nextTable</span></div><div class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">        Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node&lt;?,?&gt;[n &lt;&lt; <span class="number">1</span>];</div><div class="line">        nextTab = nt;</div><div class="line">      &#125; <span class="keyword">catch</span> (Throwable ex) &#123;      <span class="comment">// try to cope with OOME</span></div><div class="line">        sizeCtl = Integer.MAX_VALUE;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">      nextTable = nextTab;</div><div class="line">      transferIndex = n;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> nextn = nextTab.length;</div><div class="line">    <span class="comment">//初始化ForwardingNode(nextTab) 用于并发移动时，其它线程可以知道这个节点正在被移动，或已经被移动</span></div><div class="line">    ForwardingNode&lt;K,V&gt; fwd = <span class="keyword">new</span> ForwardingNode&lt;K,V&gt;(nextTab);</div><div class="line">    <span class="keyword">boolean</span> advance = <span class="keyword">true</span>;</div><div class="line">    <span class="comment">//循环的关键变量，判断是否已经扩容完成，完成就return，退出循环</span></div><div class="line">    <span class="keyword">boolean</span> finishing = <span class="keyword">false</span>; <span class="comment">// to ensure sweep before committing nextTab</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, bound = <span class="number">0</span>;;) &#123;</div><div class="line">      Node&lt;K,V&gt; f; <span class="keyword">int</span> fh;</div><div class="line">      <span class="keyword">while</span> (advance) &#123;</div><div class="line">        <span class="keyword">int</span> nextIndex, nextBound;</div><div class="line">        <span class="comment">//i指当前处理的槽位序号，bound指需要处理的槽位边界</span></div><div class="line">        <span class="keyword">if</span> (--i &gt;= bound || finishing)</div><div class="line">          advance = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((nextIndex = transferIndex) &lt;= <span class="number">0</span>) &#123;</div><div class="line">          i = -<span class="number">1</span>;</div><div class="line">          advance = <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (U.compareAndSwapInt</div><div class="line">                 (<span class="keyword">this</span>, TRANSFERINDEX, nextIndex,</div><div class="line">                  nextBound = (nextIndex &gt; stride ?</div><div class="line">                               nextIndex - stride : <span class="number">0</span>))) &#123;</div><div class="line">          bound = nextBound;</div><div class="line">          i = nextIndex - <span class="number">1</span>;</div><div class="line">          advance = <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= n || i + n &gt;= nextn) &#123;</div><div class="line">        <span class="keyword">int</span> sc;</div><div class="line">        <span class="keyword">if</span> (finishing) &#123;</div><div class="line">          nextTable = <span class="keyword">null</span>;</div><div class="line">          table = nextTab;</div><div class="line">          <span class="comment">//sizeCtl设为新数组大小的3/4(2n-n/2)</span></div><div class="line">          sizeCtl = (n &lt;&lt; <span class="number">1</span>) - (n &gt;&gt;&gt; <span class="number">1</span>);</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//resizeStamp()没看懂</span></div><div class="line">        <span class="keyword">if</span> (U.compareAndSwapInt(<span class="keyword">this</span>, SIZECTL, sc = sizeCtl, sc - <span class="number">1</span>)) &#123;</div><div class="line">          <span class="keyword">if</span> ((sc - <span class="number">2</span>) != resizeStamp(n) &lt;&lt; RESIZE_STAMP_SHIFT)</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">          finishing = advance = <span class="keyword">true</span>;</div><div class="line">          i = n; <span class="comment">// recheck before commit</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ((f = tabAt(tab, i)) == <span class="keyword">null</span>)</div><div class="line">        advance = casTabAt(tab, i, <span class="keyword">null</span>, fwd);</div><div class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ((fh = f.hash) == MOVED)</div><div class="line">        advance = <span class="keyword">true</span>; <span class="comment">// already processed</span></div><div class="line">      <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">synchronized</span> (f) &#123;</div><div class="line">          <span class="keyword">if</span> (tabAt(tab, i) == f) &#123;</div><div class="line">            Node&lt;K,V&gt; ln, hn;</div><div class="line">            <span class="keyword">if</span> (fh &gt;= <span class="number">0</span>) &#123;</div><div class="line">              <span class="comment">//使用fn&amp;n可以快速把链表中的元素分为两份</span></div><div class="line">              <span class="keyword">int</span> runBit = fh &amp; n;</div><div class="line">              Node&lt;K,V&gt; lastRun = f;</div><div class="line">              <span class="keyword">for</span> (Node&lt;K,V&gt; p = f.next; p != <span class="keyword">null</span>; p = p.next) &#123;</div><div class="line">                <span class="keyword">int</span> b = p.hash &amp; n;</div><div class="line">                <span class="keyword">if</span> (b != runBit) &#123;</div><div class="line">                  runBit = b;</div><div class="line">                  lastRun = p;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">if</span> (runBit == <span class="number">0</span>) &#123;</div><div class="line">                ln = lastRun;</div><div class="line">                hn = <span class="keyword">null</span>;</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">else</span> &#123;</div><div class="line">                hn = lastRun;</div><div class="line">                ln = <span class="keyword">null</span>;</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">for</span> (Node&lt;K,V&gt; p = f; p != lastRun; p = p.next) &#123;</div><div class="line">                <span class="keyword">int</span> ph = p.hash; K pk = p.key; V pv = p.val;</div><div class="line">                <span class="keyword">if</span> ((ph &amp; n) == <span class="number">0</span>)</div><div class="line">                  ln = <span class="keyword">new</span> Node&lt;K,V&gt;(ph, pk, pv, ln);</div><div class="line">                <span class="keyword">else</span></div><div class="line">                  hn = <span class="keyword">new</span> Node&lt;K,V&gt;(ph, pk, pv, hn);</div><div class="line">              &#125;</div><div class="line">              <span class="comment">//放到新Tab</span></div><div class="line">              setTabAt(nextTab, i, ln);</div><div class="line">              setTabAt(nextTab, i + n, hn);</div><div class="line">              setTabAt(tab, i, fwd);</div><div class="line">              advance = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (f <span class="keyword">instanceof</span> TreeBin) &#123;</div><div class="line">              TreeBin&lt;K,V&gt; t = (TreeBin&lt;K,V&gt;)f;</div><div class="line">              TreeNode&lt;K,V&gt; lo = <span class="keyword">null</span>, loTail = <span class="keyword">null</span>;</div><div class="line">              TreeNode&lt;K,V&gt; hi = <span class="keyword">null</span>, hiTail = <span class="keyword">null</span>;</div><div class="line">              <span class="keyword">int</span> lc = <span class="number">0</span>, hc = <span class="number">0</span>;</div><div class="line">              <span class="keyword">for</span> (Node&lt;K,V&gt; e = t.first; e != <span class="keyword">null</span>; e = e.next) &#123;</div><div class="line">                <span class="keyword">int</span> h = e.hash;</div><div class="line">                TreeNode&lt;K,V&gt; p = <span class="keyword">new</span> TreeNode&lt;K,V&gt;</div><div class="line">                  (h, e.key, e.val, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">                <span class="comment">//红黑树同样是根据h&amp;n分为两份</span></div><div class="line">                <span class="keyword">if</span> ((h &amp; n) == <span class="number">0</span>) &#123;</div><div class="line">                  <span class="keyword">if</span> ((p.prev = loTail) == <span class="keyword">null</span>)</div><div class="line">                    lo = p;</div><div class="line">                  <span class="keyword">else</span></div><div class="line">                    loTail.next = p;</div><div class="line">                  loTail = p;</div><div class="line">                  ++lc;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> &#123;</div><div class="line">                  <span class="keyword">if</span> ((p.prev = hiTail) == <span class="keyword">null</span>)</div><div class="line">                    hi = p;</div><div class="line">                  <span class="keyword">else</span></div><div class="line">                    hiTail.next = p;</div><div class="line">                  hiTail = p;</div><div class="line">                  ++hc;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">              <span class="comment">//拆分之后如果长度小于默认阈值(6)则转为链表</span></div><div class="line">              ln = (lc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(lo) :</div><div class="line">              (hc != <span class="number">0</span>) ? <span class="keyword">new</span> TreeBin&lt;K,V&gt;(lo) : t;</div><div class="line">              hn = (hc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(hi) :</div><div class="line">              (lc != <span class="number">0</span>) ? <span class="keyword">new</span> TreeBin&lt;K,V&gt;(hi) : t;</div><div class="line">              <span class="comment">//设置新的Tab</span></div><div class="line">              setTabAt(nextTab, i, ln);</div><div class="line">              setTabAt(nextTab, i + n, hn);</div><div class="line">              setTabAt(tab, i, fwd);</div><div class="line">              advance = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="HashMap-vs-ConcurrentHashMap"><a href="#HashMap-vs-ConcurrentHashMap" class="headerlink" title="HashMap vs ConcurrentHashMap"></a><code>HashMap</code> vs <code>ConcurrentHashMap</code></h2><ul>
+<li><code>ConcurrentHashMap</code>是线程安全的，在并发环境下不需要额外同步</li>
+<li><code>ConcurrentHashMap</code>有很好的扩展性，在多线程环境下性能方面比做了同步的<code>HashMap</code>要好，但是在单线程环境下，<code>HashMap</code>会比<code>ConcurrentHashMap</code>好一点<h1 id="晚安"><a href="#晚安" class="headerlink" title="晚安~"></a>晚安~</h1></li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/javase-Map-ConcurrentHashMap/#comments" id="sourceId::2018/javase-Map-ConcurrentHashMap/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/javase-Map-HashMap/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">JDK8的HashMap源码学习笔记</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/mybatis/">mybatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/scheduler/">scheduler</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">16</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 15px;">CAS</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/DispatcherServlet/" style="font-size: 10px;">DispatcherServlet</a> <a href="/tags/DispatcherServlet的初始化流程/" style="font-size: 10px;">DispatcherServlet的初始化流程</a> <a href="/tags/DispatcherServlet请求转发的实现/" style="font-size: 10px;">DispatcherServlet请求转发的实现</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/HttpMessageConverter/" style="font-size: 10px;">HttpMessageConverter</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/Java内存管理/" style="font-size: 10px;">Java内存管理</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/No-mapping-found-for-HTTP/" style="font-size: 10px;">No mapping found for HTTP</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/SpringMVC源码剖析/" style="font-size: 10px;">SpringMVC源码剖析</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/Validator/" style="font-size: 10px;">Validator</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 20px;">docker</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/docker镜像/" style="font-size: 10px;">docker镜像</a> <a href="/tags/docker镜像删除/" style="font-size: 10px;">docker镜像删除</a> <a href="/tags/endorsed/" style="font-size: 10px;">endorsed</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/xxl-job/" style="font-size: 10px;">xxl-job</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">程序猿DiDi</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.spring4all.com/">spring4all</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.iocoder.cn">芋道源码</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.ityouknow.com/">纯洁的微笑</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.cassite.net">囧神博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://xiangnick.website">XiangNick</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
