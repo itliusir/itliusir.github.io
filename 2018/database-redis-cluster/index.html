@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.com/2018/database-redis-cluster/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:最近工作搭建redis集群时候的笔记">
-<meta property="og:updated_time" content="2018-04-11T13:00:54.863Z">
+<meta property="og:updated_time" content="2018-04-12T01:57:37.684Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 集群部署">
 <meta name="twitter:description" content="摘要:最近工作搭建redis集群时候的笔记">
@@ -203,7 +203,12 @@
         
             
             <p>摘要:最近工作搭建redis集群时候的笔记<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="Redis集群搭建"><a href="#Redis集群搭建" class="headerlink" title="Redis集群搭建"></a>Redis集群搭建</h1><h2 id="安装gcc"><a href="#安装gcc" class="headerlink" title="安装gcc"></a>安装gcc</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">rpm -ivh gcc-c++-4.8.5-16.el7.x86_64.rpm --nodeps</div><div class="line">Preparing...                          ################################# [100%]</div><div class="line">Updating / installing...</div><div class="line">   1:gcc-c++-4.8.5-16.el7             ################################# [100%]</div></pre></td></tr></table></figure>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="Redis集群搭建"><a href="#Redis集群搭建" class="headerlink" title="Redis集群搭建"></a>Redis集群搭建</h1><h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><blockquote>
+<p>系统: CentOS 7.4</p>
+<p>Redis: redis-4.0.2</p>
+<p>ruby: 2.4.2</p>
+</blockquote>
+<h2 id="安装gcc"><a href="#安装gcc" class="headerlink" title="安装gcc"></a>安装gcc</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">rpm -ivh gcc-c++-4.8.5-16.el7.x86_64.rpm --nodeps</div><div class="line">Preparing...                          ################################# [100%]</div><div class="line">Updating / installing...</div><div class="line">   1:gcc-c++-4.8.5-16.el7             ################################# [100%]</div></pre></td></tr></table></figure>
 <h2 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt </div><div class="line">tar xzf redis-4.0.2.tar.gz</div><div class="line">cd redis-4.0.2</div><div class="line">make</div></pre></td></tr></table></figure>
 <p><strong>如果因为编译失败可以使用</strong><code>make distclean</code></p>
 <h2 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h2><ul>
