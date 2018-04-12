@@ -991,14 +991,14 @@ a.article-title:hover {
   font-size: 1.1em;
   margin: 0 -20px;
   padding: 10px 20px 10px 54px;
-  background: #fcfcfc;
-  border-left: 4px solid #eee;
+  background: #d5e7f3a8;
+  border-left: 4px solid #009688;
 }
 .article-entry blockquote:before {
   top: 20px;
   left: 10px;
   content: "\f10d";
-  color: #e2e2e2;
+  color: #009688;
   font-size: 32px;
   font-family: FontAwesome;
   text-align: center;
