@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>分类: 框架 | liusir|blog</title>
+    <title>Redis 集群规范 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="君君的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.com/categories/框架/index.html">
+    <meta name="description" content="摘要:参考官方文档Redis Cluster spec总结的Redis规范">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 集群规范">
+<meta property="og:url" content="http://itliusir.com/2018/database-redis-cluster-spec/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="君君的个人博客">
+<meta property="og:description" content="摘要:参考官方文档Redis Cluster spec总结的Redis规范">
+<meta property="og:updated_time" content="2018-04-12T11:13:35.058Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="君君的个人博客">
+<meta name="twitter:title" content="Redis 集群规范">
+<meta name="twitter:description" content="摘要:参考官方文档Redis Cluster spec总结的Redis规范">
     
 
     
@@ -158,374 +159,158 @@
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-folder"></i></span>
-        <h1 class="title">框架</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-database-redis-cluster-spec" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/scheduler-xxl-job/">XXL-JOB使用笔记</a>
+        <h1 class="article-title" itemprop="name">
+            Redis 集群规范
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/scheduler-xxl-job/">
-            <time datetime="2018-01-25T12:30:00.000Z" itemprop="datePublished">2018-01-25</time>
+        <a href="/2018/database-redis-cluster-spec/">
+            <time datetime="2018-04-12T11:00:00.000Z" itemprop="datePublished">2018-04-12</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/scheduler/">scheduler</a>
+        <a class="article-category-link" href="/categories/数据库/">数据库</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/Redis/">Redis</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/xxl-job/">xxl-job</a>
+        <a class="tag-link" href="/tags/Redis-Cluster-spec/">Redis Cluster spec</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/frame-validator/">Validator 使用总结</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:参考官方文档Redis Cluster spec总结的Redis规范<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="Redis-集群规范"><a href="#Redis-集群规范" class="headerlink" title="Redis 集群规范"></a>Redis 集群规范</h1><h2 id="安全写入"><a href="#安全写入" class="headerlink" title="安全写入"></a>安全写入</h2><p>两个写入丢失的可能</p>
+<ul>
+<li><p>写入操作到达主节点，主节点异步冗余备份还没传播到从节点时候主节点挂了，该写入会丢失</p>
+<blockquote>
+<p>几率很小，虽然是异步备份，但主节点写入并回复客户端的时间和传播给slave节点时间大致相同</p>
+</blockquote>
+</li>
+<li><p>故障转移时候，一个没有更新路由表的客户端会在主–&gt;从之前做写入操作（几率更小）</p>
+<blockquote>
+<p>原因：长时间无法被大多数主节点访问的节点会被故障转移掉，不再接受任何写入操作，其修复好后仍然会有一小段时间拒绝写入。好让其他节点有时间去告知配置信息的变更</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>每个master节点都至少要有一个salve节点可达，最好是从节点数量&gt;主节点数量</p>
+<blockquote>
+<ol>
+<li>master遇到故障转移到slave后，集群会再次恢复可用</li>
+<li>master故障修复后会重新加入集群成为新master的从节点，防止下次故障</li>
+<li>当从节点有两个就可以多一次故障转移</li>
+</ol>
+</blockquote>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>在Redis的集群中，节点并不是把命令转发到负责键的节点上，而是把客户端重定向到服务一定范围内的键的节点上。 最终客户端获得一份最新的集群路由表，里面有写着哪些节点服务哪些键，所以在正常操作中客户端是直接联系到对应的节点来发送指令。</p>
+<p>由于使用了异步复制，节点不会等待其他节点对写入操作的回复</p>
+<p>所以普通操作是可以被处理得跟在Redis单机版一样的，在一个拥有 N 个master节点的 Redis 集群中，由于线性扩展的设计，你可以认为同样的操作在集群上的性能是Redis单机版的n倍</p>
+<h2 id="键分布模型"><a href="#键分布模型" class="headerlink" title="键分布模型"></a>键分布模型</h2><p>Redis 集群的键空间被分割为 <code>16384</code> 个槽（slot）， 集群的最大节点数量也是 <code>16384</code> 个。</p>
+<blockquote>
+<p>推荐的最大节点数量为 1000 个左右。</p>
+</blockquote>
+<p>每个主节点都负责处理 <code>16384</code> 个哈希槽的其中一部分。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://redis.io/topics/cluster-spec" target="_blank" rel="external">Redis Cluster Spec</a></p>
+<p><a href="http://redisdoc.com/topic/cluster-spec.html" target="_blank" rel="external">Redis 集群规范</a></p>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/frame-validator/">
-            <time datetime="2018-01-01T06:40:00.000Z" itemprop="datePublished">2018-01-01</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Validator/">Validator</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/spring-Transactional/">关于Spring事务的传播特性</a>
-        </h1>
-    
+        <footer class="article-footer">
+            <div class="share-container">
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/spring-Transactional/">
-            <time datetime="2017-06-08T06:25:00.000Z" itemprop="datePublished">2017-06-08</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/Spring/">Spring</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Transactional/">Transactional</a>, <a class="tag-link" href="/tags/spring/">spring</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc4/">SpringMVC源码剖析（四）- DispatcherServlet请求转发的实现</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc4/">
-            <time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/DispatcherServlet请求转发的实现/">DispatcherServlet请求转发的实现</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc5/">SpringMVC源码剖析（五）-消息转换器HttpMessageConverter</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc5/">
-            <time datetime="2017-01-18T12:40:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/HttpMessageConverter/">HttpMessageConverter</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc3/">SpringMVC源码剖析（三）- DispatcherServlet的初始化流程</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc3/">
-            <time datetime="2017-01-18T12:30:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/DispatcherServlet的初始化流程/">DispatcherServlet的初始化流程</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc-bug/">No mapping found for HTTP request with URI… in Dis</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc-bug/">
-            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/No-mapping-found-for-HTTP/">No mapping found for HTTP</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc2/">SpringMVC源码剖析（二）- DispatcherServlet的前世今生</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc2/">
-            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/DispatcherServlet/">DispatcherServlet</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-springmvc1/">SpringMVC源码剖析（一）- 从抽象和接口说起</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-springmvc1/">
-            <time datetime="2017-01-18T12:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/SpringMVC/">SpringMVC</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/SpringMVC源码剖析/">SpringMVC源码剖析</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/frame-mybatis-sql/">java持久层框架mybatis如何防止sql注入</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/frame-mybatis-sql/">
-            <time datetime="2017-01-18T11:50:00.000Z" itemprop="datePublished">2017-01-18</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/mybatis/">mybatis</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/sql注入/">sql注入</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/database-redis-cluster-spec/#comments" id="sourceId::2018/database-redis-cluster-spec/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/database-redis-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Redis 集群部署</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
 </section>
             
                 <aside id="sidebar">
