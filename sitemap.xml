@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2018/middleware-install-zk-kafka/</loc>
+    
+    <lastmod>2018-04-13T03:14:10.437Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/database-redis-cluster-spec/</loc>
     
     <lastmod>2018-04-13T02:21:16.334Z</lastmod>
