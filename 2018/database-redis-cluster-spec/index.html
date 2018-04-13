@@ -11,10 +11,12 @@
 <meta property="og:url" content="http://itliusir.com/2018/database-redis-cluster-spec/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:参考官方文档Redis Cluster spec总结的Redis规范">
-<meta property="og:updated_time" content="2018-04-12T11:13:35.058Z">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/redis-cluster.png">
+<meta property="og:updated_time" content="2018-04-13T02:21:16.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 集群规范">
 <meta name="twitter:description" content="摘要:参考官方文档Redis Cluster spec总结的Redis规范">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/redis-cluster.png">
     
 
     
@@ -216,7 +218,7 @@
 </blockquote>
 </li>
 </ul>
-<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>每个master节点都至少要有一个salve节点可达，最好是从节点数量&gt;主节点数量</p>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>根据redis选举机制，高可用需要至少3台服务器(3个master节点)，每个master节点都至少要有一个salve节点可达，最好是从节点数量&gt;主节点数量</p>
 <blockquote>
 <ol>
 <li>master遇到故障转移到slave后，集群会再次恢复可用</li>
@@ -224,6 +226,7 @@
 <li>当从节点有两个就可以多一次故障转移</li>
 </ol>
 </blockquote>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/redis-cluster.png" alt="redis-cluster"></p>
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>在Redis的集群中，节点并不是把命令转发到负责键的节点上，而是把客户端重定向到服务一定范围内的键的节点上。 最终客户端获得一份最新的集群路由表，里面有写着哪些节点服务哪些键，所以在正常操作中客户端是直接联系到对应的节点来发送指令。</p>
 <p>由于使用了异步复制，节点不会等待其他节点对写入操作的回复</p>
 <p>所以普通操作是可以被处理得跟在Redis单机版一样的，在一个拥有 N 个master节点的 Redis 集群中，由于线性扩展的设计，你可以认为同样的操作在集群上的性能是Redis单机版的n倍</p>
