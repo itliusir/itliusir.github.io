@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.com/2018/middleware-install-zk-kafka/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:安装kafka文档">
-<meta property="og:updated_time" content="2018-04-13T03:14:10.437Z">
+<meta property="og:updated_time" content="2018-04-13T03:18:32.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zookeeper、kafka部署">
 <meta name="twitter:description" content="摘要:安装kafka文档">
@@ -229,6 +229,7 @@
 <h3 id="stop-Kafka"><a href="#stop-Kafka" class="headerlink" title="stop Kafka"></a>stop Kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@server28 bin]# ./kafka-server-stop.sh server.properties</div><div class="line">[root@server28 bin]# jps</div><div class="line">23792 Jps</div><div class="line">1332 jenkins.war</div><div class="line">31032 QuorumPeerMain</div></pre></td></tr></table></figure>
 <h3 id="删除Kafka的log"><a href="#删除Kafka的log" class="headerlink" title="删除Kafka的log"></a>删除Kafka的log</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在配置文件找到kafka日志目录并删除对应目录，这里是全部清空</div><div class="line">[root@server28 tmp]# cd kafka-logs/</div><div class="line">[root@server28 tmp]# rm -rf *</div></pre></td></tr></table></figure>
 <h3 id="删除Zookeeper下节点"><a href="#删除Zookeeper下节点" class="headerlink" title="删除Zookeeper下节点"></a>删除Zookeeper下节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@server28 bin]# zkCli.sh -server 192.168.103.28:2181</div><div class="line">[zk: 192.168.103.28:2181(CONNECTED) 0] rmr /admin/delete_topics/mic-service</div><div class="line">[zk: 192.168.103.28:2181(CONNECTED) 1] rmr /brokers/topics/mic-service</div><div class="line">[zk: 192.168.103.28:2181(CONNECTED) 2] rmr /config/topics/mic-service</div><div class="line">[zk: 192.168.103.28:2181(CONNECTED) 3] ls /admin/delete_topics</div><div class="line">[]</div></pre></td></tr></table></figure>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=3jvl2yjjxbk04" target="_blank" rel="external">https://cloud.tencent.com/developer/support-plan?invite_code=3jvl2yjjxbk04</a></p>
 
         
         </div>
