@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/stack4.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/stack5.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/stack6.png">
-<meta property="og:updated_time" content="2018-04-14T11:22:40.258Z">
+<meta property="og:updated_time" content="2018-04-14T11:26:48.984Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈的应用——四则运算表达式">
 <meta name="twitter:description" content="摘要:本文是看《大话数据结构》栈章节的学习总结">
@@ -215,7 +215,9 @@
 </blockquote>
 <p>大家都知道用计算器可以很方便的计算出两数运算的结果，但是如果遇到有优先级的四则运算，计算器又是如何去精确的计算出结果呢？</p>
 <p>在20世纪50年代有一个叫<strong><a href="https://zh.wikipedia.org/wiki/%E6%89%AC%C2%B7%E5%8D%A2%E5%8D%A1%E8%A5%BF%E7%BB%B4%E8%8C%A8" target="_blank" rel="external">Jan Łukasiewicz</a></strong>的波兰数学家想到了<strong>一种不需要括号的后缀表达式，我们称为<a href="https://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95" target="_blank" rel="external">逆波兰表示法</a></strong> ，逆波兰记法不需要括号来标识操作符的优先级</p>
-<h2 id="中缀转后缀表达式"><a href="#中缀转后缀表达式" class="headerlink" title="中缀转后缀表达式"></a>中缀转后缀表达式</h2><p>我们平时所用的标准四则运算表达式，如：<br>$$<br>150-(7+5)<em>2+30</em>2<br>$$<br>叫做中缀表达式，因为所有的运算符号都在两个数字之间，现在我们通过使用栈将其转为后缀表达式</p>
+<h2 id="中缀转后缀表达式"><a href="#中缀转后缀表达式" class="headerlink" title="中缀转后缀表达式"></a>中缀转后缀表达式</h2><p>我们平时所用的标准四则运算表达式，如：</p>
+<p><strong><code>150-(7+5)*2+30*2</code></strong></p>
+<p>叫做中缀表达式，因为所有的运算符号都在两个数字之间，现在我们通过使用栈将其转为后缀表达式</p>
 <blockquote>
 <p>规则：</p>
 <p>从左到右遍历上面中缀表达式的每个数字符号</p>
