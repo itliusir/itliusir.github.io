@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2018/SpringCloud-Netflix/</loc>
+    
+    <lastmod>2018-05-05T14:12:21.601Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/JVM-Instruction-Execution-Flow/</loc>
     
     <lastmod>2018-05-05T14:11:36.643Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>http://itliusir.com/2018/database-redis-cluster/</loc>
     
     <lastmod>2018-04-12T01:57:37.684Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2018/SpringCloud-Netflix/</loc>
-    
-    <lastmod>2018-04-09T05:54:18.803Z</lastmod>
     
   </url>
   
