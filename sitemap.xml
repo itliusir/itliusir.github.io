@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2018/JVM-Specification-notes-1/</loc>
+    
+    <lastmod>2018-05-06T15:33:08.885Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/SpringCloud-Netflix/</loc>
     
     <lastmod>2018-05-05T14:12:21.601Z</lastmod>
