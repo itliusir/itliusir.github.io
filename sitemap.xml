@@ -163,13 +163,6 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/2017/javase-AQS/</loc>
-    
-    <lastmod>2017-03-29T10:09:44.090Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/2017/javase-Builder/</loc>
     
     <lastmod>2017-03-17T07:52:35.214Z</lastmod>
@@ -212,41 +205,6 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/2017/frame-springmvc5/</loc>
-    
-    <lastmod>2017-01-19T13:33:59.303Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-springmvc4/</loc>
-    
-    <lastmod>2017-01-19T13:29:06.873Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-springmvc3/</loc>
-    
-    <lastmod>2017-01-19T13:27:06.582Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-springmvc2/</loc>
-    
-    <lastmod>2017-01-19T13:23:16.824Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-springmvc1/</loc>
-    
-    <lastmod>2017-01-18T12:17:24.443Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/2017/Docker-registry/</loc>
     
     <lastmod>2017-01-18T12:08:25.906Z</lastmod>
@@ -254,65 +212,9 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/2017/Docker-images-rm/</loc>
-    
-    <lastmod>2017-01-18T12:08:25.716Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/Docker-install/</loc>
-    
-    <lastmod>2017-01-18T12:02:46.380Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-springmvc-bug/</loc>
-    
-    <lastmod>2017-01-18T11:41:02.977Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/frame-mybatis-sql/</loc>
-    
-    <lastmod>2017-01-18T11:38:40.287Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/javase-memory-leak/</loc>
-    
-    <lastmod>2017-01-18T11:31:14.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/javase-ThreadLocal/</loc>
-    
-    <lastmod>2017-01-18T11:30:57.388Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/javase-endorsed/</loc>
-    
-    <lastmod>2017-01-18T11:18:22.425Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/2017/Springboot1/</loc>
     
     <lastmod>2017-01-18T11:15:06.239Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/Docker-info/</loc>
-    
-    <lastmod>2017-01-18T01:23:03.091Z</lastmod>
     
   </url>
   
