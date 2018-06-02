@@ -3,28 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>MAT内存分析工具使用 | liusir|blog</title>
+    <title>Rest Notes-基于网络应用的架构 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
+    <meta name="description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MAT内存分析工具使用">
-<meta property="og:url" content="http://itliusir.com/2017/JVM-MAT/index.html">
+<meta property="og:title" content="Rest Notes-基于网络应用的架构">
+<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Web Based Architecture/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dump.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/openfile.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat2.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat5.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dominator.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram1.png">
-<meta property="og:updated_time" content="2017-08-18T15:41:54.844Z">
+<meta property="og:description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
+<meta property="og:updated_time" content="2018-06-02T13:30:16.924Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MAT内存分析工具使用">
-<meta name="twitter:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
+<meta name="twitter:title" content="Rest Notes-基于网络应用的架构">
+<meta name="twitter:description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
     
 
     
@@ -169,7 +159,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-JVM-MAT" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Rest Notes-Web Based Architecture" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -177,7 +167,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            MAT内存分析工具使用
+            Rest Notes-基于网络应用的架构
         </h1>
     
 
@@ -186,8 +176,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/JVM-MAT/">
-            <time datetime="2017-08-18T15:00:00.000Z" itemprop="datePublished">2017-08-18</time>
+        <a href="/2018/Rest Notes-Web Based Architecture/">
+            <time datetime="2018-06-02T14:00:00.000Z" itemprop="datePublished">2018-06-02</time>
         </a>
     </div>
 
@@ -195,13 +185,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/JVM/">JVM</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/REST/">REST</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/MAT/">MAT</a>
+        <a class="tag-link" href="/tags/REST/">REST</a>
     </div>
 
                     </div>
@@ -212,69 +202,52 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p><strong>Memory Analyzer的安装</strong></p>
+            <p>摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="基于网络应用的架构"><a href="#基于网络应用的架构" class="headerlink" title="基于网络应用的架构"></a>基于网络应用的架构</h2><h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p>本文讨论的范围限制在<code>基于网络</code>应用的架构风格</p>
+<h4 id="基于网络-VS-分布式"><a href="#基于网络-VS-分布式" class="headerlink" title="基于网络 VS 分布式"></a>基于网络 VS 分布式</h4><p>基于网络的架构组件之间的通信仅限于消息传递或者消息传递的等价物</p>
+<p>Tanenbaum和van Renesse是这样区分两者：基于网络的系统有能力跨越网络运行，分布式好像是普通的集中式系统，但是运行在多个独立的CPU上</p>
+<h4 id="应用软件-VS-网络软件"><a href="#应用软件-VS-网络软件" class="headerlink" title="应用软件 VS 网络软件"></a>应用软件 VS 网络软件</h4><p>应用软件的架构是对于整个系统的一种抽象，用户动作的目的可以被表示为功能性的架构属性，而网络抽象目的则是将bit从一个地点移动到另一个地点，不关心为何移动</p>
+<blockquote>
+<p>只有在应用的层面上我们才可以拿到详细的运行参数(交互参数、应用状态参数、吞吐量等)等去评估设计上的权衡，所以我们讨论的范围需要限制在对应用软件架构的讨论</p>
+</blockquote>
+<h3 id="关键关注点的架构属性"><a href="#关键关注点的架构属性" class="headerlink" title="关键关注点的架构属性"></a>关键关注点的架构属性</h3><h4 id="性能-Performance"><a href="#性能-Performance" class="headerlink" title="性能(Performance)"></a>性能(Performance)</h4><p>基于网络应用的性能首先取决于应用的需求，然后是所选择的交互风格，接下来是实现架构，最后是每个组件的实现</p>
 <ul>
-<li>Eclipse-&gt;Help-&gt;Eclipse Marketplace</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png" alt="install plugins"></p>
+<li><p><strong>网络性能(Network Performance)</strong></p>
 <ul>
-<li>安装完成后可以调用jdk工具jps查看当前的java进程，然后调用jmap将该进程的内存heap输出到文件。</li>
+<li><strong>吞吐量</strong> 信息在组件之间移交的速率</li>
+<li><strong>开销</strong> 分为初始化开销和每次交互产生的开销</li>
+<li><strong>带宽</strong> 特定网络连接上可用的最大吞吐量</li>
+<li><strong>可用带宽</strong> 应用实际可用的那部分带宽</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dump.png" alt="dump"></p>
+</li>
+<li><p><strong>用户感知的性能(User-perceived Performance)</strong></p>
 <ul>
-<li>通过MAT以图像形式直观的展示内存泄漏报表等</li>
+<li><strong>延迟</strong> 指从最初的触发请求到得到最早的响应指示之间持续的时间</li>
+<li><strong>完成时间</strong> 完成一个应用动作所花费的时间</li>
 </ul>
-<p>首先Eclipse-&gt;File-&gt;Open File 打开上一步生成的文件</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/openfile.png" alt="openfile"></p>
-<p>第一个选项是内存泄漏报表（自动检查可能存在内存泄露的对象，通过报表展示存活的对象以及为什么他们没有被垃圾收集）；</p>
-<p>第二个是对象报表（对可疑对象进行分析，如字符串是否定义重了，空的collection、finalizer以及弱引用等）；</p>
-<p>这里我们打开第一个：</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat2.png" alt="MAT View"></p>
-<p><strong>Memory Analyzer主界面介绍</strong></p>
+<p>延迟与完成时间区别在于一个能够增量的处理数据一个是全部处理完。例如页面的异步加载与全部加载完毕</p>
+</li>
+<li><p><strong>网络效率(Network Efficiency)</strong></p>
+<p>最佳的应用性能是通过不适用网络而获得的，对于基于网络的应用来说有效的减少网络交互才是最高效的架构风格</p>
+<p>我们可以利用缓存、对数据的迁移路径缩短减少某些交互的必要性</p>
+</li>
+</ul>
+<h4 id="可伸缩性-Scalability"><a href="#可伸缩性-Scalability" class="headerlink" title="可伸缩性(Scalability)"></a>可伸缩性(Scalability)</h4><p>我们可以通过以下方法来改善可伸缩性：简化组件、将服务分布到很多组件(对交互去中心化)、以及通过监控对交互和配置进行一般控制</p>
+<p><strong>影响</strong>：</p>
 <ul>
-<li>下面的Histogram（列出内存中的对象，对象的个数以及大小）这里我们可以使用正则去进行匹配</li>
+<li>交互的频率</li>
+<li>组件负载随时间的分布</li>
+<li>强一致性or弱一致性</li>
+<li>同步or异步</li>
+<li>环境</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat5.png" alt="Histogram"></p>
-<p>可以在具体的Class右键List objects-&gt;with incoming…./outgoing…查看该Class的实例</p>
-<pre><code>1. outgoing references ：表示该对象的出节点（被该对象引用的对象）。
-2. incoming references ：表示该对象的入节点（引用到该对象的对象）。
-</code></pre><ul>
-<li>下面的Dominator Tree是列出最大的对象以及其依赖存活的Object （大小是以Retained Heap为标准排序的）</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dominator.png" alt="dominator"></p>
-<ul>
-<li>而Top Consumers则是通过图形列出最大的Object</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png" alt="top_consumers"></p>
-<ul>
-<li>Duplicate Class是通过MAT自动分析泄漏的原因</li>
-</ul>
-<p>一般Histogram和 Dominator Tree是最常用的。</p>
-<p><strong>Memory Analyzer中概念介绍</strong></p>
-<ul>
-<li>Shallow heap</li>
-</ul>
-<p>Shallow size就是对象本身占用内存的大小，不包含其引用的对象。</p>
-<pre><code>1. 常规对象（非数组）的Shallow size由其成员变量的数量和类型决定。
-2. 数组的shallow size由数组元素的类型（对象类型、基本类型）和数组长度决定
-</code></pre><ul>
-<li>Retained Heap</li>
-</ul>
-<p>它表示如果一个对象被释放，那么因为该对象的释放而减少引用从而导致释放所有的对象所占用的heap大小</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram.png" alt="retained"></p>
-<p>为了计算Retained Memory，MAT引入了Dominator Tree。加入对象A引用B和C，B和C又都引用到D（一个菱形）。此时要计算Retained Memory，A的包括A本身和B，C，D。B和C因为共同引用D，所以他俩的Retained Memory都只是他们本身。D当然也只是自己。我觉得是为了加快计算的速度，MAT改变了对象引用图，而转换成一个对象引用树。在这里例子中，树根是A，而B，C，D是他的三个儿子。B，C，D不再有相互关系。把引用图变成引用树，计算Retained Heap就会非常方便，显示也非常方便。对应到MAT UI上，在dominator tree这个view中，显示了每个对象的shallow heap和retained heap。然后可以以该节点位树根，一步步的细化看看retained heap到底是用在什么地方了。要说一下的是，这种从图到树的转换确实方便了内存分析，但有时候会让人有些疑惑。本来对象B是对象A的一个成员，但因为B还被C引用，所以B在树中并不在A下面，而很可能是平级，如下图所示。</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram1.png" alt="retained"></p>
-<p>为了纠正这点，MAT中点击右键，可以List objects中选择with outgoing references和with incoming references。这是个真正的引用图的概念</p>
-<ul>
-<li>GC Root</li>
-</ul>
-<p>GC发现通过任何reference chain(引用链)无法访问某个对象的时候，该对象即被回收。名词GC Roots正是分析这一过程的起点，例如JVM自己确保了对象的可到达性(那么JVM就是GC Roots)，所以GC Roots就是这样在内存中保持对象可到达性的，一旦不可到达，即被回收。通常GC Roots是一个在current thread(当前线程)的call stack(调用栈)上的对象（例如方法参数和局部变量），或者是线程自身或者是system class loader(系统类加载器)加载的类以及native code(本地代码)保留的活动对象。所以GC Roots是分析对象为何还存活于内存中的利器。</p>
-<p>在Histogram或者Domiantor Tree的某一个条目上，右键可以查看其GC Root Path</p>
-<p>参考：</p>
-<p><a href="http://blog.csdn.net/yxz329130952/article/details/50288145" title="利用MAT进行内存泄露分析" target="_blank" rel="external">http://blog.csdn.net/yxz329130952/article/details/50288145</a></p>
-<p><a href="http://www.jianshu.com/p/d8e247b1e7b2" title="MAT使用入门" target="_blank" rel="external">http://www.jianshu.com/p/d8e247b1e7b2</a></p>
-<h1 id="晚安"><a href="#晚安" class="headerlink" title="晚安~"></a>晚安~</h1>
+<h4 id="可修改性-Modifiability"><a href="#可修改性-Modifiability" class="headerlink" title="可修改性(Modifiability)"></a>可修改性(Modifiability)</h4><p>可修改性包括可进化性(一个组件改变不会对其他组件产生负面影响)、可扩展性、可定制性(临时定义的支持)、可配置性(部署之后修改的支持)、可重用性，我们在对一个已部署的应用做出改变时候，不应该去停止和重新启动整个系统，还要准备好应对随着时间的变化产生的兼容性</p>
+<h4 id="可见性-Visibility"><a href="#可见性-Visibility" class="headerlink" title="可见性(Visibility)"></a>可见性(Visibility)</h4><p>可见性是指一个组件对于其他两个组件之间的交互进行监视和斡旋(wo xuan)的能力</p>
+<p>拥有了可见性之后，就能够通过多个交互共享的缓存来改善性能、通过分层服务来改善可伸缩性、通过反射式监控来改善性能、通过允许防火墙等中间件对交互做检查来改善安全性</p>
+<h4 id="可移植性-Portability"><a href="#可移植性-Portability" class="headerlink" title="可移植性(Portability)"></a>可移植性(Portability)</h4><p>这里的可移植性指的是软件能够在不同环境下运行，例如虚拟机架构风格以及那些限制只使用标准格式的数据元素的架构风格</p>
+<h4 id="可靠性-Reliability"><a href="#可靠性-Reliability" class="headerlink" title="可靠性(Reliability)"></a>可靠性(Reliability)</h4><p>从应用的架构角度来说，可靠性可以被看作架构元素出现故障影响的程度</p>
+<p>可以通过避免单点故障、增加冗余、允许监视、以及将故障的范围缩小到一个可恢复的动作</p>
+
         
         </div>
         <footer class="article-footer">
@@ -297,7 +270,7 @@
 
             
     
-        <a href="http://itliusir.com/2017/JVM-MAT/#comments" id="sourceId::2017/JVM-MAT/" class="article-comment-link cy_cmt_count">评论</a>
+        <a href="http://itliusir.com/2018/Rest Notes-Web Based Architecture/#comments" id="sourceId::2018/Rest Notes-Web Based Architecture/" class="article-comment-link cy_cmt_count">评论</a>
     
 
         </footer>
@@ -330,19 +303,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/javase-Method-invoke/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Method的invoke方法源码分析
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/javase-List-LinkedList1/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/Rest Notes-Software Architecture/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">JDK8的LinkedList源码学习笔记</div>
+            <div class="article-nav-title">Rest Notes-软件架构</div>
         </a>
     
 </nav>

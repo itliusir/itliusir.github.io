@@ -3,28 +3,17 @@
 <head>
     <meta charset="utf-8">
     
-    <title>MAT内存分析工具使用 | liusir|blog</title>
+    <title>归档 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MAT内存分析工具使用">
-<meta property="og:url" content="http://itliusir.com/2017/JVM-MAT/index.html">
+    <meta name="description" content="君君的个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="liusir|blog">
+<meta property="og:url" content="http://itliusir.com/archives/page/4/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dump.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/openfile.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat2.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat5.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dominator.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram1.png">
-<meta property="og:updated_time" content="2017-08-18T15:41:54.844Z">
+<meta property="og:description" content="君君的个人博客">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MAT内存分析工具使用">
-<meta name="twitter:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
+<meta name="twitter:title" content="liusir|blog">
+<meta name="twitter:description" content="君君的个人博客">
     
 
     
@@ -169,197 +158,54 @@
 </aside>
 
             
-            <section id="main"><article id="post-JVM-MAT" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
+            <section id="main"><div class="timeline timeline-wrap">
+    
+            <div class="timeline-row timeline-row-major">
+                <span class="node"><i class="fa fa-calendar"></i></span>
+                <h1 class="title">2017</h1>
+            </div>
         
-        
-            <header class="article-header">
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
-        <h1 class="article-title" itemprop="name">
-            MAT内存分析工具使用
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/2017/Docker-registry/">Docker在Ubuntu下私服搭建</a>
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
+                <div class="article-meta">
+                    
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/JVM-MAT/">
-            <time datetime="2017-08-18T15:00:00.000Z" itemprop="datePublished">2017-08-18</time>
+        <a href="/2017/Docker-registry/">
+            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
         </a>
     </div>
 
 
-                        
+                    
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/JVM/">JVM</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
     </div>
 
-                        
+                    
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/MAT/">MAT</a>
+        <a class="tag-link" href="/tags/docker/">docker</a>, <a class="tag-link" href="/tags/docker私服/">docker私服</a>
     </div>
 
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p><strong>Memory Analyzer的安装</strong></p>
-<ul>
-<li>Eclipse-&gt;Help-&gt;Eclipse Marketplace</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png" alt="install plugins"></p>
-<ul>
-<li>安装完成后可以调用jdk工具jps查看当前的java进程，然后调用jmap将该进程的内存heap输出到文件。</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dump.png" alt="dump"></p>
-<ul>
-<li>通过MAT以图像形式直观的展示内存泄漏报表等</li>
-</ul>
-<p>首先Eclipse-&gt;File-&gt;Open File 打开上一步生成的文件</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/openfile.png" alt="openfile"></p>
-<p>第一个选项是内存泄漏报表（自动检查可能存在内存泄露的对象，通过报表展示存活的对象以及为什么他们没有被垃圾收集）；</p>
-<p>第二个是对象报表（对可疑对象进行分析，如字符串是否定义重了，空的collection、finalizer以及弱引用等）；</p>
-<p>这里我们打开第一个：</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat2.png" alt="MAT View"></p>
-<p><strong>Memory Analyzer主界面介绍</strong></p>
-<ul>
-<li>下面的Histogram（列出内存中的对象，对象的个数以及大小）这里我们可以使用正则去进行匹配</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat5.png" alt="Histogram"></p>
-<p>可以在具体的Class右键List objects-&gt;with incoming…./outgoing…查看该Class的实例</p>
-<pre><code>1. outgoing references ：表示该对象的出节点（被该对象引用的对象）。
-2. incoming references ：表示该对象的入节点（引用到该对象的对象）。
-</code></pre><ul>
-<li>下面的Dominator Tree是列出最大的对象以及其依赖存活的Object （大小是以Retained Heap为标准排序的）</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dominator.png" alt="dominator"></p>
-<ul>
-<li>而Top Consumers则是通过图形列出最大的Object</li>
-</ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png" alt="top_consumers"></p>
-<ul>
-<li>Duplicate Class是通过MAT自动分析泄漏的原因</li>
-</ul>
-<p>一般Histogram和 Dominator Tree是最常用的。</p>
-<p><strong>Memory Analyzer中概念介绍</strong></p>
-<ul>
-<li>Shallow heap</li>
-</ul>
-<p>Shallow size就是对象本身占用内存的大小，不包含其引用的对象。</p>
-<pre><code>1. 常规对象（非数组）的Shallow size由其成员变量的数量和类型决定。
-2. 数组的shallow size由数组元素的类型（对象类型、基本类型）和数组长度决定
-</code></pre><ul>
-<li>Retained Heap</li>
-</ul>
-<p>它表示如果一个对象被释放，那么因为该对象的释放而减少引用从而导致释放所有的对象所占用的heap大小</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram.png" alt="retained"></p>
-<p>为了计算Retained Memory，MAT引入了Dominator Tree。加入对象A引用B和C，B和C又都引用到D（一个菱形）。此时要计算Retained Memory，A的包括A本身和B，C，D。B和C因为共同引用D，所以他俩的Retained Memory都只是他们本身。D当然也只是自己。我觉得是为了加快计算的速度，MAT改变了对象引用图，而转换成一个对象引用树。在这里例子中，树根是A，而B，C，D是他的三个儿子。B，C，D不再有相互关系。把引用图变成引用树，计算Retained Heap就会非常方便，显示也非常方便。对应到MAT UI上，在dominator tree这个view中，显示了每个对象的shallow heap和retained heap。然后可以以该节点位树根，一步步的细化看看retained heap到底是用在什么地方了。要说一下的是，这种从图到树的转换确实方便了内存分析，但有时候会让人有些疑惑。本来对象B是对象A的一个成员，但因为B还被C引用，所以B在树中并不在A下面，而很可能是平级，如下图所示。</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram1.png" alt="retained"></p>
-<p>为了纠正这点，MAT中点击右键，可以List objects中选择with outgoing references和with incoming references。这是个真正的引用图的概念</p>
-<ul>
-<li>GC Root</li>
-</ul>
-<p>GC发现通过任何reference chain(引用链)无法访问某个对象的时候，该对象即被回收。名词GC Roots正是分析这一过程的起点，例如JVM自己确保了对象的可到达性(那么JVM就是GC Roots)，所以GC Roots就是这样在内存中保持对象可到达性的，一旦不可到达，即被回收。通常GC Roots是一个在current thread(当前线程)的call stack(调用栈)上的对象（例如方法参数和局部变量），或者是线程自身或者是system class loader(系统类加载器)加载的类以及native code(本地代码)保留的活动对象。所以GC Roots是分析对象为何还存活于内存中的利器。</p>
-<p>在Histogram或者Domiantor Tree的某一个条目上，右键可以查看其GC Root Path</p>
-<p>参考：</p>
-<p><a href="http://blog.csdn.net/yxz329130952/article/details/50288145" title="利用MAT进行内存泄露分析" target="_blank" rel="external">http://blog.csdn.net/yxz329130952/article/details/50288145</a></p>
-<p><a href="http://www.jianshu.com/p/d8e247b1e7b2" title="MAT使用入门" target="_blank" rel="external">http://www.jianshu.com/p/d8e247b1e7b2</a></p>
-<h1 id="晚安"><a href="#晚安" class="headerlink" title="晚安~"></a>晚安~</h1>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-    <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-	<a class="jiathis_button_weixin"></a>
-	<a class="jiathis_button_tsina"></a>
-	<a class="jiathis_button_qzone"></a>
-	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
-	<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
-
-
-</div>
-
-            
-    
-        <a href="http://itliusir.com/2017/JVM-MAT/#comments" id="sourceId::2017/JVM-MAT/" class="article-comment-link cy_cmt_count">评论</a>
-    
-
-        </footer>
-    </div>
-	
-		<! -- 添加捐赠图标 -->
-<div class ="post-donate">
-    <div id="donate_board" class="donate_bar center">
-        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
-        <span class="donate_txt">
-           ↑<br>
-		   大吉大利 请我吃鸡！
-        </span>
-        <br>
-      </div>  
-	<div id="donate_guide" class="donate_bar center hidden" >
-		<!-- 微信打赏图案 -->
-		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
-    </div>
-	<script type="text/javascript">
-		document.getElementById('btn_donate').onclick = function(){
-			$('#donate_board').addClass('hidden');
-			$('#donate_guide').removeClass('hidden');
-		}
-	</script>
-</div>
-<! -- 添加捐赠图标 -->
-	
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2017/javase-Method-invoke/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Method的invoke方法源码分析
-                
+                </div>
             </div>
-        </a>
+        </div>
     
-    
-        <a href="/2017/javase-List-LinkedList1/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">JDK8的LinkedList源码学习笔记</div>
-        </a>
-    
-</nav>
+</div>
 
-
-    
-	
-</article>
-
-
-    
-    <section id="comments">
-    
-    </section>
-
-
-
+    <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/archives/page/3/">&laquo; 上一页</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span>
+    </nav>
 </section>
             
                 <aside id="sidebar">
