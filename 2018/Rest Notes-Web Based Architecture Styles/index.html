@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Web Based Architecture Styles/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要: 上章节划定了我们要讨论的范围是基于网络应用的架构，接下来对基于网络应用的常见架构风格进行了调查，并针对每个风格进行多方面的评估">
-<meta property="og:updated_time" content="2018-06-03T17:40:27.837Z">
+<meta property="og:updated_time" content="2018-06-03T17:43:37.136Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rest Notes-基于网络应用的架构风格">
 <meta name="twitter:description" content="摘要: 上章节划定了我们要讨论的范围是基于网络应用的架构，接下来对基于网络应用的常见架构风格进行了调查，并针对每个风格进行多方面的评估">
@@ -247,7 +247,7 @@
 </table>
 <p>(-)是消极影响，(+)是积极影响，(±)是表示影响的性质取决于问题领域的某个方面，(空)是没有约束</p>
 <h4 id="管道和过滤器-Pipe-and-Filter-PF"><a href="#管道和过滤器-Pipe-and-Filter-PF" class="headerlink" title="管道和过滤器(Pipe and Filter,PF)"></a>管道和过滤器(Pipe and Filter,PF)</h4><p> 每个过滤器(组件)从输入端读取数据流，在输出端产出数据流，通常会对输入数据流应用一种转换并增量的处理它们</p>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>长管道会增加延迟</li>
 <li>不能增量处理只能批量顺序处理，降低用户感知性能</li>
@@ -255,7 +255,7 @@
 <h4 id="统一管道和过滤器-Uniform-Pipe-and-Filter-UPF"><a href="#统一管道和过滤器-Uniform-Pipe-and-Filter-UPF" class="headerlink" title="统一管道和过滤器(Uniform Pipe and Filter,UPF)"></a>统一管道和过滤器(Uniform Pipe and Filter,UPF)</h4><p>在PF风格的基础上增加了必须具有相同接口的约束</p>
 <p>如Unix操作系统中，其中过滤器进程具有一个字符输入流(stdin)和两个字符输出数据流(stdout和siderr)组成的接口</p>
 <p>通过限定使用这个接口就可以排列组合独立的过滤器形成新的应用，理解过滤器的运转也会变得简单</p>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>当数据需要转换时候这个约束可能会降低网络性能</li>
 </ul>
@@ -292,7 +292,7 @@
 </tbody>
 </table>
 <h4 id="复制仓库-Replicated-Repository-RR"><a href="#复制仓库-Replicated-Repository-RR" class="headerlink" title="复制仓库(Replicated Repository,RR)"></a>复制仓库(Replicated Repository,RR)</h4><p>利用多个进程提供相同的服务来改善数据的可访问性、可伸缩性，给客户端制造出只有一个集中服务的幻觉</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>改善了用户感知的性能<ul>
 <li>减少处理正常请求的延迟</li>
@@ -300,16 +300,16 @@
 </ul>
 </li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>复制所导致的复杂性</li>
 </ul>
 <h4 id="缓存-Cache"><a href="#缓存-Cache" class="headerlink" title="缓存(Cache,$)"></a>缓存(Cache,$)</h4><p>缓存风格继承复制仓库风格，复制个别请求结果以便后面的请求复用</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>缓存风格实现起来要更容易</li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>用户感知的性能层面上改善不大，因为会存在大量没有命中缓存的请求，离线操作也只会是历史数据</li>
 </ul>
@@ -448,17 +448,17 @@
 <h4 id="客户-服务器-Client-Server-CS"><a href="#客户-服务器-Client-Server-CS" class="headerlink" title="客户-服务器(Client-Server,CS)"></a>客户-服务器(Client-Server,CS)</h4><p>这个是最常见的架构风格，服务端提供接口(服务)，客户端通过连接器发送请求执行这个接口(服务)，服务端收到后进行正常操作</p>
 <h4 id="分层-客户-服务器-Layered-Client-Server-LCS"><a href="#分层-客户-服务器-Layered-Client-Server-LCS" class="headerlink" title="分层-客户-服务器(Layered-Client-Server,LCS)"></a>分层-客户-服务器(Layered-Client-Server,LCS)</h4><p>分层系统(Layered System,LS)是按照层次来组织的，下面一层给上面一层提供服务，底层则会隐藏细节；在基于网络的系统中(前文提到的讨论范围)，分层系统仅限于与CS相结合，形成LCS风格</p>
 <p>LCS是在CS的基础上添加了代理(proxy)组件和网关(gateway)组件，例如我们目前前端开发使用的转发代理和API网关，这样额外的工作为系统添加了多个层，从而实现例如LoadBlance和Security Check</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>通过隐藏和封装的层级关系，减少了耦合，改善了可进化性和可重用性</li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>增加了处理数据的开销和延迟</li>
 <li>降低了用户感知性能</li>
 </ul>
 <h4 id="客户-无状态-服务器-Client-Stateless-Server-CSS"><a href="#客户-无状态-服务器-Client-Stateless-Server-CSS" class="headerlink" title="客户-无状态-服务器(Client-Stateless-Server,CSS)"></a>客户-无状态-服务器(Client-Stateless-Server,CSS)</h4><p>该风格强调的是在服务端不允许有会话状态(session state)，所以客户端给服务端发的每个请求都必须包含理解(解析到)请求的必备信息，会话状态交给客户端保存</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li><p>可见性</p>
 <p>以前需要看很多请求数据才可以确定请求的全部性质，现在看一个就行啦</p>
@@ -470,35 +470,35 @@
 <p>不保存多个请求的状态</p>
 </li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>每次请求都需要添加类似重复的数据</li>
 <li>降低网络性能，增大了交互的开销</li>
 </ul>
 <h4 id="客户-缓存-无状态-服务器-Client-Cache-Stateless-Server-CSS"><a href="#客户-缓存-无状态-服务器-Client-Cache-Stateless-Server-CSS" class="headerlink" title="客户-缓存-无状态-服务器(Client-Cache-Stateless-Server,CSS)"></a>客户-缓存-无状态-服务器(Client-Cache-Stateless-Server,CSS)</h4><p>在CSS风格基础上增加了缓存风格，在客户端与服务端中间斡旋，重用历史的请求响应</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>减少了一些交互，从而提高效率和用户感知性能</li>
 </ul>
 <h4 id="远程会话-Remote-Session-RS"><a href="#远程会话-Remote-Session-RS" class="headerlink" title="远程会话(Remote Session,RS)"></a>远程会话(Remote Session,RS)</h4><p>该风格属于CS的一种变体，试图将客户端的复杂性最小化，可重用性(客户端)最大化，可以理解为“客户端的分布式会话”</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>集中维护服务端接口更加容易</li>
 <li>利用会话上下文提高效率</li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>减低了服务端的可伸缩性(毕竟需要保存状态，这点和无状态刚好是反的)</li>
 <li>降低了交互的可见性</li>
 </ul>
 <h4 id="远程数据访问-Remote-Data-Access-RDA"><a href="#远程数据访问-Remote-Data-Access-RDA" class="headerlink" title="远程数据访问(Remote Data Access,RDA)"></a>远程数据访问(Remote Data Access,RDA)</h4><p>该风格是CS的一种变体，将应用状态分布在客户端和服务端上，如客户端发送一个查询格式(sql或者自定义查询参数)给服务端，服务端执行这个查询，返回一个结果集，客户端可以拿到结果集进行数据筛选或拼接</p>
 <p>有点类似在某险看到的数据服务，提供查询接口，根据自定义参数返回想要的数据</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>提高了可见性(sql或约定好的参数规则)</li>
 <li>服务端可以进行数据的筛选，避免巨结果集在网络的传输</li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>降低了服务端的可伸缩性</li>
 <li>部分的故障会导致可靠性的损失</li>
@@ -577,11 +577,11 @@
 </tbody>
 </table>
 <h4 id="虚拟机-Virtual-Machine-VM"><a href="#虚拟机-Virtual-Machine-VM" class="headerlink" title="虚拟机(Virtual Machine,VM)"></a>虚拟机(Virtual Machine,VM)</h4><p>所有的移动代码都需要以某种方式来执行，这正是是虚拟机风格，虚拟机通常被当做某些语言的引擎，如JVM</p>
-<p>优点：</p>
+<p><strong>优点：</strong></p>
 <ul>
 <li>改善了可扩展性(指令和实现的分离，如JVM的Indy指令)</li>
 </ul>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>明显会降低了可见性、简单性</li>
 </ul>
@@ -644,7 +644,7 @@
 </table>
 <h4 id="基于事件的集成-Event-based-Integration-EBI"><a href="#基于事件的集成-Event-based-Integration-EBI" class="headerlink" title="基于事件的集成(Event-based Integration,EBI)"></a>基于事件的集成(Event-based Integration,EBI)</h4><p>该风格也被称为隐式调用风格或者事件系统风格，通过消除了解连接器接口的标识信息的必要性，降低了组件之间的耦合</p>
 <p>组件调用是通过发布事件或者广播，由系统本身来调用订阅该事件的组件，基于事件的这种风格为可扩展性、可重用性和可进化性(这些架构属性在第二篇基于网络的架构有详细介绍)提供了强有力的支持</p>
-<p>缺点：</p>
+<p><strong>缺点：</strong></p>
 <ul>
 <li>事件风暴(可伸缩性问题)</li>
 <li>缺乏可理解性</li>
