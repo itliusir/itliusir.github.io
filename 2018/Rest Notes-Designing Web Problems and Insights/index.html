@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>标签: datasource | liusir|blog</title>
+    <title>Rest Notes-设计Web架构：问题与领悟 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="君君的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.com/tags/datasource/index.html">
+    <meta name="description" content="摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rest Notes-设计Web架构：问题与领悟">
+<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Designing Web Problems and Insights/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="君君的个人博客">
+<meta property="og:description" content="摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导">
+<meta property="og:updated_time" content="2018-06-04T15:35:36.963Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="君君的个人博客">
+<meta name="twitter:title" content="Rest Notes-设计Web架构：问题与领悟">
+<meta name="twitter:description" content="摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导">
     
 
     
@@ -158,50 +159,159 @@
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#datasource</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-Rest Notes-Designing Web Problems and Insights" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Springboot4-SpringBoot-Configuration/">Spring Boot配置属性</a>
+        <h1 class="article-title" itemprop="name">
+            Rest Notes-设计Web架构：问题与领悟
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot4-SpringBoot-Configuration/">
-            <time datetime="2017-02-24T01:57:00.000Z" itemprop="datePublished">2017-02-24</time>
+        <a href="/2018/Rest Notes-Designing Web Problems and Insights/">
+            <time datetime="2018-06-04T15:30:00.000Z" itemprop="datePublished">2018-06-04</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/REST/">REST</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/JPA/">JPA</a>, <a class="tag-link" href="/tags/JTA/">JTA</a>, <a class="tag-link" href="/tags/datasource/">datasource</a>, <a class="tag-link" href="/tags/h2/">h2</a>, <a class="tag-link" href="/tags/jooq/">jooq</a>
+        <a class="tag-link" href="/tags/REST/">REST</a>
     </div>
 
-                </div>
-            </div>
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="设计Web架构：问题与领悟"><a href="#设计Web架构：问题与领悟" class="headerlink" title="设计Web架构：问题与领悟"></a>设计Web架构：问题与领悟</h2><h3 id="Web应用领域的需求"><a href="#Web应用领域的需求" class="headerlink" title="Web应用领域的需求"></a>Web应用领域的需求</h3><p>Berners-Lee(Web之父)写到：“Web’s major goal was to be a shared information space<br>through which people and machines could communicate”，意思是Web的主要目的是旨在形成一种共享的信息空间(链接众多文档的广域的超媒体信息检索系统)，人类和机器都可以通过它来进行沟通</p>
+<p>这个系统最初期望的用户是分散在世界各地的、通过互联网连接的各个大学和政府的高能物理研究实验室。他们的机器是不同种类的终端、工作站、服务器和超级计算机的大杂烩，所以他们的操作系统和文件格式也是一个大杂烩。构建一个这样的系统所面临的挑战是为这些信息文档提供统一的接口，使得这些信息可以在众多的平台上进行交流通信，以及当新的设备接入到这个系统时，可以进行增量的部署。</p>
+<h4 id="低门槛"><a href="#低门槛" class="headerlink" title="低门槛"></a>低门槛</h4><p>参与创建和构造信息是自愿的，因此采用“低门槛”策略是十分必要的。</p>
+<p>选择<a href="http://line-mode.cern.ch/www/hypertext/WWW/WhatIs.html" target="_blank" rel="external">超媒体</a>作为用户界面是因为其简单性和通用性。</p>
+<ol>
+<li>无论信息来源何处都能使用相同的界面进行呈现</li>
+<li>链接的关系可以形成一个关系“网状结构”</li>
+</ol>
+<p>对于创作者而言，超媒体的创作语言也必须是简单的，能够使用现有的编辑工具来进行创建，无论是否连接到互联网，都可以使用此超媒体格式来保存创作的内容。</p>
+<p>对于应用开发者而言，简单性也是一个目标，因此所有的协议都被定义为文本格式，以方便对通信进行观察和测试。</p>
+<h4 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h4><p>简单性使得我们部署一个分布式系统的最初实现成为了可能，可扩展性使得我们避免了永远陷入已部署系统的局限之中。就像社会的变化一样，一个系统如果想要像Web那么长寿就必须要做好应对变化的准备</p>
+<h4 id="分布式超媒体"><a href="#分布式超媒体" class="headerlink" title="分布式超媒体"></a>分布式超媒体</h4><p><a href="http://line-mode.cern.ch/www/hypertext/WWW/WhatIs.html" target="_blank" rel="external">超媒体</a>是由应用控制信息来定义的，这些信息内嵌在信息的表述之中。分布式超媒体系统允许在远程地点存储表达控制信息，因此分布式超媒体系统中的用户操作需要将大量的数据从其存储地移交到其使用地，所以Web的架构必须支持大粒度的数据移交。超媒体交互的可用性很容易影响到用户感知的性能（比如用户选择了一个链接，到链接的界面呈现之间的时间），因为Web的交互的信息是跨域整个互联网的，则Web的架构必须尽量的减少网络交互的次数以改善用户感知的性能。</p>
+<h4 id="互联网规模"><a href="#互联网规模" class="headerlink" title="互联网规模"></a>互联网规模</h4><p>Web旨在成为一个互联网规模的分布式超媒体系统，这意味着它的内涵远远不止仅仅是地理上的分布。互联网是跨越组织便捷互相连接的信息网络。信息服务的提供商必须能够有能力满足无法控制的<code>可伸缩性</code>和软件组件的<code>独立部署</code>两方面的要求</p>
+<ul>
+<li><p>可伸缩性</p>
+<p>无法控制的可伸缩性指的是架构元素可能会于其组织边界之外的元素进行通信，当它们遇到如下的情况时仍能正常运行：未曾预料到的负载、收到错误的数据或者恶意的数据等等</p>
+</li>
+<li><p>独立部署</p>
+<p>多个组织边界也意味着系统应该可以应对新旧组件的共存，而不妨碍新组件使用它们的新功能。同时现有的架构元素在设计的时候需要考虑到以后会添加新功能，旧的实现也必须能够方便的识别出来，从而把这些遗留的行为封装起来，不会对新元素造成不利影响。对于Web这样的系统来说，强制要求架构中的所有组件都整齐划一的来部署是不现实的事情</p>
+</li>
+</ul>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>尽管为Web的成功而欢欣鼓舞，但互联网开发者社区开始担心Web使用的快速增长率，因为最早的HTTP0.9是一个非常简单的协议，是为单个请求响应设计的，新的站点越来越多的采用了图片作为网页的一部分，导致出现了不同的浏览模式。此时的Web架构已经无法满足这样的需求了，随后在IETF形成了三个工作小组HTTP,URI和HTML。<strong>这些工作组的主要任务是定义现有架构性通信的子集（早期Web中普遍的一致的实现），然后指定一组规范来解决这些问题。这些工作带来的挑战是如何把一组新功能引入到一个已经被广泛部署的系统中；以及如何确保新功能的引入不会对那些使得Web成功的架构属性带来不利的影响甚至是毁灭性的影响</strong></p>
+<h4 id="解决之道"><a href="#解决之道" class="headerlink" title="解决之道"></a>解决之道</h4><ol>
+<li>识别出一组存在于早期Web架构(HTTP1.0和HTTP1.1之前)中的架构约束，这些架构约束负责产生出所期待的架构属性</li>
+<li>识别出在互联网规模的分布式超媒体系统中所期待的架构属性，然后选择额外的会产生那些架构属性的架构风格，将它们与早期的Web架构中的约束相结合，形成一种新的风格</li>
+<li>使用新的架构风格作为指导，对修改和扩展Web架构的提议进行评估，看其是否存在冲突，如果存在冲突则表明这个提议违反了一个或多个Web背后的设计原则</li>
+</ol>
+<p>上面的1、2、3实际上是一种无顺序的、迭代的方式来应用的</p>
+<p>修正后的协议规范是根据”<strong>新的架构风格</strong>“的指导来编写的，最后通过修订后规范，开发实现它，然后进行部署。这些解决之道是源自于Fielding博士直接参与了Apache Http服务器的项目和libwww-perl客户端库，以及为网景的Navigator、Lynx和微软的IE的开发者提供建议得到的经验</p>
+<blockquote>
+<p>下篇文章就要介绍上面的“新的架构风格”(REST)推导过程</p>
+</blockquote>
+
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Rest Notes-Designing Web Problems and Insights/#comments" id="sourceId::2018/Rest Notes-Designing Web Problems and Insights/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/Rest Notes-Web Based Architecture Styles/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Rest Notes-基于网络应用的架构风格</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
 </section>
             
                 <aside id="sidebar">
