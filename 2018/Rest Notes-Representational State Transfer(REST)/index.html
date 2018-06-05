@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/ulccss.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/rest.png">
 <meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/rest1.png">
-<meta property="og:updated_time" content="2018-06-05T15:12:25.952Z">
+<meta property="og:updated_time" content="2018-06-05T15:22:54.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rest Notes-表述性状态移交(Representational State Transfer ,REST)">
 <meta name="twitter:description" content="摘要: 上篇文章提到的“新的架构风格(REST)”就是专门为分布式超媒体系统设计的，它由几种基于网络的架构风格中衍生而来的一种混合架构风格，并且添加了一些额外的架构约束，用来定义统一的连接器接口">
@@ -232,7 +232,7 @@
 <p><img src="http://ok0qzthrb.bkt.clouddn.com/earlywww.png" alt="早期Web架构"></p>
 <p>由于Web实现的开发者们早已超越了这种早期的设计，请求除了静态的文档之外还能够识别出动态生成的响应，也以代理和共享缓存的形式开展了对中间件的开发工作，但是必须对现有的协议进行扩展，这样中间件才能可靠的通信。以下三个架构约束（<strong>统一接口，分层系统，按需代码</strong>）则是对早期Web架构的扩充，以便用来对现代的Web架构的扩展加以指导</p>
 <h4 id="统一接口"><a href="#统一接口" class="headerlink" title="统一接口"></a>统一接口</h4><p>本约束也是使得REST风格与别的风格产生区别的核心特征，通过在组件接口上应用通用性的软件工程原则来简化系统架构，也改善了交互的可见性，也使得它们提供的服务与实现是解耦的，促进了独立的可进化性。当然任何东西都有两面性，统一接口的代价就是降低了效率。因为信息都是使用标准的形式来移交的，而不是特定于应用需求的形式。</p>
-<p>统一接口的意义在于凡是参与到每一个http通信的所有组件(浏览器、http代理、服务网关、web服务器、应用服务器等)，都可以理解这个请求。构成这个请求的是uri、http、mime、html，用url标识资源，用http操作资源的表述，用mine协商请求双方都接收的媒体类型(html、json、xml等)</p>
+<p>统一接口的意义在于凡是参与到每一个http通信的所有组件(浏览器、http代理、服务网关、web服务器、应用服务器等)，都可以理解这个请求。构成这个请求的是uri、http、mime、html，用url标识资源，用http操作资源的表述，用mime协商请求双方都接收的媒体类型(html、json、xml等)</p>
 <blockquote>
 <p>REST接口被设计为可以高效的移交大粒度的超媒体数据，并对Web的场景情况做了优化，但是这也导致该接口对于其他形式的架构交互而言并不是最优的</p>
 </blockquote>
