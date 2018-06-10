@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Experience and Evaluation3/index.html">
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训">
-<meta property="og:updated_time" content="2018-06-10T15:35:13.686Z">
+<meta property="og:updated_time" content="2018-06-10T15:44:52.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rest Notes-架构上的教训(论文部分完结)">
 <meta name="twitter:description" content="摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训">
@@ -214,7 +214,7 @@
 <h4 id="媒体类型的设计"><a href="#媒体类型的设计" class="headerlink" title="媒体类型的设计"></a>媒体类型的设计</h4><p>REST有一个对架构风格来说不同寻常的方面，那就是它对于Web架构中数据元素的定义影响程度</p>
 <ul>
 <li><p><strong>应用状态</strong></p>
-<p>应用的开发者经常违背的就是应用状态和无状态交互架构约束。将应用状态放错地方而造成架构不匹配并不仅限于上篇文章提到的Cookie，还有HTML种引入的<code>frame</code>，在一个子窗口中选择链接而导致的状态迁移与正常的状态迁移是无法区分的</p>
+<p>应用的开发者经常违背的就是应用状态和无状态交互架构约束。将应用状态放错地方而造成架构不匹配并不仅限于上篇文章提到的<code>Cookie</code>，还有HTML中引入的<code>frame</code>，在一个子窗口中选择链接而导致的状态迁移与正常的状态迁移是无法区分的</p>
 <blockquote>
 <p>作者认为frame和cookie的失败之处在于，用户代理无法管理或解释它们所提供的间接应用状态。替代的设计是将这些信息放到一个主要的表述中，并且告知用户代理如何去管理这个存放了指定的资源领域的工作区</p>
 </blockquote>
