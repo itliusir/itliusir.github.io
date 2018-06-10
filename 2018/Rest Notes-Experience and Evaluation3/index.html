@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Rest Notes-将REST应用于HTTP | liusir|blog</title>
+    <title>Rest Notes-架构上的教训(论文部分完结) | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要: 超文本移交协议(HTTP)在Web架构中既作为在Web组件之间通信的主要的应用级协议，也作为特别为移交资源的表述而设计的唯一的协议(现在并不是唯一，还有COAP协议)。">
+    <meta name="description" content="摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rest Notes-将REST应用于HTTP">
-<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Experience and Evaluation2/index.html">
+<meta property="og:title" content="Rest Notes-架构上的教训(论文部分完结)">
+<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Experience and Evaluation3/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要: 超文本移交协议(HTTP)在Web架构中既作为在Web组件之间通信的主要的应用级协议，也作为特别为移交资源的表述而设计的唯一的协议(现在并不是唯一，还有COAP协议)。">
-<meta property="og:updated_time" content="2018-06-09T17:03:33.026Z">
+<meta property="og:description" content="摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训">
+<meta property="og:updated_time" content="2018-06-10T15:35:13.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rest Notes-将REST应用于HTTP">
-<meta name="twitter:description" content="摘要: 超文本移交协议(HTTP)在Web架构中既作为在Web组件之间通信的主要的应用级协议，也作为特别为移交资源的表述而设计的唯一的协议(现在并不是唯一，还有COAP协议)。">
+<meta name="twitter:title" content="Rest Notes-架构上的教训(论文部分完结)">
+<meta name="twitter:description" content="摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训">
     
 
     
@@ -159,7 +159,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Rest Notes-Experience and Evaluation2" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Rest Notes-Experience and Evaluation3" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -167,7 +167,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Rest Notes-将REST应用于HTTP
+            Rest Notes-架构上的教训(论文部分完结)
         </h1>
     
 
@@ -176,8 +176,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/Rest Notes-Experience and Evaluation2/">
-            <time datetime="2018-06-09T15:30:00.000Z" itemprop="datePublished">2018-06-09</time>
+        <a href="/2018/Rest Notes-Experience and Evaluation3/">
+            <time datetime="2018-06-10T15:30:00.000Z" itemprop="datePublished">2018-06-10</time>
         </a>
     </div>
 
@@ -202,84 +202,35 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要: 超文本移交协议(HTTP)在Web架构中既作为在Web组件之间通信的主要的应用级协议，也作为特别为移交资源的表述而设计的唯一的协议(<strong>现在并不是唯一，还有COAP协议</strong>)。<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h3 id="将REST应用于HTTP"><a href="#将REST应用于HTTP" class="headerlink" title="将REST应用于HTTP"></a>将REST应用于HTTP</h3><p>超文本移交协议(HTTP)在Web架构中既作为在Web组件之间通信的主要的应用级协议，也作为特别为移交资源的表述而设计的唯一的协议(<strong>现在并不是唯一，还有COAP协议</strong>)。</p>
-<p>REST用来识别早期HTTP协议中的问题，并指定了一个可以和HTTP1.0互操作的协议子集，然后分析HTTP1.1的扩展提议，并最终诞生了HTTP1.1</p>
-<h4 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h4><p>REST的主要目标之一是在一个已部署的架构中支持逐渐的和片段的修改</p>
+            <p>摘要: 从现代Web架构和由REST识别出的问题中，可以总结出很多通用的架构上的教训<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h3 id="架构上的教训"><a href="#架构上的教训" class="headerlink" title="架构上的教训"></a>架构上的教训</h3><h4 id="基于网络的API的优势"><a href="#基于网络的API的优势" class="headerlink" title="基于网络的API的优势"></a>基于网络的API的优势</h4><p>将现代Web与其他中间件相区分的是它使用HTTP作为一个基于网络的API，其实并非一向如此，早期的Web设计利用了一个程序库(CERN的libwww)作为所有的客户端和服务器端软件所使用的的单个协议实现库。<code>CERN libwww</code>提供了一个基于库的API来建造可互操作的Web组件</p>
+<h4 id="HTTP不是RPC"><a href="#HTTP不是RPC" class="headerlink" title="HTTP不是RPC"></a>HTTP不是RPC</h4><p>人们常常错误地将HTTP称为一种远程调用(RPC)机制，仅仅是因为它也包括了请求和响应。</p>
+<p>RPC是调用远程机器上的一个过程，在RPC协议中，调用方识别出过程并且传递一组固定的参数，然后等待在使用相同接口返回的一个消息中提供的回答。Java的RMI(远程方法调用)就很类似，差异仅仅是将过程标识为一个对象、方法的组合，而不是一个简单的服务过程。</p>
+<p>当然，将HTTP与RPC区分开的并不是上面的语法和特性，其重要的区别是：HTTP是请求被定向到使用一个有标准语义的通用接口的资源，中间组件几乎完全相同的方式来解释这些语义，结果就是使得一个应用能够支持转换的分层和独立于信息来源的间接层，这对于一个满足互联网规模、多个组织、无法控制的可伸缩性需求的信息系统来说是非常有用的；RPC的机制是根据语言的API来定义的，而不是根据基于网络应用的需求来定义的</p>
+<h4 id="HTTP不是一种传输协议"><a href="#HTTP不是一种传输协议" class="headerlink" title="HTTP不是一种传输协议"></a>HTTP不是一种传输协议</h4><p>HTTP并非被设计为一种传输协议，它是一种移交协议</p>
+<blockquote>
+<p>Web各组件都能理解HTTP语义，从而可以独自的完成HTTP的响应，而不必一定到达最终的源服务器，这也是为什么它是移交不是传输协议的原因</p>
+</blockquote>
+<h4 id="媒体类型的设计"><a href="#媒体类型的设计" class="headerlink" title="媒体类型的设计"></a>媒体类型的设计</h4><p>REST有一个对架构风格来说不同寻常的方面，那就是它对于Web架构中数据元素的定义影响程度</p>
 <ul>
-<li><p><strong>协议版本控制</strong></p>
-<p>通过主版本和次版本号来区分（1.0 1.1 2.0），其版本信息代表的是消息发送者对协议的支持能力</p>
-</li>
-<li><p><strong>可扩展的协议元素</strong></p>
-<p>通过将解析和转发HTTP消息的规则与新的HTTP协议元素的相关语义分离开，解决了中间组件更新部署问题</p>
-<p>扩大了响应码区间，100-599</p>
-</li>
-<li><p><strong>升级</strong></p>
-<p>HTTP1.1新增了Upgrade头，用来再通信双方进行协商协议版本</p>
-</li>
-</ul>
-<h4 id="自描述的信息"><a href="#自描述的信息" class="headerlink" title="自描述的信息"></a>自描述的信息</h4><p>REST要求组件之间消息是自描述的，以便支持中间组件对于交互的处理。然而早期HTTP协议的一些方面并不是自描述的(请求中缺乏主机标识、无法根据语法来区分消息控制数据和表述元数据等)</p>
-<ul>
-<li><p><strong>Host(主机)</strong></p>
-<p>早期的HTTP请求中不会携带host头部信息，这导致了无法区分我访问的到底是服务器上的哪个站点</p>
+<li><p><strong>应用状态</strong></p>
+<p>应用的开发者经常违背的就是应用状态和无状态交互架构约束。将应用状态放错地方而造成架构不匹配并不仅限于上篇文章提到的Cookie，还有HTML种引入的<code>frame</code>，在一个子窗口中选择链接而导致的状态迁移与正常的状态迁移是无法区分的</p>
 <blockquote>
-<p>例如我们使用Github pages搭建静态博客时候，都将域名解析到Github的某个IP(192.30.252.154)，大家通过不同域名访问的却是不同页面。这个就是通过不同的Host来区分的</p>
+<p>作者认为frame和cookie的失败之处在于，用户代理无法管理或解释它们所提供的间接应用状态。替代的设计是将这些信息放到一个主要的表述中，并且告知用户代理如何去管理这个存放了指定的资源领域的工作区</p>
 </blockquote>
 </li>
-<li><p><strong>分层编码</strong></p>
-<p>HTTP为了描述表述的元数据，继承了多用途互联网邮件扩展(MIME)的语法,MIME没有定义分层的媒体类型</p>
-</li>
-<li><p><strong>语义独立性</strong></p>
-<p>如上面<strong>可扩展的协议元素</strong>所述，HTTP消息的解析与其语义是相分离的</p>
-</li>
-<li><p><strong>传输独立性</strong></p>
-<p>早期的HTTP协议包括大多数的HTTP/1.0的实现，使用底层的传输协议来表示响应消息的结束。服务器通过关闭TCP连接来表明响应消息的结束，但不幸的是则会导致：客户端没有办法区分一个完成的响应和因为某种故障异常而断开的响应。为了解决这个问题在HTTP/1.0中重新定义了Content-Length头信息字段，以表示消息体的字节长度，并且在HTTP/1.1中引入了“chunked”(分块)这个移交编码</p>
+<li><p><strong>Java VS JavaScript</strong></p>
+<p>通过使用REST，我们能够知道为何一些媒体类型与其他类型相比在Web架构中得到了更加广泛的接受，甚至这些类型并未取得开发者偏爱的情况下(例如Java Applet对抗JavaScript)</p>
 <blockquote>
-<p>chunked编码允许表述在其生成阶段的开始时尺寸是未知的，通过一系列分块来描述它的界限，每个分块的尺寸可在被发送之前单独设置</p>
-</blockquote>
-</li>
-<li><p><strong>尺寸限制</strong></p>
-<p>对于应用层协议的灵活性而言，常见的障碍是在协议的参数上过度指定尺寸限制的倾向</p>
-<blockquote>
-<p>在HTTP协议中并没有限制URI的长度、头信息字段的长度、表述的长度、任何由一列条目组成的字段值的长度</p>
-</blockquote>
-</li>
-<li><p><strong>缓存控制</strong></p>
-<p>REST努力在高效率的、低效率的行为和其所期待的语义透明的缓存行为之间取得平衡，因此它允许由应用确定缓存需求，而不是将该需求硬编码在协议本身之中，这对于HTTP协议来说是至关重要的</p>
-<blockquote>
-<p>HTTP/1.1通过添加Cache-Control、Age、Etag、Vary几个头信息字段来达到这个目标</p>
+<p>作者认为JavaScript在Web上比Java更成功体现在可见的交互性影响较少、复杂性比较小、用户感知的延迟</p>
 </blockquote>
 </li>
 </ul>
-<h4 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h4><ul>
-<li><p><strong>持久连接</strong></p>
-<p>早期的HTTP协议每个连接只能发送单个请求/响应，尽管实现起来简单，但是它对于底层TCP传输机制的使用非常低效。原因在于每次交互都要付出重新建立连接的开销</p>
-<p>对于HTTP/1.0，通过使用在Connection头信息字段中的“keep-alive”指令来达到这个目标，但是如果转发给不理解该指令的中间组件会造成连接关闭，HTTP1.1最终把默认的持久连接作为了默认的选项，如果要关闭连接，则需要发送close的指令</p>
-</li>
-<li><p><strong>直写式缓存</strong></p>
-<p>HTTP协议不支持回写式缓存，HTTP缓存不能假设通过它写入的消息与来自相同资源的后续请求可能获取的内容是相同的，因此它不能缓存一个PUT请求的消息体，并且将其内容重用于稍后的GET请求的响应</p>
-<p>缺乏回写式缓存并不会对性能产生严重影响</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>REST论文的阅读到此结束了，可以看出来REST主要是提供了一套指导原则，可以根据这些原则来识别架构中的缺陷，现代Web是REST架构风格的一个架构实例。在一个理想的世界里，软件系统的实现与它的设计有着精确的匹配，现代Web架构的一些功能确实完全符合它们在REST中的设计标准，例如通过URI标识资源，使用MediaTypes标识数据格式等</p>
+<p>REST既贡献了现代Web软件架构背后的基础理论，也为我们上了重要的一课，展示了软件工程原则如何能够被系统地应用在一个真实的软件系统的设计与评估之中</p>
 <blockquote>
-<p>这里的PUT请求是写入动作，幂等的，相当于对资源赋值操作</p>
+<p>接下来会去阅读网络协议与RestFul API最佳的设计等</p>
 </blockquote>
-</li>
-</ul>
-<h4 id="REST在HTTP中的不匹配"><a href="#REST在HTTP中的不匹配" class="headerlink" title="REST在HTTP中的不匹配"></a>REST在HTTP中的不匹配</h4><p>在HTTP协议中存在一些架构不匹配，一些是由于标准过程之外部署的第三方扩展所导致的，其他的则是由于与已部署的HTTP/1.0组件保持兼容的必要性所导致的</p>
-<ul>
-<li><p><strong>区分非权威的响应</strong></p>
-<p>没有一致的机制来区分一个响应是来自于源服务器还是中间的某一个组件(走的缓存没有走来源服务器)，虽然HTTP1.1中定义了Warning消息头，但是在实践中并未广泛使用。</p>
-</li>
-<li><p><strong>Cookie</strong></p>
-<p>Cookie是不透明的数据，来源服务器通过将它包括在一个Set-Cookie响应头信息字段中，将它设置给一个用户代理，用户代理在所有将来的请求中包括这个相同的Cookie，直到被替换或者过期</p>
-<blockquote>
-<p>Cookie违反了REST，因为它们允许数据在没有充分表明其语义的情况下对其进行传递，这会成为一个安全和隐私方面的关注点(结合使用Cookie和Referer头信息字段，有可能当用户多个站点浏览时对其进行跟踪)</p>
-</blockquote>
-</li>
-<li><p><strong>响应与请求相匹配</strong></p>
-<p>当需要描述哪一个响应属于哪一个请求的时候，HTTP消息并不是自描述的</p>
-<p>早期的HTTP协议并没有考虑到需要将响应与相关的请求绑定在一起的消息控制数据，因此请求的顺序决定了响应的顺序，这意味着HTTP依赖于传输层的连接来确定这一匹配</p>
-</li>
-</ul>
 
         
         </div>
@@ -303,7 +254,7 @@
 
             
     
-        <a href="http://itliusir.com/2018/Rest Notes-Experience and Evaluation2/#comments" id="sourceId::2018/Rest Notes-Experience and Evaluation2/" class="article-comment-link cy_cmt_count">评论</a>
+        <a href="http://itliusir.com/2018/Rest Notes-Experience and Evaluation3/#comments" id="sourceId::2018/Rest Notes-Experience and Evaluation3/" class="article-comment-link cy_cmt_count">评论</a>
     
 
         </footer>
@@ -336,19 +287,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2018/Rest Notes-Experience and Evaluation3/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Rest Notes-架构上的教训(论文部分完结)
-                
-            </div>
-        </a>
     
-    
-        <a href="/2018/Rest Notes-Experience and Evaluation1/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/Rest Notes-Experience and Evaluation2/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Rest Notes-将REST应用于URI</div>
+            <div class="article-nav-title">Rest Notes-将REST应用于HTTP</div>
         </a>
     
 </nav>
