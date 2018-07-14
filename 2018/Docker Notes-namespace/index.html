@@ -3,17 +3,20 @@
 <head>
     <meta charset="utf-8">
     
-    <title>标签: Method | liusir|blog</title>
+    <title>Docker Notes-namespace | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="君君的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.com/tags/Method/index.html">
+    <meta name="description" content="摘要: Docker Notes系列为学习Docker笔记，本文是学习namespace 资源隔离的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Notes-namespace">
+<meta property="og:url" content="http://itliusir.com/2018/Docker Notes-namespace/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="君君的个人博客">
+<meta property="og:description" content="摘要: Docker Notes系列为学习Docker笔记，本文是学习namespace 资源隔离的笔记">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/network%20namespace.png">
+<meta property="og:updated_time" content="2018-07-14T12:29:08.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="君君的个人博客">
+<meta name="twitter:title" content="Docker Notes-namespace">
+<meta name="twitter:description" content="摘要: Docker Notes系列为学习Docker笔记，本文是学习namespace 资源隔离的笔记">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/network%20namespace.png">
     
 
     
@@ -158,50 +161,221 @@
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#Method</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-Docker Notes-namespace" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/javase-Method-invoke/">Method的invoke方法源码分析</a>
+        <h1 class="article-title" itemprop="name">
+            Docker Notes-namespace
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/javase-Method-invoke/">
-            <time datetime="2017-09-05T10:30:00.000Z" itemprop="datePublished">2017-09-05</time>
+        <a href="/2018/Docker Notes-namespace/">
+            <time datetime="2018-07-14T12:30:00.000Z" itemprop="datePublished">2018-07-14</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Method/">Method</a>, <a class="tag-link" href="/tags/invoke/">invoke</a>
+        <a class="tag-link" href="/tags/namespace/">namespace</a>
     </div>
 
-                </div>
-            </div>
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: Docker Notes系列为学习Docker笔记，本文是学习namespace 资源隔离的笔记<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>对于开发者而言，Docker的大热让人们思考容器隔离的实现，如对主机名与域名的隔离、资源隔离、网络的隔离、进程间通信的隔离、用户权限的隔离、PID的隔离等。Linux内核中提供了以下6种namespace隔离的系统调用</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">namespace</th>
+<th style="text-align:center">系统调用参数</th>
+<th style="text-align:center">隔离内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">UTS</td>
+<td style="text-align:center"><code>CLONE_NEWUTC</code></td>
+<td style="text-align:center">主机名与域名</td>
+</tr>
+<tr>
+<td style="text-align:center">IPC</td>
+<td style="text-align:center"><code>CLONE_NEWIPC</code></td>
+<td style="text-align:center">信号量、消息队列、共享内存</td>
+</tr>
+<tr>
+<td style="text-align:center">PID</td>
+<td style="text-align:center"><code>CLONE_NEWPID</code></td>
+<td style="text-align:center">进程编号</td>
+</tr>
+<tr>
+<td style="text-align:center">Network</td>
+<td style="text-align:center"><code>CLONE_NEWNET</code></td>
+<td style="text-align:center">网络栈、端口</td>
+</tr>
+<tr>
+<td style="text-align:center">Mount</td>
+<td style="text-align:center"><code>CLONE_NEWNS</code></td>
+<td style="text-align:center">文件系统</td>
+</tr>
+<tr>
+<td style="text-align:center">User</td>
+<td style="text-align:center"><code>CLONE_NEWUSER</code></td>
+<td style="text-align:center">用户与用户组</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><strong>namespace api</strong></p>
+<p>创建一个namespace一般使用clone()来创建，其API还包括setns()、unshare()、<a href="https://zh.wikipedia.org/wiki/Procfs" target="_blank" rel="external">/proc目录</a>下的一些文件</p>
+<p>然后通过不同的参数来确定使用哪种隔离方式</p>
+<ul>
+<li><p><strong>clone()</strong></p>
+<p><code>clone()</code>是<code>fork()</code>的一种变种，<code>fork()</code>是一种创建自身进程副本的操作，clone()可以通过flags参数来控制使用多少功能</p>
+<blockquote>
+<p>fork()在父进程中返回新创建子进程的进程ID，在子进程中返回0，出现错误返回负值</p>
+</blockquote>
+</li>
+<li><p><strong>setns()</strong></p>
+<p>在使用Docker exec在运行的容器中执行一个新的命令就需要该方法，进程从原来的namespace加入到另一个namespace，通常会在setns()执行后使用clone()创建子进程继续执行命令，让原进程结束运行</p>
+<blockquote>
+<p>加入namespace后可以通过引入execve()函数执行用户命令(调用/bin/bash 接收参数，运行起一个shell)</p>
+</blockquote>
+</li>
+<li><p><strong>unshare()</strong></p>
+<p>unshare()与clone()很像，不同的是unshare()不需要启动一个新进程</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>UTS</strong></p>
+<p>通过在clone()方法的flags中选择CLONE_NEWUTS参数来实现隔离不同namespace下的主机名与域名</p>
+</li>
+<li><p><strong>IPC</strong></p>
+<p>同上面一样，通过CLONE_NEWIPC参数来实现不同namespace下的进程间通信隔离(信号量、消息队列、共享内存)，下列的不同namespace不再重复介绍传参方式</p>
+</li>
+<li><p><strong>PID</strong></p>
+<p>PID namespace隔离非常实用会对进程PID重新编号，所以不同namespace下PID可以相同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@cf proc]# docker exec -ti 69aa00d7aa3b /bin/bash</div><div class="line">root@69aa00d7aa3b:/data# echo $$</div><div class="line">18</div><div class="line">root@69aa00d7aa3b:/data# exit</div><div class="line">exit</div><div class="line">[root@cf proc]# echo $$</div><div class="line">28512</div></pre></td></tr></table></figure>
+<p>Unix系统中，PID为1的进程是init，它是所有进程的父进程，负责维护进程表，因此若在Docker容器中运行多个进程，最先启动的进程应该是具有资源管理能力的，init进程还可以对信号进行捕捉，如Docker中接收容器结束信号后结束容器进程回收资源</p>
+<blockquote>
+<p>在PID namespace下unshare()与setns()方法会有一些变化，其方法的调用者进程并不进入新的PID namespace，接下来的创建子进程才会在新的namespace。例如在docker中，docker exec会使用setns()加入一个已存在的namespace，但是最终还是会调用clone()函数</p>
+</blockquote>
+</li>
+<li><p><strong>MOUNT</strong></p>
+<p>MOUNT namespace是第一个Linux namespace，所以标识符并不是CLONE_NEWMOUNT而是CLONE_NEWNS。创建MOUNT namespace时，会把当前的文件结构复制给新的namespace，新的namespace中的mount操作只会影响自身的文件系统，然后通过挂载传播来决定挂载事件的传播到别的挂载对象</p>
+</li>
+<li><p><strong>Network</strong></p>
+<p>Network namespace主要是对网络资源的隔离，不同的Network namespace间可以通过创建veth pair(虚拟网络设备对，一端在新的namespace下，一端在原先的namespace中连接物理网络设备)来实现通信</p>
+<blockquote>
+<p>在建立veth pair之前新旧namespace使用pipe(管道)来通信</p>
+</blockquote>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/network%20namespace.png" alt=""></p>
+</li>
+<li><p><strong>User</strong></p>
+<p>User namespace主要是对用户ID、root目录、特殊权限等的隔离</p>
+</li>
+</ul>
+
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Docker Notes-namespace/#comments" id="sourceId::2018/Docker Notes-namespace/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/Rest Notes-Experience and Evaluation3/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Rest Notes-架构上的教训(论文部分完结)</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
 </section>
             
                 <aside id="sidebar">
