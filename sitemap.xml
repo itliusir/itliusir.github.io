@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-cgroups/</loc>
+    
+    <lastmod>2018-07-15T13:03:57.068Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/Docker%20Notes-namespace/</loc>
     
     <lastmod>2018-07-14T12:29:08.525Z</lastmod>
