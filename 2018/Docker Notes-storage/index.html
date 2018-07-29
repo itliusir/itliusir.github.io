@@ -3,17 +3,20 @@
 <head>
     <meta charset="utf-8">
     
-    <title>归档: 2017/2 | liusir|blog</title>
+    <title>Docker Notes-storage | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="君君的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.com/archives/2017/02/index.html">
+    <meta name="description" content="摘要: Docker Notes系列为学习Docker笔记，本文是Docker存储介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Notes-storage">
+<meta property="og:url" content="http://itliusir.com/2018/Docker Notes-storage/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="君君的个人博客">
+<meta property="og:description" content="摘要: Docker Notes系列为学习Docker笔记，本文是Docker存储介绍">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/device%20mapper.png">
+<meta property="og:updated_time" content="2018-07-29T16:04:29.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="君君的个人博客">
+<meta name="twitter:title" content="Docker Notes-storage">
+<meta name="twitter:description" content="摘要: Docker Notes系列为学习Docker笔记，本文是Docker存储介绍">
+<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/device%20mapper.png">
     
 
     
@@ -158,158 +161,155 @@
 </aside>
 
             
-            <section id="main"><div class="timeline timeline-wrap">
-    
-            <div class="timeline-row timeline-row-major">
-                <span class="node"><i class="fa fa-calendar"></i></span>
-                <h1 class="title">2017</h1>
-            </div>
+            <section id="main"><article id="post-Docker Notes-storage" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Springboot4-SpringBoot-Configuration/">Spring Boot配置属性</a>
+        <h1 class="article-title" itemprop="name">
+            Docker Notes-storage
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot4-SpringBoot-Configuration/">
-            <time datetime="2017-02-24T01:57:00.000Z" itemprop="datePublished">2017-02-24</time>
+        <a href="/2018/Docker Notes-storage/">
+            <time datetime="2018-07-29T15:30:00.000Z" itemprop="datePublished">2018-07-29</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Docker/">Docker</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/JPA/">JPA</a>, <a class="tag-link" href="/tags/JTA/">JTA</a>, <a class="tag-link" href="/tags/datasource/">datasource</a>, <a class="tag-link" href="/tags/h2/">h2</a>, <a class="tag-link" href="/tags/jooq/">jooq</a>
+        <a class="tag-link" href="/tags/docker-storage/">docker storage</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Springboot3-Static-Resources/">Spring Boot 静态资源处理</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: Docker Notes系列为学习Docker笔记，本文是Docker存储介绍<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="Docker-存储管理"><a href="#Docker-存储管理" class="headerlink" title="Docker 存储管理"></a>Docker 存储管理</h2><h3 id="Docker-镜像元数据管理"><a href="#Docker-镜像元数据管理" class="headerlink" title="Docker 镜像元数据管理"></a>Docker 镜像元数据管理</h3><p>由上篇文章的镜像管理可知Docker以分层形式存储镜像，元数据与镜像文件的存储也是完全隔离开来</p>
+<h4 id="repository-元数据"><a href="#repository-元数据" class="headerlink" title="repository 元数据"></a>repository 元数据</h4><p>repository 由具有某个功能的Docker镜像的所有迭代版本构成的镜像库，其本地持久化文件存放于<code>/var/lib/docker/image/{Storage Driver}/repositories.json</code>中，结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@cf /]# docker info | grep &apos;Storage Driver&apos;</div><div class="line">Storage Driver: overlay2</div><div class="line">[root@cf /]# cat /var/lib/docker/image/overlay2/repositories.json</div><div class="line">&#123;</div><div class="line">  &quot;Repositories&quot;: &#123;</div><div class="line">    &quot;busybox&quot;: &#123;</div><div class="line">      &quot;busybox:latest&quot;: &quot;sha256:8c811b4aec35f259572d0f79207bc0678df4c736eeec50bc9fec37ed936a472a&quot;,</div><div class="line">      &quot;busybox:test&quot;: &quot;sha256:357bb11d2c366a4c60bcb20580407694f2f66f091452c8680dadf2761dc3cba0&quot;,</div><div class="line">      &quot;busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47&quot;: &quot;sha256:8c811b4aec35f259572d0f79207bc0678df4c736eeec50bc9fec37ed936a472a&quot;</div><div class="line">    &#125;,</div><div class="line">    &quot;centos&quot;: &#123;</div><div class="line">      &quot;centos:7&quot;: &quot;sha256:49f7960eb7e4cb46f1a02c1f8174c6fac07ebf1eb6d8deffbcb5c695f1c9edd5&quot;,</div><div class="line">      &quot;centos@sha256:b67d21dfe609ddacf404589e04631d90a342921e81c40aeaf3391f6717fa5322&quot;: &quot;sha256:49f7960eb7e4cb46f1a02c1f8174c6fac07ebf1eb6d8deffbcb5c695f1c9edd5&quot;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Docker 默认采用SHA256算法根据镜像元数据配置文件计算出镜像ID</p>
+</blockquote>
+<h4 id="image-元数据"><a href="#image-元数据" class="headerlink" title="image 元数据"></a>image 元数据</h4><p>image 元数据包括了如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">[root@cf /]# cat /var/lib/docker/image/overlay2/imagedb/content/sha256/8c811b4aec35f25...</div><div class="line">&#123;</div><div class="line">  &quot;architecture&quot;: &quot;amd64&quot;,</div><div class="line">  &quot;config&quot;: &#123;</div><div class="line">    &quot;Hostname&quot;: &quot;&quot;,</div><div class="line">    &quot;Domainname&quot;: &quot;&quot;,</div><div class="line">    &quot;User&quot;: &quot;&quot;,</div><div class="line">    &quot;AttachStdin&quot;: false,</div><div class="line">    &quot;AttachStdout&quot;: false,</div><div class="line">    &quot;AttachStderr&quot;: false,</div><div class="line">    &quot;Tty&quot;: false,</div><div class="line">    &quot;OpenStdin&quot;: false,</div><div class="line">    &quot;StdinOnce&quot;: false,</div><div class="line">    &quot;Env&quot;: [</div><div class="line">      &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</div><div class="line">    ],</div><div class="line">    &quot;Cmd&quot;: [</div><div class="line">      &quot;sh&quot;</div><div class="line">    ],</div><div class="line">    &quot;ArgsEscaped&quot;: true,</div><div class="line">    &quot;Image&quot;: &quot;sha256:3e8a1c5213eb57c6ea8ddb27d86a241698741ce60d9053b641f57a7e455f6842&quot;,</div><div class="line">    &quot;Volumes&quot;: null,</div><div class="line">    &quot;WorkingDir&quot;: &quot;&quot;,</div><div class="line">    &quot;Entrypoint&quot;: null,</div><div class="line">    &quot;OnBuild&quot;: null,</div><div class="line">    &quot;Labels&quot;: null</div><div class="line">  &#125;,</div><div class="line">  &quot;container&quot;: &quot;617bfbb850a66642161d4925e0c00f77caa46e22057409788207e7b2edb86c3e&quot;,</div><div class="line">  &quot;container_config&quot;: &#123;</div><div class="line">    &quot;Hostname&quot;: &quot;617bfbb850a6&quot;,</div><div class="line">    &quot;Domainname&quot;: &quot;&quot;,</div><div class="line">    &quot;User&quot;: &quot;&quot;,</div><div class="line">    &quot;AttachStdin&quot;: false,</div><div class="line">    &quot;AttachStdout&quot;: false,</div><div class="line">    &quot;AttachStderr&quot;: false,</div><div class="line">    &quot;Tty&quot;: false,</div><div class="line">    &quot;OpenStdin&quot;: false,</div><div class="line">    &quot;StdinOnce&quot;: false,</div><div class="line">    &quot;Env&quot;: [</div><div class="line">      &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</div><div class="line">    ],</div><div class="line">    &quot;Cmd&quot;: [</div><div class="line">      &quot;/bin/sh&quot;,</div><div class="line">      &quot;-c&quot;,</div><div class="line">      &quot;#(nop) &quot;,</div><div class="line">      &quot;CMD [\&quot;sh\&quot;]&quot;</div><div class="line">    ],</div><div class="line">    &quot;ArgsEscaped&quot;: true,</div><div class="line">    &quot;Image&quot;: &quot;sha256:3e8a1c5213eb57c6ea8ddb27d86a241698741ce60d9053b641f57a7e455f6842&quot;,</div><div class="line">    &quot;Volumes&quot;: null,</div><div class="line">    &quot;WorkingDir&quot;: &quot;&quot;,</div><div class="line">    &quot;Entrypoint&quot;: null,</div><div class="line">    &quot;OnBuild&quot;: null,</div><div class="line">    &quot;Labels&quot;: &#123;</div><div class="line">      </div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  &quot;created&quot;: &quot;2018-05-23T21:19:31.132152818Z&quot;,</div><div class="line">  &quot;docker_version&quot;: &quot;17.06.2-ce&quot;,</div><div class="line">  &quot;history&quot;: [</div><div class="line">    &#123;</div><div class="line">      &quot;created&quot;: &quot;2018-05-23T21:19:30.902651601Z&quot;,</div><div class="line">      &quot;created_by&quot;: &quot;/bin/sh -c #(nop) ADD file:5f0439d8328ab58c087cd067c91ce92765da98916d91b083df6590477b7b9f19 in / &quot;</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">      &quot;created&quot;: &quot;2018-05-23T21:19:31.132152818Z&quot;,</div><div class="line">      &quot;created_by&quot;: &quot;/bin/sh -c #(nop)  CMD [\&quot;sh\&quot;]&quot;,</div><div class="line">      &quot;empty_layer&quot;: true</div><div class="line">    &#125;</div><div class="line">  ],</div><div class="line">  &quot;os&quot;: &quot;linux&quot;,</div><div class="line">  &quot;rootfs&quot;: &#123;</div><div class="line">    &quot;type&quot;: &quot;layers&quot;,</div><div class="line">    &quot;diff_ids&quot;: [</div><div class="line">      &quot;sha256:432b65032b9466b4dadcc5c7b11701e71d21c18400aae946b101ad16be62333a&quot;</div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="layer元数据"><a href="#layer元数据" class="headerlink" title="layer元数据"></a>layer元数据</h4><p>由上文可知layer负责与镜像层和容器层元数据有关的增删改查，并将其增删改查操作映射到实际存储镜像层文件系统的graphdriver模块。</p>
+<p>用户在Docker宿主机上下载了某个镜像层之后，Docker会在宿主机上基于镜像层文件包和image元数据，构建本地的layer元数据，如diff、size等，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@cf /]# cat /var/lib/docker/image/overlay2/layerdb/sha256/432b65032b9466b4d.../</div><div class="line">cache-id           diff               size               tar-split.json.gz</div></pre></td></tr></table></figure>
+<h3 id="Docker-存储驱动"><a href="#Docker-存储驱动" class="headerlink" title="Docker 存储驱动"></a>Docker 存储驱动</h3><p>为了支持镜像的分层(只读层、读写层)与写时复制等特性，Docker提供了存储驱动的接口。存储驱动根据操作系统底层的支持提供了针对某种文件系统的初始化操作以及对镜像层的增删改查和差异比较等操作</p>
+<h4 id="常用存储驱动"><a href="#常用存储驱动" class="headerlink" title="常用存储驱动"></a>常用存储驱动</h4><ol>
+<li><p><strong>aufs</strong></p>
+<p>aufs是一种支持联合挂载的文件系统，相当于讲不同目录挂载到同一目录下，这些目录的挂载是分层次的，每一层都是一个普通的文件系统</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@cf /]# cd /var/lib/docker/aufs</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>device mapper</strong></p>
+<p>device mapper是Linux 2.6内核中提供的一种从逻辑设备到物理设备的映射框架机制，用户可以很方便地根据自己的需要制定实现存储资源的管理策略</p>
+<p>device mapper 本质功能就是根据映射关系描述IO处理规则，当映射设备接收到IO请求的时候，这个IO请求会根据映射表逐级转发，直到这个请求最终传到最底层的物理设备上</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/device%20mapper.png" alt="device mapper"></p>
+<p>如上图所示，映射设备是内核向外提供的逻辑设备，而目标设备即可以是物理设备也可以同样是映射设备</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@cf /]# cd /var/lib/docker/devicemapper</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>overlay</strong></p>
+<p>overlayFS是一种新型联合文件系统，它允许用户将一个文件系统与另一个文件系统重叠(overlay)，在上层的文件系统中记录更改，而下层的文件系统保持不变</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@cf overlay2]# tree -L 2</div><div class="line">.</div><div class="line">├── 05f14d2b45bfa0ff20f...</div><div class="line">│   ├── diff</div><div class="line">│   ├── link</div><div class="line">│   ├── lower</div><div class="line">│   └── work</div></pre></td></tr></table></figure></li>
+</ol>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot3-Static-Resources/">
-            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/addResourceHandlers/">addResourceHandlers</a>, <a class="tag-link" href="/tags/静态资源处理/">静态资源处理</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Springboot2-Swagger/">Spring Boot中使用Swagger2构建强大的RESTful API文档</a>
-        </h1>
-    
+        <footer class="article-footer">
+            <div class="share-container">
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot2-Swagger/">
-            <time datetime="2017-02-14T05:33:00.000Z" itemprop="datePublished">2017-02-14</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Swagger2/">Swagger2</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/javase-Java-volatile/">关于Java变量的可见性问题</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/javase-Java-volatile/">
-            <time datetime="2017-02-07T07:19:00.000Z" itemprop="datePublished">2017-02-07</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Java变量的可见性/">Java变量的可见性</a>, <a class="tag-link" href="/tags/volatile的可见性/">volatile的可见性</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Docker Notes-storage/#comments" id="sourceId::2018/Docker Notes-storage/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/Docker Notes-architecture/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Docker Notes-architecture</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
 </section>
             
                 <aside id="sidebar">
