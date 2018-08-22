@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2018/SpringCloud-Feign-Hystrix/</loc>
+    
+    <lastmod>2018-08-22T03:36:10.901Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/Spring%20Boot-AutoConfiguration/</loc>
     
     <lastmod>2018-08-13T08:08:52.257Z</lastmod>

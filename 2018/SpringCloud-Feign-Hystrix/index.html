@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>归档: 2017/4 | liusir|blog</title>
+    <title>一个feign使用不当的问题 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="君君的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="liusir|blog">
-<meta property="og:url" content="http://itliusir.com/archives/2017/04/index.html">
+    <meta name="description" content="摘要: 一个feign使用不当的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个feign使用不当的问题">
+<meta property="og:url" content="http://itliusir.com/2018/SpringCloud-Feign-Hystrix/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="君君的个人博客">
+<meta property="og:description" content="摘要: 一个feign使用不当的问题">
+<meta property="og:updated_time" content="2018-08-22T03:36:10.901Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="liusir|blog">
-<meta name="twitter:description" content="君君的个人博客">
+<meta name="twitter:title" content="一个feign使用不当的问题">
+<meta name="twitter:description" content="摘要: 一个feign使用不当的问题">
     
 
     
@@ -158,86 +159,139 @@
 </aside>
 
             
-            <section id="main"><div class="timeline timeline-wrap">
-    
-            <div class="timeline-row timeline-row-major">
-                <span class="node"><i class="fa fa-calendar"></i></span>
-                <h1 class="title">2017</h1>
-            </div>
+            <section id="main"><article id="post-SpringCloud-Feign-Hystrix" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Algorithm-BCrypt/">很方便的密码加密算法BCrypt</a>
+        <h1 class="article-title" itemprop="name">
+            一个feign使用不当的问题
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Algorithm-BCrypt/">
-            <time datetime="2017-04-14T12:00:00.000Z" itemprop="datePublished">2017-04-14</time>
+        <a href="/2018/SpringCloud-Feign-Hystrix/">
+            <time datetime="2018-08-22T04:00:00.000Z" itemprop="datePublished">2018-08-22</time>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/SpringCloud/">SpringCloud</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/BCrypt/">BCrypt</a>
+        <a class="tag-link" href="/tags/Feign/">Feign</a>, <a class="tag-link" href="/tags/Hystrix/">Hystrix</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2017/Algorithm-Random/">现在有10个随机数，随机数的范围在1到100之间。现在要求写出一种算法，将1到100之间没有在随机数中的数求出来</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: 一个feign使用不当的问题<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h3 id="一个错误的示例"><a href="#一个错误的示例" class="headerlink" title="一个错误的示例"></a>一个错误的示例</h3><p><strong>接口与回退逻辑</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"service-A"</span>,fallback=AServiceFallback.class )</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AService</span> </span>&#123;</div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/aApi/getA"</span>, method = RequestMethod.GET)</div><div class="line">  <span class="function">List&lt;AInfo&gt; <span class="title">getA</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="meta">@Slf</span>4j</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AServiceFallback</span> <span class="keyword">implements</span> <span class="title">AService</span></span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;AInfo&gt; <span class="title">getA</span><span class="params">()</span> </span>&#123;</div><div class="line">    log.error(<span class="string">"进入回退方法：异常"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>配置文件</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="attr">hystrix:</span></div><div class="line"><span class="attr">    command:</span></div><div class="line"><span class="attr">        default:</span></div><div class="line"><span class="attr">            execution:</span></div><div class="line"><span class="attr">                isolation:</span></div><div class="line"><span class="attr">                    thread:</span></div><div class="line"><span class="attr">                        timeoutInMilliseconds:</span> <span class="number">50000</span></div><div class="line"><span class="attr">ribbon:</span></div><div class="line"><span class="attr">    ReadTimeout:</span> <span class="number">60000</span></div><div class="line"><span class="attr">    ConnectTimeout:</span> <span class="number">60000</span></div><div class="line"><span class="attr">    eureka:</span></div><div class="line"><span class="attr">        enabled:</span> <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>以上配置在不熟悉<code>feign-hystrix</code> 或者查看 <a href="http://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_spring-cloud-feign.html#spring-cloud-feign-hystrix-fallback" target="_blank" rel="external">Feign Hystrix Fallbacks</a> 的可能感觉并没有问题，项目启动也是正常</p>
+<h3 id="正确使用方式"><a href="#正确使用方式" class="headerlink" title="正确使用方式"></a>正确使用方式</h3><p><strong>接口与回退逻辑</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"service-A"</span>,fallback=AServiceFallback.class )</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AService</span> </span>&#123;</div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/aApi/getA"</span>, method = RequestMethod.GET)</div><div class="line">  <span class="function">List&lt;AInfo&gt; <span class="title">getA</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="meta">@Slf</span>4j</div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AServiceFallback</span> <span class="keyword">implements</span> <span class="title">AService</span></span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;AInfo&gt; <span class="title">getA</span><span class="params">()</span> </span>&#123;</div><div class="line">    log.error(<span class="string">"进入回退方法：异常"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>配置文件</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="attr">hystrix:</span></div><div class="line"><span class="attr">    command:</span></div><div class="line"><span class="attr">        default:</span></div><div class="line"><span class="attr">            execution:</span></div><div class="line"><span class="attr">                isolation:</span></div><div class="line"><span class="attr">                    thread:</span></div><div class="line"><span class="attr">                        timeoutInMilliseconds:</span> <span class="number">50000</span></div><div class="line"><span class="attr">ribbon:</span></div><div class="line"><span class="attr">    ReadTimeout:</span> <span class="number">60000</span></div><div class="line"><span class="attr">    ConnectTimeout:</span> <span class="number">60000</span></div><div class="line"><span class="attr">    eureka:</span></div><div class="line"><span class="attr">        enabled:</span> <span class="literal">true</span></div><div class="line"></div><div class="line"><span class="attr">feign:</span></div><div class="line"><span class="attr">  hystrix:</span></div><div class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>可以看到，在配置文件中新增了<code>feign.hystrix.enabled = true</code> 进行激活，如果代码不变启动项目会报：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Caused by: java.lang.IllegalStateException: No fallback instance of type class com.yss.xx.feign.fallback.AServiceFallback found for feign client service-A</div></pre></td></tr></table></figure>
+<p>可以参考<a href="http://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_spring-cloud-feign.html#spring-cloud-feign-hystrix" target="_blank" rel="external">Feign Hystrix Support</a> ，也可以在回退逻辑接口的类上面使用Spring 通用模式装配注解<code>@Component</code> 对<code>AServiceFallback</code>进行装配</p>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/Algorithm-Random/">
-            <time datetime="2017-04-01T04:30:00.000Z" itemprop="datePublished">2017-04-01</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Random/">Random</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/SpringCloud-Feign-Hystrix/#comments" id="sourceId::2018/SpringCloud-Feign-Hystrix/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/Spring Boot-AutoConfiguration/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Spring Boot 核心特性之组件自动装配</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
 </section>
             
                 <aside id="sidebar">
