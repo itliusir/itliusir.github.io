@@ -173,12 +173,12 @@ a:visited {
 }
 code {
   margin: 0 2px;
-  color: #e96900;
-  padding: 3px 5px;
-  font-size: 0.8em;
-  border-radius: 2px;
+  color: #c0341d;
+  padding: 2px 4px;
+  font-size: 0.9em;
+  border-radius: 3px;
   font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
-  background-color: #f8f8f8;
+  background-color: #fcedea;
 }
 .outer {
   max-width: 1320px;
@@ -863,12 +863,12 @@ code {
 }
 .article-title {
   font-size: 2em;
-  color: #565a5f;
+  color: #009688;
   text-decoration: none;
   line-height: 1.3em;
 }
 a.article-title:visited {
-  color: #565a5f;
+  color: #009688;
 }
 a.article-title:hover {
   color: #38b7ea;
@@ -991,14 +991,14 @@ a.article-title:hover {
   font-size: 1.1em;
   margin: 0 -20px;
   padding: 10px 20px 10px 54px;
-  background: #fcfcfc;
-  border-left: 4px solid #eee;
+  background: #d5e7f3a8;
+  border-left: 4px solid #009688;
 }
 .article-entry blockquote:before {
   top: 20px;
   left: 10px;
   content: "\f10d";
-  color: #e2e2e2;
+  color: #009688;
   font-size: 32px;
   font-family: FontAwesome;
   text-align: center;
@@ -1800,7 +1800,7 @@ ol.toc {
   padding: 15px 5px;
 }
 .widget a {
-  color: #777;
+  color: #009688;
   text-decoration: none;
 }
 .widget a:hover {
@@ -1879,7 +1879,7 @@ ol.toc {
   color: #fff;
   font-size: 50px;
   line-height: 55px;
-  background: #565a5f;
+  background: #009688cf;
   opacity: 0.8;
   border-radius: 4px;
   bottom: 20px;
