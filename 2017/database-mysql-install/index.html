@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>MySQL5.7安装常见问题 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
+<meta name="keywords" content="MySQL5.7安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL5.7安装常见问题">
+<meta property="og:url" content="http://itliusir.com/2017/database-mysql-install/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-01-26T08:14:01.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL5.7安装常见问题">
+<meta name="twitter:description" content="摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                47
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                51
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-database-mysql-install" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            MySQL5.7安装常见问题
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/database-mysql-install/">
+            <time datetime="2017-01-26T07:22:00.000Z" itemprop="datePublished">2017-01-26</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据库/">数据库</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/MySQL/">MySQL</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/MySQL5-7安装/">MySQL5.7安装</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:从MySQL 5.7开始没有data文件夹，如果不进行初始化的话，mysql服务是无法启动的<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="MySQL的安装"><a href="#MySQL的安装" class="headerlink" title="MySQL的安装"></a>MySQL的安装</h2><ol>
+<li>去官网下载zip格式的Mysql Server的压缩包（绿色版），根据个人电脑选择x86或者x64版本，点击最下面的跳过登录下载。</li>
+<li><p>解压，复制my-dafault.ini到bin目录下，重命名为my.ini。可以根据需要复制以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line"><span class="comment"># 设置mysql客户端默认字符集</span></span><br><span class="line">default-character-set=utf8 </span><br><span class="line">[mysqld]</span><br><span class="line"><span class="comment">#设置3306端口</span></span><br><span class="line">port = 3306 </span><br><span class="line"><span class="comment"># 设置mysql的安装目录</span></span><br><span class="line">basedir=D:\mysql\mysql-5.6.35-winx64</span><br><span class="line"><span class="comment"># 设置mysql数据库的数据的存放目录</span></span><br><span class="line">datadir=D:\mysql\mysql-5.6.35-winx64\data</span><br><span class="line"><span class="comment"># 允许最大连接数</span></span><br><span class="line">max_connections=200</span><br><span class="line"><span class="comment"># 服务端使用的字符集默认为8比特编码的latin1字符集</span></span><br><span class="line">character-set-server=utf8</span><br><span class="line"><span class="comment"># 创建新表时将使用的默认存储引擎</span></span><br><span class="line">default-storage-engine=INNODB</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从MySQL5.7开始，MySQL没有5.6那么易用，没有data文件夹使网上很多配置方法都会失效，<strong>如果不进行初始化的话，mysql服务是无法启动的</strong></p>
+<ol>
+<li>以管理员身份运行cmd，cd到mysql的bin目录下，执行命令：<br>mysqld –initialize –user=mysql –console</li>
+<li>该命令会去创建data目录与数据库，生成root用户和临时密码，在执行后的最后一行：localhost: xxxxxx</li>
+</ol>
+</li>
+<li><p>配置环境变量，将bin所在的文件夹路径添加到path的最后，例如：    path=..xxx；D:\mysql\mysql-5.6.35-winx64\bin\my.ini</p>
+</li>
+<li>运行cmd，输入net start mysql启动mysql服务，再输入mysql -u root -p,然后输入临时密码。修改密码：set password=password(‘新密码’);，然后回车，注意分号不要忽略。<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2></li>
+<li><p>关闭服务<br>以管理员身份运行cmd，执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net stop mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld -remove [服务名]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除文件</p>
+</li>
+<li>删除注册表信息<br>清除注册表中的该MySQL服务，有几个地方:<br>a、HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\Eventlog\Application\MySQL 目录删除<br>b、HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\Eventlog\Application\MySQL 目录删除<br>c、HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\MySQL 目录删除<br>注册表中的ControlSet001、ControlSet002不一定是001和002，可能是ControlSet005、006之类，删除的时候都删除就可以 。<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2></li>
+<li><p>data文件错误<br>MySQL服务正在启动..<br>MySQL服务无法启动。</p>
+<p>服务没有报告任何错误。<br><strong>原因：</strong><br>原因：一般初始化之前已存在data文件就会出现这个错误，或者data文件缺少了某些文件</p>
+<p><strong>解决：</strong><br>先执行mysqld -remove，然后把data文件删除，如果删除不了重启一下就可以了，之后重新进行安装就没问题了。如果想保留之前的data文件，可以先把data文件拷贝到其他地方，安装好之后再将原data文件中多的文件拷贝进去就行了</p>
+</li>
+<li><p>密码错误（<strong>Error password Error 1045…Access denied</strong>）<br><strong>原因1：</strong><br>使用mysqld –initialize方法安装会生成一个随机字符串组成的密码，这个密码在错误日志D:\mysql\mysql-5.6.35-winx64\data\xxx.err（xxx是用户名）可以找到。<br><strong>原因2：</strong><br>忘记密码<br><strong>解决：</strong>如果忘记密码或找不到随机密码，可以通过以下方法跳过权限修改密码<br>以管理员身份运行cmd，执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net stop mysql//关闭服务</span><br><span class="line">mysqld --skip-grant-tables;//设置mysql登录--skip-grant-tables模式</span><br></pre></td></tr></table></figure>
+<p>打开一个新的cmd</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql//直接登录mysql</span><br><span class="line">   update mysql.user set authentication_string=password('123456') where user='root' and Host = 'localhost';//修改密码</span><br><span class="line">   //特别提醒注意的一点是，新版的mysql数据库下的user表中已经没有Password字段了，而是将加密后的用户密码存储于authentication_string字段</span><br><span class="line">   flush privileges;//刷新权限，退出--skip-grant-tables模式，很重要！</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>重启电脑，然后mysql就可以连接了<br>但是此时操作似乎功能不完全，还要在登录状态下修改一次密码<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">alter user 'root'@'localhost' identified by '123456';</span><br><span class="line">还可以这样：</span><br><span class="line">set password for 'root'@'localhost'=password('123456')；</span><br><span class="line">或这样：</span><br><span class="line">set password=password('123456');</span><br></pre></td></tr></table></figure></p>
+<p><strong>其实mysql的安装卸载过程很简单，一般出了问题之后，把data文件备份后重装，然后把原data中的数据库文件拷贝回来就可以了。</strong></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2017/database-mysql-install/#comments" id="sourceId::2017/database-mysql-install/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/javase-Java-volatile/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    关于Java变量的可见性问题
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/Springboot1/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">关于SpringBoot bean无法注入的问题</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/SpringCloud/">SpringCloud</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/scheduler/">scheduler</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Validator/" style="font-size: 10px;">Validator</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker架构/" style="font-size: 10px;">docker架构</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/xxl-job/" style="font-size: 10px;">xxl-job</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">程序猿DiDi</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.720ui.com">梁桂钊的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.spring4all.com/">spring4all</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.iocoder.cn">芋道源码</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.ityouknow.com/">纯洁的微笑</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.cassite.net">囧神博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://xiangnick.website">XiangNick</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://keveon.me">小凯博客</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

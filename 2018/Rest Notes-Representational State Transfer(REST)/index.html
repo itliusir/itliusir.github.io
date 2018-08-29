@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Rest Notes-表述性状态移交(Representational State Transfer ,REST) | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要: 上篇文章提到的“新的架构风格(REST)”就是专门为分布式超媒体系统设计的，它由几种基于网络的架构风格中衍生而来的一种混合架构风格，并且添加了一些额外的架构约束，用来定义统一的连接器接口">
+<meta name="keywords" content="REST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rest Notes-表述性状态移交(Representational State Transfer ,REST)">
+<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Representational State Transfer(REST)/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要: 上篇文章提到的“新的架构风格(REST)”就是专门为分布式超媒体系统设计的，它由几种基于网络的架构风格中衍生而来的一种混合架构风格，并且添加了一些额外的架构约束，用来定义统一的连接器接口">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://oze7h7cqk.bkt.clouddn.com/nullStyle.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/CS.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/css.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/ccss.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/earlywww.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/uccss.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/ulccss.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/rest.png">
+<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/rest1.png">
+<meta property="og:updated_time" content="2018-06-05T15:22:54.784Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rest Notes-表述性状态移交(Representational State Transfer ,REST)">
+<meta name="twitter:description" content="摘要: 上篇文章提到的“新的架构风格(REST)”就是专门为分布式超媒体系统设计的，它由几种基于网络的架构风格中衍生而来的一种混合架构风格，并且添加了一些额外的架构约束，用来定义统一的连接器接口">
+<meta name="twitter:image" content="http://oze7h7cqk.bkt.clouddn.com/nullStyle.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                47
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                51
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://git.oschina.net/201314521" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/u/5427225594?source=blog" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Rest Notes-Representational State Transfer(REST)" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Rest Notes-表述性状态移交(Representational State Transfer ,REST)
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/Rest Notes-Representational State Transfer(REST)/">
+            <time datetime="2018-06-05T15:00:00.000Z" itemprop="datePublished">2018-06-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/REST/">REST</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/REST/">REST</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: 上篇文章提到的“新的架构风格(REST)”就是专门为分布式超媒体系统设计的，它由几种<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">基于网络的架构风格</a>中衍生而来的一种混合架构风格，并且添加了一些额外的架构约束，用来定义统一的连接器接口<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h3 id="推导REST"><a href="#推导REST" class="headerlink" title="推导REST"></a>推导REST</h3><p>Web架构背后的设计基础理论可以描述为<strong>由一组应用于架构中元素之上的架构约束组成的架构风格</strong></p>
+<h4 id="从“空”风格-Null-Style-开始"><a href="#从“空”风格-Null-Style-开始" class="headerlink" title="从“空”风格(Null Style)开始"></a>从“空”风格(Null Style)开始</h4><p>无论是建筑还是软件，架构过程有着两种常见的观点：</p>
+<ol>
+<li>设计者一切从0开始最后建造出一个架构，直到架构满足系统需求</li>
+<li>设计者从一个整体的系统需求出发，此时没有任何约束(空风格)，通过增量的识别出各种约束应用于系统的架构元素之上，不了解架构元素的可以回看<a href="http://itliusir.com/2018/Rest%20Notes-Software%20Architecture/">第一篇文章</a></li>
+</ol>
+<p>REST正是使用第二种观点开发出来的，从架构的观点来看，空风格描述了一个组件之间没有明显边界的系统，这就是我们描述REST的起点</p>
+<p><img src="http://oze7h7cqk.bkt.clouddn.com/nullStyle.png" alt="null style"></p>
+<h4 id="客户-服务器"><a href="#客户-服务器" class="headerlink" title="客户-服务器"></a>客户-服务器</h4><p>首先添加一个<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">客户-服务器</a>约束，该约束背后原则是分离关注点，通过分离用户界面和数据存储这两个关注点，提高了<strong>可移植性</strong>、<strong>可伸缩性</strong>。对于Web而言最重要的是这种关注点分离使得组件可以<strong>独立的部署与进化</strong></p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/CS.png" alt="cs"></p>
+<h4 id="无状态"><a href="#无状态" class="headerlink" title="无状态"></a>无状态</h4><p>接下来添加一个<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">无状态</a>约束：通信必须在本质上是无状态的，从客户端到服务器的每个请求都必须包含理解该请求所必需的所有信息，<strong>会话状态要全部保存在客户端</strong></p>
+<p>这一约束产生了<strong>可见性</strong>、<strong>可靠性</strong>和<strong>可伸缩性</strong>三个架构属性，原因可以去查看上面无状态的超链接，这里不重复解释</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/css.png" alt="css"></p>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存."></a>缓存.</h4><p>为了改善网络的效率，我们添加了缓存这个架构约束，好处在于减少了一些交互，从而提高效率和用户感知性能</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/ccss.png" alt="ccss"></p>
+<p><strong>早期的Web架构(1994年之前)是通过客户-缓存-无状态-服务器的架构约束集合(风格)来定义的</strong>，交互的通信协议仅包含了对非共享缓存(non-shared caches)的支持，并没有限定接口要对所有的资源提供一组一致的语义。相反地，Web依赖于使用一个公共的客户-服务器实现库(CERN的libwww)来维护Web应用之间的一致性</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/earlywww.png" alt="早期Web架构"></p>
+<p>由于Web实现的开发者们早已超越了这种早期的设计，请求除了静态的文档之外还能够识别出动态生成的响应，也以代理和共享缓存的形式开展了对中间件的开发工作，但是必须对现有的协议进行扩展，这样中间件才能可靠的通信。以下三个架构约束（<strong>统一接口，分层系统，按需代码</strong>）则是对早期Web架构的扩充，以便用来对现代的Web架构的扩展加以指导</p>
+<h4 id="统一接口"><a href="#统一接口" class="headerlink" title="统一接口"></a>统一接口</h4><p>本约束也是使得REST风格与别的风格产生区别的核心特征，通过在组件接口上应用通用性的软件工程原则来简化系统架构，也改善了交互的可见性，也使得它们提供的服务与实现是解耦的，促进了独立的可进化性。当然任何东西都有两面性，统一接口的代价就是降低了效率。因为信息都是使用标准的形式来移交的，而不是特定于应用需求的形式。</p>
+<p>统一接口的意义在于凡是参与到每一个http通信的所有组件(浏览器、http代理、服务网关、web服务器、应用服务器等)，都可以理解这个请求。构成这个请求的是uri、http、mime、html，用url标识资源，用http操作资源的表述，用mime协商请求双方都接收的媒体类型(html、json、xml等)</p>
+<blockquote>
+<p>REST接口被设计为可以高效的移交大粒度的超媒体数据，并对Web的场景情况做了优化，但是这也导致该接口对于其他形式的架构交互而言并不是最优的</p>
+</blockquote>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/uccss.png" alt="uccss"></p>
+<p>为了获得统一接口，需要多个架构约束来指导组件的行为，REST由四个接口架构约束来定义：</p>
+<ul>
+<li>资源的识别</li>
+<li>通过表述来操作资源</li>
+<li>自描述的信息</li>
+<li>超媒体作为应用程序状态的引擎（HATEOAS）</li>
+</ul>
+<h4 id="分层系统"><a href="#分层系统" class="headerlink" title="分层系统"></a>分层系统</h4><p>为了进一步改善与互联网规模这个需求相关的行为，我们添加了分层系统架构约束，为整个系统的复杂性设置了边界，并且提高了底层独立性。我们能够使用层级来封装遗留服务，使新的服务免受遗留客户端的影响。</p>
+<p>中间件还可以支持负载均衡来<strong>改善系统的可伸缩性</strong>。然而，分层系统会增加数据处理的开销和延迟，因此<strong>降低用户感知的性能</strong>。不过对于一个支持缓存的架构来说，则可以通过在中间层使用共享缓存来弥补这一缺点。此外还可以通过这些中间层实施安全策略（比如防火墙）。</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/ulccss.png" alt="ulccss"></p>
+<p>分层系统架构约束与统一接口架构约束相结合，产生了与<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">统一管道和过滤器风格</a>类似的架构属性。在REST中，中间组件能够主动的转换消息的内容，因为这些消息是自描述的，并且其语义对于中间组件是可见的</p>
+<h4 id="按需代码"><a href="#按需代码" class="headerlink" title="按需代码"></a>按需代码</h4><p>我们为REST添加的最后架构约束来自<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">基于网络应用的架构风格</a>的按需代码约束，REST允许通过下载并执行applet形式或脚本形式的代码，对客户端的功能进行扩展。这样通过减少预先实现的功能的数目，简化了客户端的开发，允许部署之后下载功能代码也<strong>改善了系统的可扩展性</strong>。但是这样做<strong>降低了可见性（REST的连接器和组件并无法理解这些脚本），</strong>因此它只是REST的一个可选的架构约束</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/rest.png" alt="rest风格"></p>
+<h4 id="风格推导小节"><a href="#风格推导小节" class="headerlink" title="风格推导小节"></a>风格推导小节</h4><p>REST架构风格由一组经过选择的架构约束组成，通过这些架构约束在候选架构上产生所期待的架构属性，夏天是根据<a href="http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/">基于网络应用的架构风格</a>图形化描述了REST架构风格的架构约束来源</p>
+<p><img src="http://ok0qzthrb.bkt.clouddn.com/rest1.png" alt="推导REST"></p>
+<blockquote>
+<p>本篇文章主要是对rest风格的推导，下一篇文章会介绍REST架构中的架构元素</p>
+</blockquote>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Rest Notes-Representational State Transfer(REST)/#comments" id="sourceId::2018/Rest Notes-Representational State Transfer(REST)/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://ok0qzthrb.bkt.clouddn.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/Rest Notes-REST Elements/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Rest Notes-REST架构的元素
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/Rest Notes-Designing Web Problems and Insights/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Rest Notes-设计Web架构：问题与领悟</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/SpringCloud/">SpringCloud</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/scheduler/">scheduler</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Validator/" style="font-size: 10px;">Validator</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker架构/" style="font-size: 10px;">docker架构</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/xxl-job/" style="font-size: 10px;">xxl-job</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://blog.didispace.com/">程序猿DiDi</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.720ui.com">梁桂钊的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.spring4all.com/">spring4all</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.infoq.com/cn/">InfoQ</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.importnew.com/">ImportNew</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.jianshu.com/u/90ab66c248e6">占小狼</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.iocoder.cn">芋道源码</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://jinnianshilongnian.iteye.com/">开涛的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.ityouknow.com/">纯洁的微笑</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://calvin1978.blogcn.com/">花样的年华</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.cnblogs.com/binyue/">纸上得来终觉浅</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.csdn.net/z69183787/article/category/2176787">设计模式</a>
+                    </li>
+                
+                    <li>
+                        <a href="">~~~~~↓基佬链接↓~~~~~</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hansam.cc">hansam博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.cassite.net">囧神博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://bl.321aiyi.com">阿海博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://www.itmasir.com">小马博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://xiangnick.website">XiangNick</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://keveon.me">小凯博客</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://ok0qzthrb.bkt.clouddn.com/canvas-nest.min2.js"></script>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
