@@ -4,6 +4,47 @@
   
     
     <entry>
+      <title></title>
+      <url>http://itliusir.com/2018/javase-JMM/</url>
+      <content type="html"><![CDATA[<h2 id="Java-Memory-Model"><a href="#Java-Memory-Model" class="headerlink" title="Java Memory Model"></a>Java Memory Model</h2><h3 id="未同步的程序的行为"><a href="#未同步的程序的行为" class="headerlink" title="未同步的程序的行为"></a>未同步的程序的行为</h3><p><img src="http://ok0qzthrb.bkt.clouddn.com/%E9%87%8D%E6%8E%92%E5%BA%8F.png" alt="语句重排序"></p>
+<p>如上面例子所示</p>
+<p>有 A B 两个共享变量，r1 r2 两个局部变量 </p>
+<p>要出现 <strong>May observer r2 == 2，r1 == 1 </strong> 线程执行顺序应该是如下所示：</p>
+<p><em>Thread 1：B=1</em><br><em>Thread 2：r1=B</em><br><em>Thread 2：A=2</em><br><em>Thread 1：r2=A</em></p>
+<blockquote>
+<p>而按照程序员视角看第一个原始指令与实际的结果，可能会感觉很困惑，其根本原因是Java 的语义允许编译器和微处理器进行优化，这则会影响<strong>未正确同步的代码的行为</strong> (如上代码是未同步的)。</p>
+</blockquote>
+<h3 id="非正式语义"><a href="#非正式语义" class="headerlink" title="非正式语义"></a>非正式语义</h3><p>看一个程序是否被正确的同步有两个关键概念</p>
+<p><strong>冲突访问</strong></p>
+<p>对共享元素存在数据竞争场景，如上文中的未同步程序的行为</p>
+<p><strong>Happens-Before 关系</strong></p>
+<p><code>happens-before</code> 关系可以对两个动作进行排序，如果一个动作 <code>happens-before</code> 另一个动作，则第一个对第二个可见，且第一个排在第二个之前。必须强调的是，两个动作之间存在 <code>happens-before</code> 关系并不意味着这些动作在Java中必须以这种顺序发生。<code>happens-before</code> 关系主要用于强调两个有冲突的动作之间的顺序，以及定义数据争用的发生时机</p>
+<blockquote>
+<p> 如果某个动作A <code>happens-before</code> 动作B，且B <code>happens-before</code> 动作C，则有A <code>happens-before</code> C</p>
+</blockquote>
+<h4 id="顺序一致性"><a href="#顺序一致性" class="headerlink" title="顺序一致性"></a>顺序一致性</h4><p>顺序一致性是程序执行过程中可见性和顺序的强有力保证，在顺序一致性内存模型中，每个操作都必须是原子执行且对所有线程可见</p>
+<h4 id="final-字段"><a href="#final-字段" class="headerlink" title="final 字段"></a>final 字段</h4><p>声明为 final 的字段在 <strong>对象完全初始化后的时刻</strong> 值是不可变的，所以 final 字段也允许编程人员在不需要同步的情况下实现线程安全的不可变对象</p>
+<h3 id="什么是内存模型"><a href="#什么是内存模型" class="headerlink" title="什么是内存模型"></a>什么是内存模型</h3><p>内存模型可以看做为一组规则，规定了一个线程的写操作何时会对另一个线程可见</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>Shared variables/Heap memory</strong></p>
+<p>能够在线程间共享的内存称为共享内存或堆内存，所有的实例字段，静态字段以及数组元素都存储在堆内存中，方法中的局部变量永远不会在线程间共享且不会被内存模型影响</p>
+<p><strong>Inter-thread Actions</strong></p>
+<p>线程间的动作是某一个线程执行的动作能被另一个线程探测或影响，比如lock某个管城、读写volatile变量</p>
+<blockquote>
+<p>我们无需关心 <em>Intra-thread</em> 动作(线程内部) ，每个单线程需要遵守正确的 <em>Intra-thread semantics</em></p>
+</blockquote>
+<p><strong>Intra-thread semantics</strong></p>
+<p>线程内语义是单线程程序的标准语义，线程内语义决定着某个线程孤立的执行过程，当从堆中读取值时，值是由内存模型决定的</p>
+<p><strong>Synchronization Actions</strong></p>
+<p>同步动作包括锁、解锁、读写 volatile 变量等动作</p>
+<h4 id="近似模型"><a href="#近似模型" class="headerlink" title="近似模型"></a>近似模型</h4><p>在上文的非正式语义中描述了顺序一致性，在顺序一致性内存模型中，每个操作都必须是原子执行且对所有线程可见。其约束较严格，禁止了编译器和处理器优化，不适合做 Java 内存模型</p>
+<p>Java中，共享变量(实例、静态、数组元素)存在堆内存中，堆内存在线程之间共享。非共享变量(局部变量、方法定义参数、异常处理参数)不会在线程之间共享，它们不会有内存可见性的问题</p>
+<p>在JMM(Java Memory Model，java 内存模型)中，其</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一个feign使用不当的问题]]></title>
       <url>http://itliusir.com/2018/SpringCloud-Feign-Hystrix/</url>
       <content type="html"><![CDATA[<p>摘要: 一个feign使用不当的问题<br><a id="more"></a></p>
@@ -3615,6 +3656,32 @@
     </entry>
     
     <entry>
+      <title><![CDATA[关于SpringBoot bean无法注入的问题]]></title>
+      <url>http://itliusir.com/2017/Springboot1/</url>
+      <content type="html"><![CDATA[<p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天初次使用springboot搭建了Demo，联合mybatis时候(因为连接数据库需要创建vo层)出现bean无法导入的问题。网上谷歌了下后来找到了一个很容易忽视的原因。<br>这个是我的包结构，注意Application的位置，刚开始我并没有放在现在这个位置，而是和bean以及接口UserMapper是平行的包下。然后就报了Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}<br>这个错</p>
+<p>关于SpringBoot <wbr>bean无法注入的问题<br>将Application放在了最外层的包才解决问题。</p>
+<p>原因是：SpringBoot项目的Bean装配默认规则是根据Application类所在的包位置从上往下扫描！<br>所以一定要放在最外层！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 微服务 </category>
+            
+            <category> Springboot </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> springboot </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Docker在Ubuntu下私服搭建]]></title>
       <url>http://itliusir.com/2017/Docker-registry/</url>
       <content type="html"><![CDATA[<p>摘要:docker同maven一样，虽然有中央仓库，但是都不是国内的下载速度较慢影响开发进度（当然maven可以配置阿里云的镜像速度很快）。<br><a id="more"></a></p>
@@ -3641,32 +3708,6 @@
             <tag> docker </tag>
             
             <tag> docker私服 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[关于SpringBoot bean无法注入的问题]]></title>
-      <url>http://itliusir.com/2017/Springboot1/</url>
-      <content type="html"><![CDATA[<p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天初次使用springboot搭建了Demo，联合mybatis时候(因为连接数据库需要创建vo层)出现bean无法导入的问题。网上谷歌了下后来找到了一个很容易忽视的原因。<br>这个是我的包结构，注意Application的位置，刚开始我并没有放在现在这个位置，而是和bean以及接口UserMapper是平行的包下。然后就报了Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}<br>这个错</p>
-<p>关于SpringBoot <wbr>bean无法注入的问题<br>将Application放在了最外层的包才解决问题。</p>
-<p>原因是：SpringBoot项目的Bean装配默认规则是根据Application类所在的包位置从上往下扫描！<br>所以一定要放在最外层！</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 微服务 </category>
-            
-            <category> Springboot </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> springboot </tag>
             
         </tags>
         
