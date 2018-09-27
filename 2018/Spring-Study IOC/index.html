@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8">
     
-    <title>关于SpringBoot bean无法注入的问题 | liusir|blog</title>
+    <title>Spring IOC Notes-Obj Creation Process | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
-<meta name="keywords" content="springboot">
+    <meta name="description" content="摘要: Spring IOC 学习笔记-对象创建过程">
+<meta name="keywords" content="ioc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于SpringBoot bean无法注入的问题">
-<meta property="og:url" content="http://itliusir.com/2017/Springboot1/index.html">
+<meta property="og:title" content="Spring IOC Notes-Obj Creation Process">
+<meta property="og:url" content="http://itliusir.com/2018/Spring-Study IOC/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
+<meta property="og:description" content="摘要: Spring IOC 学习笔记-对象创建过程">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-01-18T11:15:06.240Z">
+<meta property="og:updated_time" content="2018-09-27T11:21:18.640Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于SpringBoot bean无法注入的问题">
-<meta name="twitter:description" content="摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程">
+<meta name="twitter:title" content="Spring IOC Notes-Obj Creation Process">
+<meta name="twitter:description" content="摘要: Spring IOC 学习笔记-对象创建过程">
     
 
     
@@ -161,7 +161,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Springboot1" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Spring-Study IOC" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -169,7 +169,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            关于SpringBoot bean无法注入的问题
+            Spring IOC Notes-Obj Creation Process
         </h1>
     
 
@@ -178,8 +178,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/Springboot1/">
-            <time datetime="2017-01-18T01:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+        <a href="/2018/Spring-Study IOC/">
+            <time datetime="2018-09-27T11:30:00.000Z" itemprop="datePublished">2018-09-27</time>
         </a>
     </div>
 
@@ -187,13 +187,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/Springboot/">Springboot</a>
+        <a class="article-category-link" href="/categories/框架/">框架</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/框架/Spring/">Spring</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/springboot/">springboot</a>
+        <a class="tag-link" href="/tags/ioc/">ioc</a>
     </div>
 
                     </div>
@@ -204,10 +204,57 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>摘要:Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><p>今天初次使用springboot搭建了Demo，联合mybatis时候(因为连接数据库需要创建vo层)出现bean无法导入的问题。网上谷歌了下后来找到了一个很容易忽视的原因。<br>这个是我的包结构，注意Application的位置，刚开始我并没有放在现在这个位置，而是和bean以及接口UserMapper是平行的包下。然后就报了Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}<br>这个错</p>
-<p>关于SpringBoot <wbr>bean无法注入的问题<br>将Application放在了最外层的包才解决问题。</p>
-<p>原因是：SpringBoot项目的Bean装配默认规则是根据Application类所在的包位置从上往下扫描！<br>所以一定要放在最外层！</p>
+            <p>摘要: Spring IOC 学习笔记-对象创建过程<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="对象创建过程"><a href="#对象创建过程" class="headerlink" title="对象创建过程"></a>对象创建过程</h2><p><code>Resource</code> (<code>xml</code> <code>annotation</code> <code>class</code> <code>properties/yml</code>) -&gt; <code>BeanDefinition</code> -&gt; <code>BeanWrapper</code> -&gt; <code>Object</code></p>
+<h3 id="Resource-–-gt-BeanDefinition"><a href="#Resource-–-gt-BeanDefinition" class="headerlink" title="Resource –&gt; BeanDefinition"></a><code>Resource</code> –&gt; <code>BeanDefinition</code></h3><h4 id="For-Xml"><a href="#For-Xml" class="headerlink" title="For Xml"></a>For <code>Xml</code></h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">class</span>=<span class="string">"com.itliusir.spring.entity.User"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">value</span>=<span class="string">"1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">value</span>=<span class="string">"杰克"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"classes"</span> <span class="attr">ref</span>=<span class="string">"aClass"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"aClass"</span> <span class="attr">class</span>=<span class="string">"com.itliusir.spring.entity.Class"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">value</span>=<span class="string">"1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"className"</span> <span class="attr">value</span>=<span class="string">"终极一班"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ClassPathXmlApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext</span><br><span class="line">        (<span class="string">"classpath:bean.xml"</span>);</span><br><span class="line">    User user = applicationContext.getBean(User.class);</span><br><span class="line">    log.info(user.getName());</span><br><span class="line">    log.info(user.getClasses().getClassName());</span><br><span class="line">    Assert.assertEquals(<span class="string">"杰克"</span>, user.getName());</span><br><span class="line">    Assert.assertEquals(<span class="string">"终极一班"</span>, user.getClasses().getClassName());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>org.springframework.context.support.ClassPathXmlApplicationContext#ClassPathXmlApplicationContext(java.lang.String)</code></li>
+<li><code>org.springframework.context.support.AbstractApplicationContext#refresh</code></li>
+<li><code>org.springframework.context.support.AbstractApplicationContext#obtainFreshBeanFactory</code></li>
+<li><code>org.springframework.context.support.AbstractRefreshableApplicationContext#refreshBeanFactory</code></li>
+<li><code>org.springframework.context.support.AbstractXmlApplicationContext#loadBeanDefinitions(org.springframework.beans.factory.support.DefaultListableBeanFactory)</code></li>
+<li><code>org.springframework.context.support.AbstractXmlApplicationContext#loadBeanDefinitions(org.springframework.beans.factory.xml.XmlBeanDefinitionReader)</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.Resource...)</code></li>
+<li><code>org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.Resource)</code></li>
+<li><code>org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.support.EncodedResource)</code></li>
+<li><code>org.springframework.beans.factory.xml.XmlBeanDefinitionReader#doLoadBeanDefinitions</code></li>
+<li><code>org.springframework.beans.factory.xml.XmlBeanDefinitionReader#registerBeanDefinitions</code></li>
+<li><code>org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#registerBeanDefinitions</code></li>
+<li><code>org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#doRegisterBeanDefinitions</code></li>
+<li><code>org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#parseBeanDefinitions</code></li>
+<li><code>org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#parseDefaultElement</code></li>
+<li><code>org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#processBeanDefinition</code></li>
+<li><code>org.springframework.beans.factory.support.BeanDefinitionReaderUtils#registerBeanDefinition</code></li>
+<li><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#registerBeanDefinition</code></li>
+</ol>
+<h4 id="For-Annotation"><a href="#For-Annotation" class="headerlink" title="For Annotation"></a>For <code>Annotation</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleBean</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id = <span class="string">"sss"</span>;</span><br><span class="line">    <span class="keyword">private</span> String name = <span class="string">"simpleBeans"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    AnnotationConfigApplicationContext applicationContext = <span class="keyword">new</span> AnnotationConfigApplicationContext(<span class="string">"com.itliusir.spring.beans.annotation"</span>);</span><br><span class="line">    SimpleBean simpleBean = applicationContext.getBean(SimpleBean.class);</span><br><span class="line">    log.info(simpleBean.getId());</span><br><span class="line">    log.info(simpleBean.getName());</span><br><span class="line">    Assert.assertEquals(<span class="string">"sss"</span>, simpleBean.getId());</span><br><span class="line">    Assert.assertEquals(<span class="string">"simpleBeans"</span>, simpleBean.getName());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext(java.lang.String...)</code></li>
+<li><code>org.springframework.context.annotation.AnnotationConfigApplicationContext#scan</code></li>
+<li><code>org.springframework.context.annotation.ClassPathBeanDefinitionScanner#scan</code></li>
+<li><code>org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan</code></li>
+<li><code>org.springframework.context.annotation.ClassPathBeanDefinitionScanner#registerBeanDefinition</code></li>
+<li><code>org.springframework.beans.factory.support.BeanDefinitionReaderUtils#registerBeanDefinition</code></li>
+</ol>
+<h4 id="For-Yml"><a href="#For-Yml" class="headerlink" title="For Yml"></a>For <code>Yml</code></h4><h3 id="BeanDefinition-–-gt-Object"><a href="#BeanDefinition-–-gt-Object" class="headerlink" title="BeanDefinition –&gt; Object"></a><code>BeanDefinition</code> –&gt; <code>Object</code></h3><ol>
+<li><code>org.springframework.beans.factory.BeanFactory#getBean(java.lang.String)</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code></li>
+</ol>
+<h4 id="CreateBeanInstance"><a href="#CreateBeanInstance" class="headerlink" title="CreateBeanInstance"></a><code>CreateBeanInstance</code></h4><ol>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance</code></li>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#instantiateBean</code></li>
+</ol>
+<h4 id="PopulateBean"><a href="#PopulateBean" class="headerlink" title="PopulateBean"></a><code>PopulateBean</code></h4><ol>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean</code></li>
+</ol>
+<h4 id="InitializeBean"><a href="#InitializeBean" class="headerlink" title="InitializeBean"></a><code>InitializeBean</code></h4><ol>
+<li><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean(java.lang.String, java.lang.Object, org.springframework.beans.factory.support.RootBeanDefinition)</code></li>
+</ol>
 
         
         </div>
@@ -231,7 +278,7 @@
 
             
     
-        <a href="http://itliusir.com/2017/Springboot1/#comments" id="sourceId::2017/Springboot1/" class="article-comment-link cy_cmt_count">评论</a>
+        <a href="http://itliusir.com/2018/Spring-Study IOC/#comments" id="sourceId::2018/Spring-Study IOC/" class="article-comment-link cy_cmt_count">评论</a>
     
 
         </footer>
@@ -264,15 +311,11 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/Docker-registry/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Docker在Ubuntu下私服搭建
-                
-            </div>
-        </a>
     
+        <a href="/2018/Spring Boot-Spring Event/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">使用Spring Event解耦业务开发</div>
+        </a>
     
 </nav>
 
