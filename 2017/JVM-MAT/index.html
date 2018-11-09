@@ -13,20 +13,20 @@
 <meta property="og:site_name" content="liusir|blog">
 <meta property="og:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dump.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/openfile.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat2.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/mat5.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/dominator.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram.png">
-<meta property="og:image" content="http://ok0qzthrb.bkt.clouddn.com/histogram1.png">
-<meta property="og:updated_time" content="2017-08-18T15:41:54.844Z">
+<meta property="og:image" content="http://qiniu.itliusir.com/eclipse-install-plugins.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/dump.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/openfile.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/mat2.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/mat5.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/dominator.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/top_consumers1.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/histogram.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/histogram1.png">
+<meta property="og:updated_time" content="2018-11-09T09:51:11.384Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MAT内存分析工具使用">
 <meta name="twitter:description" content="摘要:Eclipse Memory Analysis Tools (MAT) 是一个分析 Java堆数据的专业工具,用它可以定位内存泄漏的原因。">
-<meta name="twitter:image" content="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png">
+<meta name="twitter:image" content="http://qiniu.itliusir.com/eclipse-install-plugins.png">
     
 
     
@@ -125,7 +125,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                49
+                50
                 <span>文章</span>
             </div>
             <div class="article-info-block">
@@ -219,36 +219,36 @@
 <ul>
 <li>Eclipse-&gt;Help-&gt;Eclipse Marketplace</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/eclipse-install-plugins.png" alt="install plugins"></p>
+<p><img src="http://qiniu.itliusir.com/eclipse-install-plugins.png" alt="install plugins"></p>
 <ul>
 <li>安装完成后可以调用jdk工具jps查看当前的java进程，然后调用jmap将该进程的内存heap输出到文件。</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dump.png" alt="dump"></p>
+<p><img src="http://qiniu.itliusir.com/dump.png" alt="dump"></p>
 <ul>
 <li>通过MAT以图像形式直观的展示内存泄漏报表等</li>
 </ul>
 <p>首先Eclipse-&gt;File-&gt;Open File 打开上一步生成的文件</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/openfile.png" alt="openfile"></p>
+<p><img src="http://qiniu.itliusir.com/openfile.png" alt="openfile"></p>
 <p>第一个选项是内存泄漏报表（自动检查可能存在内存泄露的对象，通过报表展示存活的对象以及为什么他们没有被垃圾收集）；</p>
 <p>第二个是对象报表（对可疑对象进行分析，如字符串是否定义重了，空的collection、finalizer以及弱引用等）；</p>
 <p>这里我们打开第一个：</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat2.png" alt="MAT View"></p>
+<p><img src="http://qiniu.itliusir.com/mat2.png" alt="MAT View"></p>
 <p><strong>Memory Analyzer主界面介绍</strong></p>
 <ul>
 <li>下面的Histogram（列出内存中的对象，对象的个数以及大小）这里我们可以使用正则去进行匹配</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/mat5.png" alt="Histogram"></p>
+<p><img src="http://qiniu.itliusir.com/mat5.png" alt="Histogram"></p>
 <p>可以在具体的Class右键List objects-&gt;with incoming…./outgoing…查看该Class的实例</p>
 <pre><code>1. outgoing references ：表示该对象的出节点（被该对象引用的对象）。
 2. incoming references ：表示该对象的入节点（引用到该对象的对象）。
 </code></pre><ul>
 <li>下面的Dominator Tree是列出最大的对象以及其依赖存活的Object （大小是以Retained Heap为标准排序的）</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/dominator.png" alt="dominator"></p>
+<p><img src="http://qiniu.itliusir.com/dominator.png" alt="dominator"></p>
 <ul>
 <li>而Top Consumers则是通过图形列出最大的Object</li>
 </ul>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/top_consumers1.png" alt="top_consumers"></p>
+<p><img src="http://qiniu.itliusir.com/top_consumers1.png" alt="top_consumers"></p>
 <ul>
 <li>Duplicate Class是通过MAT自动分析泄漏的原因</li>
 </ul>
@@ -264,9 +264,9 @@
 <li>Retained Heap</li>
 </ul>
 <p>它表示如果一个对象被释放，那么因为该对象的释放而减少引用从而导致释放所有的对象所占用的heap大小</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram.png" alt="retained"></p>
+<p><img src="http://qiniu.itliusir.com/histogram.png" alt="retained"></p>
 <p>为了计算Retained Memory，MAT引入了Dominator Tree。加入对象A引用B和C，B和C又都引用到D（一个菱形）。此时要计算Retained Memory，A的包括A本身和B，C，D。B和C因为共同引用D，所以他俩的Retained Memory都只是他们本身。D当然也只是自己。我觉得是为了加快计算的速度，MAT改变了对象引用图，而转换成一个对象引用树。在这里例子中，树根是A，而B，C，D是他的三个儿子。B，C，D不再有相互关系。把引用图变成引用树，计算Retained Heap就会非常方便，显示也非常方便。对应到MAT UI上，在dominator tree这个view中，显示了每个对象的shallow heap和retained heap。然后可以以该节点位树根，一步步的细化看看retained heap到底是用在什么地方了。要说一下的是，这种从图到树的转换确实方便了内存分析，但有时候会让人有些疑惑。本来对象B是对象A的一个成员，但因为B还被C引用，所以B在树中并不在A下面，而很可能是平级，如下图所示。</p>
-<p><img src="http://ok0qzthrb.bkt.clouddn.com/histogram1.png" alt="retained"></p>
+<p><img src="http://qiniu.itliusir.com/histogram1.png" alt="retained"></p>
 <p>为了纠正这点，MAT中点击右键，可以List objects中选择with outgoing references和with incoming references。这是个真正的引用图的概念</p>
 <ul>
 <li>GC Root</li>
@@ -370,7 +370,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/SpringCloud/">SpringCloud</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/scheduler/">scheduler</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Docker/">Docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/SpringCloud/">SpringCloud</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/Springboot/">Springboot</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/">框架</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/框架/Spring/">Spring</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/SpringMVC/">SpringMVC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/框架/scheduler/">scheduler</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -379,7 +379,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -388,7 +388,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Validator/" style="font-size: 10px;">Validator</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker架构/" style="font-size: 10px;">docker架构</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/xxl-job/" style="font-size: 10px;">xxl-job</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
+            <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/BCrypt/" style="font-size: 10px;">BCrypt</a> <a href="/tags/Builder模式/" style="font-size: 10px;">Builder模式</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JPA/" style="font-size: 10px;">JPA</a> <a href="/tags/JTA/" style="font-size: 10px;">JTA</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/Java变量的可见性/" style="font-size: 10px;">Java变量的可见性</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/MySQL5-7安装/" style="font-size: 10px;">MySQL5.7安装</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Random/" style="font-size: 10px;">Random</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/Validator/" style="font-size: 10px;">Validator</a> <a href="/tags/addResourceHandlers/" style="font-size: 10px;">addResourceHandlers</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker架构/" style="font-size: 10px;">docker架构</a> <a href="/tags/docker私服/" style="font-size: 10px;">docker私服</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/h2/" style="font-size: 10px;">h2</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/jooq/" style="font-size: 10px;">jooq</a> <a href="/tags/kafka/" style="font-size: 10px;">kafka</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/volatile的可见性/" style="font-size: 10px;">volatile的可见性</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/xxl-job/" style="font-size: 10px;">xxl-job</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/静态资源处理/" style="font-size: 10px;">静态资源处理</a>
         </div>
     </div>
 
