@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2017/javase-Method-invoke/</loc>
+    
+    <lastmod>2018-12-03T12:19:12.645Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2018/Spring-Study%20IOC2/</loc>
     
     <lastmod>2018-11-09T09:56:41.564Z</lastmod>
@@ -306,13 +313,6 @@
     <loc>http://itliusir.com/2017/Docker-Nodejs-Vue/</loc>
     
     <lastmod>2017-11-23T08:23:23.166Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/2017/javase-Method-invoke/</loc>
-    
-    <lastmod>2017-09-05T08:09:48.066Z</lastmod>
     
   </url>
   
