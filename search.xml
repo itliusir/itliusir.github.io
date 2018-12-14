@@ -5,7 +5,7 @@
     <entry>
       <title><![CDATA[2018-面试总结]]></title>
       <url>%2F2018%2F2018%20Interview-Summary%2F</url>
-      <content type="text"><![CDATA[摘要: 2018-面试总结 正文:2018面试题总结 JAVA 基础 Arraylist和Linkedlist存储结构与区别 HashMap 1.7与1.8区别 HashMap 扩容原理，为什么是2的N次幂 多线程 HashTable 原理，Synchronize 原理 ConcurrentHashMap 原理，说说CAS J.U.C 并发包，谈谈AQS volitile关键字,谈谈JMM ThreadLocal原理 JVM Jvm 内存结构 几种常见的垃圾算法 为什么要分代 一个方法的执行在JVM中的流程 标记清除与可达性 数据结构与算法 二叉树深度优先遍历 队列与栈区别 红黑树(HashMap 1.8延伸) 哪种数据结构搜索效率高 TopK 归并算法 给一堆打乱后的数组，输入目标数字 输出下标，时间复杂度要小 网络协议 TCP 三次握手 四次挥手 HTTP报文结构，Get与Post区别 HTTPS交互流程，对称加密与非对称加密 数据库 B tree索引结构 SQL优化，除了explain 还有什么工具 ACID，mysql默认事务隔离级别，重复读、脏读是什么 mysql统计类查询 redis 有序set原理 知道哪种数据库原理(草) 框架与分布式 SpringCloud问个遍 IOC原理，怎么打印请求时间又绕到AOP 多个定时任务事务保持一致 分布式锁的实现 异步的实现 分布式一致性协议 熔断组件的原理]]></content>
+      <content type="text"><![CDATA[摘要: 2018-面试总结 正文:2018面试题总结JAVA 基础 Arraylist和Linkedlist存储结构与区别 HashMap 1.7与1.8区别 HashMap 扩容原理，为什么是2的N次幂多线程 HashTable 原理，Synchronize 原理 ConcurrentHashMap 原理，说说CAS J.U.C 并发包，谈谈AQS volitile关键字,谈谈JMM ThreadLocal原理JVM Jvm 内存结构 几种常见的垃圾算法 为什么要分代 一个方法的执行在JVM中的流程 标记清除与可达性数据结构与算法 二叉树深度优先遍历 队列与栈区别 红黑树(HashMap 1.8延伸) 哪种数据结构搜索效率高 TopK 归并算法 给一堆打乱后的数组，输入目标数字 输出下标，时间复杂度要小网络协议 TCP 三次握手 四次挥手 HTTP报文结构，Get与Post区别 HTTPS交互流程，对称加密与非对称加密数据库 B tree索引结构 SQL优化，除了explain 还有什么工具 ACID，mysql默认事务隔离级别，重复读、脏读是什么 mysql统计类查询 redis 有序set原理 知道哪种数据库原理(草)框架与分布式 SpringCloud问个遍 IOC原理，怎么打印请求时间又绕到AOP 多个定时任务事务保持一致 分布式锁的实现 异步的实现 分布式一致性协议 熔断组件的原理]]></content>
     </entry>
 
     
