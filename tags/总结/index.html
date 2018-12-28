@@ -3,20 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Rest Notes-基于网络应用的架构 | liusir|blog</title>
+    <title>标签: 总结 | liusir|blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
-<meta name="keywords" content="REST">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Rest Notes-基于网络应用的架构">
-<meta property="og:url" content="http://itliusir.com/2018/Rest Notes-Web Based Architecture/index.html">
+    <meta name="description" content="君君的个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="liusir|blog">
+<meta property="og:url" content="http://itliusir.com/tags/总结/index.html">
 <meta property="og:site_name" content="liusir|blog">
-<meta property="og:description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
+<meta property="og:description" content="君君的个人博客">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-02T13:30:16.924Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rest Notes-基于网络应用的架构">
-<meta name="twitter:description" content="摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义">
+<meta name="twitter:title" content="liusir|blog">
+<meta name="twitter:description" content="君君的个人博客">
     
 
     
@@ -161,180 +159,50 @@
 </aside>
 
             
-            <section id="main"><article id="post-Rest Notes-Web Based Architecture" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
+            <section id="main">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-tag"></i></span>
+        <h1 class="title">#总结</h1>
+    </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
-        <h1 class="article-title" itemprop="name">
-            Rest Notes-基于网络应用的架构
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/2018/2018 Annual-Summary/">2018-年度总结</a>
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
+                <div class="article-meta">
+                    
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/Rest Notes-Web Based Architecture/">
-            <time datetime="2018-06-02T14:00:00.000Z" itemprop="datePublished">2018-06-02</time>
+        <a href="/2018/2018 Annual-Summary/">
+            <time datetime="2018-12-28T10:00:00.000Z" itemprop="datePublished">2018-12-28</time>
         </a>
     </div>
 
 
-                        
+                    
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/微服务/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/微服务/REST/">REST</a>
+        <a class="article-category-link" href="/categories/总结/">总结</a>
     </div>
 
-                        
+                    
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/REST/">REST</a>
+        <a class="tag-link" href="/tags/总结/">总结</a>
     </div>
 
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>摘要: 本文为Rest论文的第二章节基于网络应用的架构学习总结，该章同第一章软件架构一样继续讨论论文的背景，主要是对论文要讨论的范围进行一个定义<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="基于网络应用的架构"><a href="#基于网络应用的架构" class="headerlink" title="基于网络应用的架构"></a>基于网络应用的架构</h2><h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p>本文讨论的范围限制在<code>基于网络</code>应用的架构风格</p>
-<h4 id="基于网络-VS-分布式"><a href="#基于网络-VS-分布式" class="headerlink" title="基于网络 VS 分布式"></a>基于网络 VS 分布式</h4><p>基于网络的架构组件之间的通信仅限于消息传递或者消息传递的等价物</p>
-<p>Tanenbaum和van Renesse是这样区分两者：基于网络的系统有能力跨越网络运行，分布式好像是普通的集中式系统，但是运行在多个独立的CPU上</p>
-<h4 id="应用软件-VS-网络软件"><a href="#应用软件-VS-网络软件" class="headerlink" title="应用软件 VS 网络软件"></a>应用软件 VS 网络软件</h4><p>应用软件的架构是对于整个系统的一种抽象，用户动作的目的可以被表示为功能性的架构属性，而网络抽象目的则是将bit从一个地点移动到另一个地点，不关心为何移动</p>
-<blockquote>
-<p>只有在应用的层面上我们才可以拿到详细的运行参数(交互参数、应用状态参数、吞吐量等)等去评估设计上的权衡，所以我们讨论的范围需要限制在对应用软件架构的讨论</p>
-</blockquote>
-<h3 id="关键关注点的架构属性"><a href="#关键关注点的架构属性" class="headerlink" title="关键关注点的架构属性"></a>关键关注点的架构属性</h3><h4 id="性能-Performance"><a href="#性能-Performance" class="headerlink" title="性能(Performance)"></a>性能(Performance)</h4><p>基于网络应用的性能首先取决于应用的需求，然后是所选择的交互风格，接下来是实现架构，最后是每个组件的实现</p>
-<ul>
-<li><p><strong>网络性能(Network Performance)</strong></p>
-<ul>
-<li><strong>吞吐量</strong> 信息在组件之间移交的速率</li>
-<li><strong>开销</strong> 分为初始化开销和每次交互产生的开销</li>
-<li><strong>带宽</strong> 特定网络连接上可用的最大吞吐量</li>
-<li><strong>可用带宽</strong> 应用实际可用的那部分带宽</li>
-</ul>
-</li>
-<li><p><strong>用户感知的性能(User-perceived Performance)</strong></p>
-<ul>
-<li><strong>延迟</strong> 指从最初的触发请求到得到最早的响应指示之间持续的时间</li>
-<li><strong>完成时间</strong> 完成一个应用动作所花费的时间</li>
-</ul>
-<p>延迟与完成时间区别在于一个能够增量的处理数据一个是全部处理完。例如页面的异步加载与全部加载完毕</p>
-</li>
-<li><p><strong>网络效率(Network Efficiency)</strong></p>
-<p>最佳的应用性能是通过不适用网络而获得的，对于基于网络的应用来说有效的减少网络交互才是最高效的架构风格</p>
-<p>我们可以利用缓存、对数据的迁移路径缩短减少某些交互的必要性</p>
-</li>
-</ul>
-<h4 id="可伸缩性-Scalability"><a href="#可伸缩性-Scalability" class="headerlink" title="可伸缩性(Scalability)"></a>可伸缩性(Scalability)</h4><p>我们可以通过以下方法来改善可伸缩性：简化组件、将服务分布到很多组件(对交互去中心化)、以及通过监控对交互和配置进行一般控制</p>
-<p><strong>影响</strong>：</p>
-<ul>
-<li>交互的频率</li>
-<li>组件负载随时间的分布</li>
-<li>强一致性or弱一致性</li>
-<li>同步or异步</li>
-<li>环境</li>
-</ul>
-<h4 id="可修改性-Modifiability"><a href="#可修改性-Modifiability" class="headerlink" title="可修改性(Modifiability)"></a>可修改性(Modifiability)</h4><p>可修改性包括可进化性(一个组件改变不会对其他组件产生负面影响)、可扩展性、可定制性(临时定义的支持)、可配置性(部署之后修改的支持)、可重用性，我们在对一个已部署的应用做出改变时候，不应该去停止和重新启动整个系统，还要准备好应对随着时间的变化产生的兼容性</p>
-<h4 id="可见性-Visibility"><a href="#可见性-Visibility" class="headerlink" title="可见性(Visibility)"></a>可见性(Visibility)</h4><p>可见性是指一个组件对于其他两个组件之间的交互进行监视和斡旋(wo xuan)的能力</p>
-<p>拥有了可见性之后，就能够通过多个交互共享的缓存来改善性能、通过分层服务来改善可伸缩性、通过反射式监控来改善性能、通过允许防火墙等中间件对交互做检查来改善安全性</p>
-<h4 id="可移植性-Portability"><a href="#可移植性-Portability" class="headerlink" title="可移植性(Portability)"></a>可移植性(Portability)</h4><p>这里的可移植性指的是软件能够在不同环境下运行，例如虚拟机架构风格以及那些限制只使用标准格式的数据元素的架构风格</p>
-<h4 id="可靠性-Reliability"><a href="#可靠性-Reliability" class="headerlink" title="可靠性(Reliability)"></a>可靠性(Reliability)</h4><p>从应用的架构角度来说，可靠性可以被看作架构元素出现故障影响的程度</p>
-<p>可以通过避免单点故障、增加冗余、允许监视、以及将故障的范围缩小到一个可恢复的动作</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-    <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-	<a class="jiathis_button_weixin"></a>
-	<a class="jiathis_button_tsina"></a>
-	<a class="jiathis_button_qzone"></a>
-	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
-	<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
-
-
-</div>
-
-            
-    
-        <a href="http://itliusir.com/2018/Rest Notes-Web Based Architecture/#comments" id="sourceId::2018/Rest Notes-Web Based Architecture/" class="article-comment-link cy_cmt_count">评论</a>
-    
-
-        </footer>
-    </div>
-	
-		<! -- 添加捐赠图标 -->
-<div class ="post-donate">
-    <div id="donate_board" class="donate_bar center">
-        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
-        <span class="donate_txt">
-           ↑<br>
-		   大吉大利 请我吃鸡！
-        </span>
-        <br>
-      </div>  
-	<div id="donate_guide" class="donate_bar center hidden" >
-		<!-- 微信打赏图案 -->
-		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
-    </div>
-	<script type="text/javascript">
-		document.getElementById('btn_donate').onclick = function(){
-			$('#donate_board').addClass('hidden');
-			$('#donate_guide').removeClass('hidden');
-		}
-	</script>
-</div>
-<! -- 添加捐赠图标 -->
-	
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2018/Rest Notes-Web Based Architecture Styles/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Rest Notes-基于网络应用的架构风格
-                
+                </div>
             </div>
-        </a>
+        </div>
     
-    
-        <a href="/2018/Rest Notes-Software Architecture/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Rest Notes-软件架构</div>
-        </a>
-    
-</nav>
-
-
-    
-	
-</article>
-
-
-    
-    <section id="comments">
-    
-    </section>
-
-
-
+</div>
 </section>
             
                 <aside id="sidebar">
