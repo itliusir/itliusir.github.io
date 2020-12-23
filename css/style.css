@@ -161,7 +161,7 @@ body,
 body {
   color: #565a5f;
   background: #f5f8f9;
-  font: 14px "open sans", "Helvetica Neue", "Microsoft Yahei", Helvetica, Arial, sans-serif;
+  font: 18px "open sans", "Helvetica Neue", "Microsoft Yahei", Helvetica, Arial, sans-serif;
   -webkit-text-size-adjust: 100%;
 }
 a {
@@ -181,7 +181,7 @@ code {
   background-color: #fcedea;
 }
 .outer {
-  max-width: 1320px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -430,7 +430,7 @@ code {
   display: inline-block;
 }
 .header-inner #logo .site-title {
-  font-size: 16px;
+  font-size: 18px;
   display: inline-block;
   vertical-align: top;
   font-weight: 600;
