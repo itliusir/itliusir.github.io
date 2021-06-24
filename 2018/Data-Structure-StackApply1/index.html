@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>栈的应用——四则运算表达式 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:本文是看《大话数据结构》栈章节的学习总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈的应用——四则运算表达式">
+<meta property="og:url" content="http://itliusir.com/2018/Data-Structure-StackApply1/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:本文是看《大话数据结构》栈章节的学习总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack1.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack2-1.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack3.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack4.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack5.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/stack6.png">
+<meta property="article:published_time" content="2018-04-14T11:00:00.000Z">
+<meta property="article:modified_time" content="2018-11-09T09:48:26.864Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="Stack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu.itliusir.com/stack1.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                56
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                52
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Data-Structure-StackApply1" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            栈的应用——四则运算表达式
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/Data-Structure-StackApply1/">
+            <time datetime="2018-04-14T11:00:00.000Z" itemprop="datePublished">2018-04-14</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Stack/" rel="tag">Stack</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:本文是看《大话数据结构》栈章节的学习总结</p>
+<span id="more"></span>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h1 id="栈的应用——四则运算表达式"><a href="#栈的应用——四则运算表达式" class="headerlink" title="栈的应用——四则运算表达式"></a>栈的应用——四则运算表达式</h1><blockquote>
+<p>栈的应用场景有很多，如浏览器的后退，编辑软件的回退等，今天要谈的是栈的基本应用之四则运算表达式(中缀转后缀表达式)</p>
+</blockquote>
+<p>大家都知道用计算器可以很方便的计算出两数运算的结果，但是如果遇到有优先级的四则运算，计算器又是如何去精确的计算出结果呢？</p>
+<p>在20世纪50年代有一个叫**<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%89%AC%C2%B7%E5%8D%A2%E5%8D%A1%E8%A5%BF%E7%BB%B4%E8%8C%A8">Jan Łukasiewicz</a><strong>的波兰数学家想到了</strong>一种不需要括号的后缀表达式，我们称为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95">逆波兰表示法</a>** ，逆波兰记法不需要括号来标识操作符的优先级</p>
+<h2 id="中缀转后缀表达式"><a href="#中缀转后缀表达式" class="headerlink" title="中缀转后缀表达式"></a>中缀转后缀表达式</h2><p>我们平时所用的标准四则运算表达式，如：</p>
+<p><strong><code>150-(7+5)*2+30*2</code></strong></p>
+<p>叫做中缀表达式，因为所有的运算符号都在两个数字之间，现在我们通过使用栈将其转为后缀表达式</p>
+<blockquote>
+<p>规则：</p>
+<p>从左到右遍历上面中缀表达式的每个数字符号</p>
+<ol>
+<li>如果是数字则直接输出</li>
+<li>如果是符号则判断与栈顶中的符号优先级，是右括号的或者比栈顶中符号优先级低的依次去括号出栈输出</li>
+<li>否则在栈中等待最后遍历完依次输出</li>
+</ol>
+</blockquote>
+<h3 id="转换过程"><a href="#转换过程" class="headerlink" title="转换过程"></a>转换过程</h3><ol>
+<li>按照上述规则依次遍历<code>150-(7+5)*2+30*2</code>，150是数字直接输出，<code>-</code>号进栈，第三个是左括号也是符号依然进栈，7是数字直接输出，如下图一所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack1.png" alt="图一"></p>
+<ol start="2">
+<li>下面接着<code>+</code>号进栈，5输出，接下注意的是右括号，遇到右括号需要匹配前面的左括号，并依次去括号出栈输出(输出了<code>+</code>)。接着<code>*</code>号进栈，2输出，如下图二所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack2-1.png" alt="图二"></p>
+<ol start="3">
+<li>此时栈顶是<code>*</code>,然后<code>+</code>号<strong>准备进栈</strong>，对比发现<code>+</code>优先级低于栈顶，则栈顶元素依次输出，完了后<code>+</code>号<strong>进栈</strong> 。接着30输出，<code>*</code>比栈顶<code>+</code>优先级高，直接进栈不输出，然后2输出。如下图三所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack3.png" alt="图三"></p>
+<ol start="4">
+<li>最后遍历结束栈中符号依次输出，最终的后缀表达式结果是**<code>150 7 5 + 2 * - 30 2 * +</code>**</li>
+</ol>
+<h2 id="后缀表达式计算结果"><a href="#后缀表达式计算结果" class="headerlink" title="后缀表达式计算结果"></a>后缀表达式计算结果</h2><p>上述结果：**<code>150 7 5 + 2 * - 30 2 * +</code>**， 可能很多人问转这个有什么用，接下来看的是该后缀表达式的计算过程。</p>
+<blockquote>
+<p>计算规则：从左到右遍历每个数字和符号，遇到数字就进栈，遇到符号将处于栈顶的两个元素出栈并运算，运算结果进栈，一直到最后算出最终结果</p>
+</blockquote>
+<ol>
+<li><strong>150 7 5</strong>依次进栈，<code>+</code>号是符号，将栈顶的 <strong>7 5</strong>出栈并运算(+)，结果是<strong>12</strong>并进栈，<strong>2</strong>是数字同样进栈。如下图四所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack4.png" alt="图四"></p>
+<ol start="2">
+<li>接着是<code>*</code>号，将栈顶的两个元素运算并重新入栈(<em><em>12 <em>2</em></em>)；然后是<code>-</code>号，栈顶两个元素分别是</em>*150 24<strong>，结果是</strong>126<strong>入栈；然后数字</strong>30 2**依次入栈。如下图五所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack5.png" alt="图五"></p>
+<ol start="3">
+<li>遍历到<code>*</code>，将栈顶元素<strong>30 2</strong>运算并重新进栈，最后是<code>+</code>号，所以结果是186出栈，栈变为空。如下图六所示。</li>
+</ol>
+<p><img src="http://qiniu.itliusir.com/stack6.png" alt="图六"></p>
+<p><strong>上述过程都充分的利用了栈的后进先出特性来处理的，所以该表达式的转换和计算是栈的经典应用之一，对理解栈本身也有很大的帮助~</strong></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Data-Structure-StackApply1/#comments" id="sourceId::2018/Data-Structure-StackApply1/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/JVM-Instruction-Execution-Flow/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    初识JVM指令执行流程
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/database-redis-cluster-spec/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Redis 集群规范</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

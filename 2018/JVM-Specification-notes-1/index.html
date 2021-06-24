@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JVM Specification notes 1 -Jvm Structure | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要: Jvm Structure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM Specification notes 1 -Jvm Structure">
+<meta property="og:url" content="http://itliusir.com/2018/JVM-Specification-notes-1/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要: Jvm Structure">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-06T15:30:00.000Z">
+<meta property="article:modified_time" content="2018-05-06T15:33:08.885Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="JVM-Spec">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                56
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                52
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-JVM-Specification-notes-1" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            JVM Specification notes 1 -Jvm Structure
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/JVM-Specification-notes-1/">
+            <time datetime="2018-05-06T15:30:00.000Z" itemprop="datePublished">2018-05-06</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/JVM/">JVM</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/JVM-Spec/" rel="tag">JVM-Spec</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: Jvm Structure</p>
+<span id="more"></span>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="Java-虚拟机结构"><a href="#Java-虚拟机结构" class="headerlink" title="Java 虚拟机结构"></a>Java 虚拟机结构</h2><h3 id="Class文件格式"><a href="#Class文件格式" class="headerlink" title="Class文件格式"></a>Class文件格式</h3><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><ul>
+<li>原始类型(基本类型)<ul>
+<li>数值类型{整数[byte8 short16 int32 long64 char16]、浮点[float32 double64]}</li>
+<li>布尔类型{boolean8}</li>
+<li>returnAddress类型{表示一条字节码指令的操作码}</li>
+</ul>
+</li>
+<li>引用类型</li>
+</ul>
+<blockquote>
+<p>编译器应当在编译期间尽最大努力完成可能的类型检查，使得虚拟机在运行期间无需进行这些操作</p>
+<p>编译器会在编译期或运行期会将byte和short类型的数据带符号扩展（Sign-Extend）为相应的int类型数据，将boolean和char类型数据零位扩展（Zero-Extend）为相应的int类型数据</p>
+</blockquote>
+<h3 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h3><p>程序运行期间会使用到的运行时数据区</p>
+<h4 id="PC寄存器"><a href="#PC寄存器" class="headerlink" title="PC寄存器"></a>PC寄存器</h4><p>每一个虚拟机线程都有自己的PC寄存器，保存Java虚拟机正在执行的字节码指令的地址</p>
+<h4 id="Java-虚拟机栈"><a href="#Java-虚拟机栈" class="headerlink" title="Java 虚拟机栈"></a>Java 虚拟机栈</h4><p>栈与线程同时创建，存储局部变量与一些过程结果的地方</p>
+<h4 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h4><p>可供各条线程共享的运行时内存区域，也是供所有类实例和数组对象分配内存的区域</p>
+<p>Java堆在虚拟机启动的时候就被创建，它存储了被自动内存管理系统所管理的各种对象，这些受管理的对象无需，也无法显式地被销毁    </p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>可供各条线程共享的运行时内存区域</p>
+<p>方法区在虚拟机启动的时候被创建，存储了每一个类的结构信息，例如运行时常量池、字段和方法数据、构造函数和普通方法的字节码内容、还包括一些在类、实例、接口初始化时用到的特殊方法</p>
+<blockquote>
+<p>虽然方法区是堆的逻辑组成部分，但是简单的虚拟机实现可以选择在这个区域不实现垃圾收集</p>
+</blockquote>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>每一个类或接口的常量池的运行时表示形式，它包括了若干种不同的常量：从编译期可知的数值字面量到必须运行期解析后才能获得的方法或字段引用</p>
+<blockquote>
+<p>每一个运行时常量池都分配在Java虚拟机的方法区之中，在类和接口被加载到虚拟机后，对应的运行时常量池就被创建出来</p>
+</blockquote>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>如果支持本地方法栈，则会在线程创建的时候按线程分配</p>
+<h3 id="栈帧-Frame"><a href="#栈帧-Frame" class="headerlink" title="栈帧(Frame)"></a>栈帧(Frame)</h3><p>用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接、方法返回值和异常分派</p>
+<p>栈帧随着方法调用而创建，随着方法结束而销毁，无论方法是正常完成还是异常完成</p>
+<p>栈帧的存储空间分配在Java虚拟机栈</p>
+<p>每一个栈帧都有自己的局部变量表、操作数栈和指向当前方法所属的类的运行时常量池的引用</p>
+<p>栈帧容量的大小仅仅取决于Java虚拟机的实现和方法调用时可被分配的内存</p>
+<p>一条线程只有正在执行某个方法的栈帧是活动的，叫做当前栈帧，对应的方法叫当前方法，定义这个方法的类叫当前类。对局部变量表和操作数栈的各种操作，通常指的是当前栈帧进行的操作</p>
+<blockquote>
+<p>栈帧是线程本地私有的数据，不可能在一个栈帧之中引用另外一条线程的栈帧</p>
+<p>如果当前方法调用了其他方法，或者当前方法执行结束，那这个方法的栈帧就不再是当前栈帧了。当一个新的方法被调用，则会新建一个栈帧并成为当前栈帧，当方法返回时会将结果（当前新的栈帧）返回给上一个栈帧，当前栈帧丢弃，上一个栈帧重新成为当前栈帧。</p>
+</blockquote>
+<h4 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h4><p>长度由编译期决定，存储于类和接口的二进制表示之中，既通过方法的Code属性保存及提供给栈帧使用</p>
+<ul>
+<li>一个局部变量可以保存类型boolean、byte、char、short、float、reference和returnAddress的数据</li>
+<li>两个局部变量可以保存类型为long和double的数据</li>
+</ul>
+<p>当方法被调用时候，参数将会传递至从0开始的连续的局部变量表里。如果是实例方法被调用则第0个局部变量一定是this</p>
+<blockquote>
+<p>局部变量使用索引来进行定位访问，0-max</p>
+<p>long和double这种需要两个局部变量的类型，索引取最小的那个局部变量。</p>
+</blockquote>
+<h4 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h4><p>同局部变量表，长度由编译期决定，存储于类和接口的二进制表示之中，既通过方法的Code属性保存及提供给栈帧使用</p>
+<p>操作数栈所属的栈帧在刚刚被创建的时候，操作数栈是空的。</p>
+<p>Java虚拟机提供一些字节码指令来从局部变量表或者对象实例的字段中复制常量或变量值到操作数栈中，也提供了一些指令用于从操作数栈取走数据、操作数据和把操作结果重新入栈。在方法调用的时候，操作数栈也用来准备调用方法的参数以及接收方法返回结果，例子参考<a href="http://itliusir.com/2018/JVM-Instruction-Execution-Flow/">初识jvm指令执行流程</a></p>
+<blockquote>
+<p>一个long或者double类型的数据会占用两个单位的栈深度，其他数据类型则会占用一个单位深度</p>
+</blockquote>
+<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4><p>在Class文件里面，描述一个方法调用了其他方法，或者访问其成员变量是通过符号引用来表示的，动态链接的作用就是将这些符号引用所表示的方法转换为实际方法的直接引用</p>
+<p>类加载的过程中将要解析掉尚未被解析的符号引用，并且将变量访问转化为访问这些变量的存储结构所在的运行时内存位置的正确偏移量</p>
+<blockquote>
+<p>由于动态链接的存在，通过晚期绑定（Late Binding）使用的其他类的方法和变量在发生变化时，将不会对调用它们的方法构成影响</p>
+</blockquote>
+<h3 id="浮点算法"><a href="#浮点算法" class="headerlink" title="浮点算法"></a>浮点算法</h3><p>Java虚拟机采纳了《IEEE Standard for Binary Floating-Point Arithmetic》（ANSI/IEEE Std. 754-1985，New York）浮点算法规范中的部分子集</p>
+<h4 id="Java虚拟机和IEEE-754中的浮点算法"><a href="#Java虚拟机和IEEE-754中的浮点算法" class="headerlink" title="Java虚拟机和IEEE 754中的浮点算法"></a>Java虚拟机和IEEE 754中的浮点算法</h4><ul>
+<li><p>在Java虚拟机中的浮点操作在遇到非法操作，如被零除（Divison By Zero）、上限溢出（Overflow）、下限溢出（Underflow）和非精确（Inexact）时，不会抛出exception、trap或者其他IEEE 754异常情况中定义的信号。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">1</span>;</span><br><span class="line">System.out.println(d/<span class="number">0</span>); <span class="comment">//Infinity 非exception </span></span><br></pre></td></tr></table></figure></li>
+<li><p>Java虚拟机里面，将浮点数转化为整型数是使用向零舍入(去尾操作)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">1.61</span>;</span><br><span class="line">System.out.println((<span class="keyword">int</span>)d);<span class="comment">//1 非2</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="初始化方法的特殊命名"><a href="#初始化方法的特殊命名" class="headerlink" title="初始化方法的特殊命名"></a>初始化方法的特殊命名</h3><ul>
+<li><p><code>&lt;init&gt;</code></p>
+<p>在Java虚拟机层面上，Java语言中的构造函数是以一个名为<code>&lt;init&gt;</code>的特殊实例初始化方法的形式出现的</p>
+<p><code>&lt;init&gt;</code>这个方法名称是由编译器命名的，因为它并非一个合法的Java方法名字，不可能通过程序编码的方式实现。实例初始化方法只能在实例的初始化期间，通过Java虚拟机的<code>invokespecial</code>令来调用，只有在实例正在构造的时候，实例初始化方法才可以被调用访问</p>
+</li>
+<li><p><code>&lt;clinit&gt;</code></p>
+<p>类或者接口是通过<code>&lt;clinit&gt;</code>方法完成初始化的，这个名字也是由编译器命名的，没有任何虚拟机字节码指令可以调用这个方法，只有在类的初始化阶段中会被虚拟机自身调用</p>
+</li>
+</ul>
+<h3 id="异常的处理"><a href="#异常的处理" class="headerlink" title="异常的处理"></a>异常的处理</h3><p>抛异常的本质实际上是程序控制权的一种即时的、非局部（Nonlocal）的转换——从异常抛出的地方转换至处理异常的地方</p>
+<ul>
+<li><p>同步异常</p>
+<p>当前线程执行的某个操作所导致的异常</p>
+</li>
+<li><p>异步异常</p>
+<p>其他线程中出现的异常</p>
+</li>
+</ul>
+<blockquote>
+<p>由Java虚拟机执行的每一个方法都会配有零至多个异常处理器（Exception Handlers），异常处理器描述了其在方法代码中的有效作用范围（通过字节码偏移量范围来描述）、能处理的异常类型以及处理异常的代码所在的位置</p>
+<p>当有异常被抛出时，Java虚拟机会搜索当前方法的包含的各个异常处理器，如果能找到可以处理该异常的异常处理器，则将代码控制权转向到异常处理器中描述的处理异常的分支之中</p>
+</blockquote>
+<h3 id="字节码指令"><a href="#字节码指令" class="headerlink" title="字节码指令"></a>字节码指令</h3><p>Java虚拟机的指令由一个字节长度的、代表着某种特定操作含义的操作码（Opcode）以及跟随其后的零至多个代表此操作所需参数的操作数（Operands）所构成。虚拟机中许多指令并不包含操作数，只有一个操作码。<br>如果忽略异常处理，那Java虚拟机的解释器使用下面这个伪代码的循环即可有效地工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123; </span><br><span class="line">  自动计算PC寄存器以及从PC寄存器的位置取出操作码;</span><br><span class="line">  <span class="keyword">if</span> (存在操作数) 取出操作数;</span><br><span class="line">  执行操作码所定义的操作</span><br><span class="line">&#125; <span class="keyword">while</span> (处理下一次循环);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果要将一个16位长度的无符号整数使用两个无符号字节存储起来，如下所示</p>
+<p><code>(byte1 &lt;&lt; 8) | byte2</code></p>
+<h4 id="加载和存储指令"><a href="#加载和存储指令" class="headerlink" title="加载和存储指令"></a>加载和存储指令</h4><ul>
+<li><p>xload</p>
+<p>从局部变量加载到操作数栈</p>
+</li>
+<li><p>xstore</p>
+<p>从操作数栈存储到局部变量表</p>
+</li>
+<li><p>xpush，xdc，xconst</p>
+<p>将一个常量加载到操作数栈</p>
+</li>
+<li><p>wide</p>
+<p>扩充局部变量表的访问索引</p>
+</li>
+</ul>
+<h4 id="运算指令"><a href="#运算指令" class="headerlink" title="运算指令"></a>运算指令</h4><p>对两个操作数栈上的值进行某种特定运算，并把结果重新存入到操作栈顶</p>
+<ul>
+<li><p>整型数据运算</p>
+<p>如：iadd，isub，imul，idiv</p>
+</li>
+<li><p>浮点型数据运算</p>
+<p>如：fadd，fsub，fmul，fdiv</p>
+</li>
+</ul>
+<h4 id="类型转换指令"><a href="#类型转换指令" class="headerlink" title="类型转换指令"></a>类型转换指令</h4><p>将两种Java虚拟机数值类型进行相互转换</p>
+<ul>
+<li><p>宽化类型转换</p>
+<p>小范围类型向大范围类型的安全转换，无需显式的转换指令</p>
+</li>
+<li><p>窄化类型转换</p>
+<p>(i2b，i2c，i2s，l2i，f2i，f2l，d2i，d2l，d2f)可能会导致转换结果产生不同的正负号、不同的数量级，数值丢失精度等</p>
+</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>浮点型转整型 NaN-&gt;0</li>
+<li>尽管可能发生上限溢出、下限溢出和精度丢失等情况，但是Java虚拟机中数值类型的窄化转换永远不可能导致虚拟机抛出运行时异常</li>
+</ol>
+</blockquote>
+<h4 id="对象创建与操作"><a href="#对象创建与操作" class="headerlink" title="对象创建与操作"></a>对象创建与操作</h4><ul>
+<li>创建类实例：new</li>
+<li>创建数组：newarray，anewarray，multianewarray</li>
+<li>访问类字段(static)和实例字段(!static)：getfield，putfield，getstatic，putstatic</li>
+<li>将一个数组元素加载到操作数栈：xaload</li>
+<li>将一个操作数栈值储存到数组元素中：xastore</li>
+<li>取数组长度的指令：arraylenth</li>
+<li>检查类实例类型的指令：instanceof，checkcast</li>
+</ul>
+<h4 id="控制转移指令"><a href="#控制转移指令" class="headerlink" title="控制转移指令"></a>控制转移指令</h4><ul>
+<li><p>条件分支</p>
+<p>ifeq，iflt，ifle，ifne，ifgt，ifge，ifnull，ifnonnull，if_icmpeq，if_icmpne，if_icmplt，if_icmpgt，if_icmple，if_icmpge，if_acmpeq和if_acmpne</p>
+</li>
+<li><p>复合条件分支</p>
+<p>tableswitch，lookupswitch</p>
+</li>
+<li><p>无条件分支</p>
+<p>goto，goto_w，jsr，jsr_w，ret</p>
+</li>
+</ul>
+<blockquote>
+<p>各种类型的比较最终都会转化为int类型的比较操作：</p>
+<p>boolean类型、byte类型、char类型和short类型的条件分支比较操作，都使用int类型的比较指令来完成。而对于long类型、float类型和double类型的条件分支比较操作，则会先执行相应类型的比较运算指令，运算指令会返回一个整形值到操作数栈中，随后再执行int类型的条件分支比较操作来完成整个分支跳转</p>
+</blockquote>
+<h4 id="方法调用与返回指令"><a href="#方法调用与返回指令" class="headerlink" title="方法调用与返回指令"></a>方法调用与返回指令</h4><ul>
+<li><p>方法调用</p>
+<p>invokevirtual(调用对象的实例方法)；</p>
+<p>invokeinterface(调用接口方法-&gt;找到实现接口的对象-&gt;找出适合的方法；</p>
+<p>invokespecial(调用特殊处理的实例方法：初始化方法 私有方法 父类方法)；</p>
+<p>invokestatic(调用类方法)</p>
+</li>
+<li><p>方法返回</p>
+<p>return(void)</p>
+<p>xreturn(返回类型x)</p>
+</li>
+</ul>
+<h4 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h4><p>在程序中显式抛出异常的操作会由athrow指令实现，除了这种情况，还有别的异常会在其他Java虚拟机指令检测到异常状况时由虚拟机自动抛出</p>
+<h4 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h4><p>Java虚拟机可以支持方法级的同步和方法内部一段指令序列的同步</p>
+<ul>
+<li><p>方法级同步</p>
+<p>隐式，无需通过字节码指令来控制</p>
+</li>
+<li><p>指令集序列同步</p>
+<p>通常是由Java语言的synchronized块来表示，java虚拟机的指令集有monitorenter和monitorexit两条指令来支持synchronized关键字的语义</p>
+</li>
+<li><p>结构化锁定</p>
+<p>方法调用期间每一个管程退出都与前面的管程进入相匹配的情形，持有与释放次数相等</p>
+</li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/JVM-Specification-notes-1/#comments" id="sourceId::2018/JVM-Specification-notes-1/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/API-Gateway-Safety/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    API 网关的安全
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/JVM-Instruction-Execution-Flow/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">初识JVM指令执行流程</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

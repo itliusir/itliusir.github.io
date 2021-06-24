@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>管程和信号量分析 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="TOP 带着问题来分析 管程和信号量区别 为什么 Mesa 模型的 wait() 支持超时参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="管程和信号量分析">
+<meta property="og:url" content="http://itliusir.com/2019/10-Monitor/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="TOP 带着问题来分析 管程和信号量区别 为什么 Mesa 模型的 wait() 支持超时参数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu.itliusir.com/mesa.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/hoare.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/brinch_hanson.png">
+<meta property="article:published_time" content="2019-10-01T15:48:00.000Z">
+<meta property="article:modified_time" content="2020-12-23T16:25:18.518Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="信号量">
+<meta property="article:tag" content="管程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu.itliusir.com/mesa.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                56
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                52
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-10-Monitor" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            管程和信号量分析
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2019/10-Monitor/">
+            <time datetime="2019-10-01T15:48:00.000Z" itemprop="datePublished">2019-10-01</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" rel="tag">信号量</a>, <a class="tag-link-link" href="/tags/%E7%AE%A1%E7%A8%8B/" rel="tag">管程</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="TOP-带着问题来分析"><a href="#TOP-带着问题来分析" class="headerlink" title="TOP 带着问题来分析"></a>TOP 带着问题来分析</h2><ol>
+<li>管程和信号量区别</li>
+<li>为什么 Mesa 模型的 wait() 支持超时参数</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="1-管程-Monitor"><a href="#1-管程-Monitor" class="headerlink" title="1. 管程(Monitor)"></a>1. 管程(Monitor)</h2><p>管程也被称为监视器，指的是通过管理共享变量以及对共享变量的操作过程，实现了在一个时间点，最多只有一个线程在执行(线程安全的，支持并发)。</p>
+<p>管程与信号量是等价的，信号量我们下面会有介绍，管程相比信号量来说，其隐蔽了同步的细节，更易于用户维护，而信号量的 PV 操作会大量分散到代码的地方，不易维护容易造成死锁，所以 Java 选择了管程(面向对象方法)。</p>
+<p>回到问题 <strong>TOP 1</strong> ，可以明白其区别主要是在面向程序员的维护与体验。</p>
+<p>我们来举一个场景，线程 T1 去操作管程中的共享数据，但是因为还不满足 “条件”(例如条件是队列不空)，这个时候 T1 入条件对应的等待队列；假设之后线程 T2 入队成功，满足了 T1 的 “条件”。这个时候 T2 是先唤醒 T1 再执行还是自己执行完再唤醒呢？</p>
+<p>针对这个场景，我们来看管程的三种模型：</p>
+<h3 id="1-1-Mesa-模型"><a href="#1-1-Mesa-模型" class="headerlink" title="1.1 Mesa 模型"></a>1.1 Mesa 模型</h3><p>Mesa 模型是现在广泛应用的模型，Java 管程也是参考的该模型。可以看到在处理以上场景时，也就是图中第 4 步，T1 线程被唤醒后会从 “条件” 等待队列转移到入口队列，T2 线程会继续执行，最后 T1 从入口队列出来继续执行。</p>
+<p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/mesa.png"><img src="http://qiniu.itliusir.com/mesa.png" alt="img"></a></p>
+<h3 id="1-2-Hoare-模型"><a href="#1-2-Hoare-模型" class="headerlink" title="1.2 Hoare 模型"></a>1.2 Hoare 模型</h3><p>与 Mesa 模型不同的是，Hoare 模型在处理这个场景时，同样在第 4 步是把 T2 线程放入一个 Signal 队列等待唤醒，T1 线程执行完会去 Signal 队列唤醒 T2(如果 Signal 队列为空才去入口队列调度)，T2 重新开始。</p>
+<p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/hoare.png"><img src="http://qiniu.itliusir.com/hoare.png" alt="img"></a></p>
+<h3 id="1-3-Brinch-Hanson-模型"><a href="#1-3-Brinch-Hanson-模型" class="headerlink" title="1.3 Brinch Hanson 模型"></a>1.3 Brinch Hanson 模型</h3><p>该模型仅允许线程完成(从 Monitor 退出时)发出信号唤醒，也即是第 4 步 T2 线程会一直执行完再去唤醒 T1 。</p>
+<p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/brinch_hanson.png"><img src="http://qiniu.itliusir.com/brinch_hanson.png" alt="img"></a></p>
+<p>三种模型中，第一种 Mesa 模型的 wait() 是支持超时参数，因为 Mesa 模型中唤醒后进入的是入口等待队列，不一定执行，而后两种模型唤醒后是会直接调度的，所以不需要超时时间。</p>
+<p>回到问题 <strong>TOP 2</strong> ，可以明白其参数的意义。</p>
+<p>相对来说Hoare 模型增加了一个队列(类似优先队列)成本较高，Brinch Hanson 模型较为简单，而且唤醒对比 Mesa 模型保证能一定执行。</p>
+<p>对于 JAVA 层面的管程实现 AQS，可以参考后面几篇源码分析。</p>
+<h2 id="2-信号量-Semaphore"><a href="#2-信号量-Semaphore" class="headerlink" title="2. 信号量(Semaphore)"></a>2. 信号量(Semaphore)</h2><p>并发编程领域的大师 <em>Edsger Dijkstra</em> 提出了一种经典的解决同步不同执行线程问题的方法，这个方法是基于一种叫做 <strong>信号量</strong> 的特殊类型变量的。它由两种特殊的操作来处理，这两种操作称为 P 和 V。</p>
+<ul>
+<li><p><strong>P(s) 操作</strong></p>
+<p>P(s) 把共享变量(信号量) s 减 1，并且立即返回。如果 s 为 0，则挂起这个线程直到变成非0</p>
+</li>
+<li><p><strong>V(s) 操作</strong></p>
+<p>V(s) 把 s 加 1。如果有线程阻塞在 P 操作等待 s 变成非 0，V 操作会唤醒这些线程中的一个，然后把 s 减 1(P 操作)</p>
+</li>
+</ul>
+<p>P V 操作看起来很抽象，我们举个现实中采用信号量控制线程的例子，例如我们信号量设置的是2，也就是同时只允许2个线程处理，当第三个线程 T3 来的时候 T1、T2 还没处理完的情况下，T3 会阻塞到 T1 或 T2 执行完成并且通过 V 操作(加1，释放一个位置给别人)，这个时候 T3 进行 P操作(减一，把这个位置占用)。</p>
+<p>同样的如果s我们设置为1，则可以实现线程之间的互斥操作。</p>
+<p>关于 Java 版本的信号量实现可以参考后面几篇源码分析。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2019/10-Monitor/#comments" id="sourceId::2019/10-Monitor/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/11-Synchronized/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Synchronized 源码分析
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2019/07-LongAdder/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">LongAdder 源码分析</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

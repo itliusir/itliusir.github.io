@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Rest Notes-设计Web架构：问题与领悟 | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rest Notes-设计Web架构：问题与领悟">
+<meta property="og:url" content="http://itliusir.com/2018/Rest%20Notes-Designing%20Web%20Problems%20and%20Insights/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-04T15:30:00.000Z">
+<meta property="article:modified_time" content="2018-06-04T15:35:36.963Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="REST">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                56
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                52
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Rest Notes-Designing Web Problems and Insights" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Rest Notes-设计Web架构：问题与领悟
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/Rest%20Notes-Designing%20Web%20Problems%20and%20Insights/">
+            <time datetime="2018-06-04T15:30:00.000Z" itemprop="datePublished">2018-06-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/REST/" rel="tag">REST</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: 本文介绍Web架构的需求，以及作者在对Web通信协议做设计评估遇到的问题，根据上篇文章的调查和分类获得的领悟推导出了开发某种架构风格的方法，用来改进现代Web架构的设计工作提供指导</p>
+<span id="more"></span>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h2><h2 id="设计Web架构：问题与领悟"><a href="#设计Web架构：问题与领悟" class="headerlink" title="设计Web架构：问题与领悟"></a>设计Web架构：问题与领悟</h2><h3 id="Web应用领域的需求"><a href="#Web应用领域的需求" class="headerlink" title="Web应用领域的需求"></a>Web应用领域的需求</h3><p>Berners-Lee(Web之父)写到：“Web’s major goal was to be a shared information space<br>through which people and machines could communicate”，意思是Web的主要目的是旨在形成一种共享的信息空间(链接众多文档的广域的超媒体信息检索系统)，人类和机器都可以通过它来进行沟通</p>
+<p>这个系统最初期望的用户是分散在世界各地的、通过互联网连接的各个大学和政府的高能物理研究实验室。他们的机器是不同种类的终端、工作站、服务器和超级计算机的大杂烩，所以他们的操作系统和文件格式也是一个大杂烩。构建一个这样的系统所面临的挑战是为这些信息文档提供统一的接口，使得这些信息可以在众多的平台上进行交流通信，以及当新的设备接入到这个系统时，可以进行增量的部署。</p>
+<h4 id="低门槛"><a href="#低门槛" class="headerlink" title="低门槛"></a>低门槛</h4><p>参与创建和构造信息是自愿的，因此采用“低门槛”策略是十分必要的。</p>
+<p>选择<a target="_blank" rel="noopener" href="http://line-mode.cern.ch/www/hypertext/WWW/WhatIs.html">超媒体</a>作为用户界面是因为其简单性和通用性。</p>
+<ol>
+<li>无论信息来源何处都能使用相同的界面进行呈现</li>
+<li>链接的关系可以形成一个关系“网状结构”</li>
+</ol>
+<p>对于创作者而言，超媒体的创作语言也必须是简单的，能够使用现有的编辑工具来进行创建，无论是否连接到互联网，都可以使用此超媒体格式来保存创作的内容。</p>
+<p>对于应用开发者而言，简单性也是一个目标，因此所有的协议都被定义为文本格式，以方便对通信进行观察和测试。</p>
+<h4 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h4><p>简单性使得我们部署一个分布式系统的最初实现成为了可能，可扩展性使得我们避免了永远陷入已部署系统的局限之中。就像社会的变化一样，一个系统如果想要像Web那么长寿就必须要做好应对变化的准备</p>
+<h4 id="分布式超媒体"><a href="#分布式超媒体" class="headerlink" title="分布式超媒体"></a>分布式超媒体</h4><p><a target="_blank" rel="noopener" href="http://line-mode.cern.ch/www/hypertext/WWW/WhatIs.html">超媒体</a>是由应用控制信息来定义的，这些信息内嵌在信息的表述之中。分布式超媒体系统允许在远程地点存储表达控制信息，因此分布式超媒体系统中的用户操作需要将大量的数据从其存储地移交到其使用地，所以Web的架构必须支持大粒度的数据移交。超媒体交互的可用性很容易影响到用户感知的性能（比如用户选择了一个链接，到链接的界面呈现之间的时间），因为Web的交互的信息是跨域整个互联网的，则Web的架构必须尽量的减少网络交互的次数以改善用户感知的性能。</p>
+<h4 id="互联网规模"><a href="#互联网规模" class="headerlink" title="互联网规模"></a>互联网规模</h4><p>Web旨在成为一个互联网规模的分布式超媒体系统，这意味着它的内涵远远不止仅仅是地理上的分布。互联网是跨越组织便捷互相连接的信息网络。信息服务的提供商必须能够有能力满足无法控制的<code>可伸缩性</code>和软件组件的<code>独立部署</code>两方面的要求</p>
+<ul>
+<li><p>可伸缩性</p>
+<p>无法控制的可伸缩性指的是架构元素可能会于其组织边界之外的元素进行通信，当它们遇到如下的情况时仍能正常运行：未曾预料到的负载、收到错误的数据或者恶意的数据等等</p>
+</li>
+<li><p>独立部署</p>
+<p>多个组织边界也意味着系统应该可以应对新旧组件的共存，而不妨碍新组件使用它们的新功能。同时现有的架构元素在设计的时候需要考虑到以后会添加新功能，旧的实现也必须能够方便的识别出来，从而把这些遗留的行为封装起来，不会对新元素造成不利影响。对于Web这样的系统来说，强制要求架构中的所有组件都整齐划一的来部署是不现实的事情</p>
+</li>
+</ul>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>尽管为Web的成功而欢欣鼓舞，但互联网开发者社区开始担心Web使用的快速增长率，因为最早的HTTP0.9是一个非常简单的协议，是为单个请求响应设计的，新的站点越来越多的采用了图片作为网页的一部分，导致出现了不同的浏览模式。此时的Web架构已经无法满足这样的需求了，随后在IETF形成了三个工作小组HTTP,URI和HTML。<strong>这些工作组的主要任务是定义现有架构性通信的子集（早期Web中普遍的一致的实现），然后指定一组规范来解决这些问题。这些工作带来的挑战是如何把一组新功能引入到一个已经被广泛部署的系统中；以及如何确保新功能的引入不会对那些使得Web成功的架构属性带来不利的影响甚至是毁灭性的影响</strong></p>
+<h4 id="解决之道"><a href="#解决之道" class="headerlink" title="解决之道"></a>解决之道</h4><ol>
+<li>识别出一组存在于早期Web架构(HTTP1.0和HTTP1.1之前)中的架构约束，这些架构约束负责产生出所期待的架构属性</li>
+<li>识别出在互联网规模的分布式超媒体系统中所期待的架构属性，然后选择额外的会产生那些架构属性的架构风格，将它们与早期的Web架构中的约束相结合，形成一种新的风格</li>
+<li>使用新的架构风格作为指导，对修改和扩展Web架构的提议进行评估，看其是否存在冲突，如果存在冲突则表明这个提议违反了一个或多个Web背后的设计原则</li>
+</ol>
+<p>上面的1、2、3实际上是一种无顺序的、迭代的方式来应用的</p>
+<p>修正后的协议规范是根据”<strong>新的架构风格</strong>“的指导来编写的，最后通过修订后规范，开发实现它，然后进行部署。这些解决之道是源自于Fielding博士直接参与了Apache Http服务器的项目和libwww-perl客户端库，以及为网景的Navigator、Lynx和微软的IE的开发者提供建议得到的经验</p>
+<blockquote>
+<p>下篇文章就要介绍上面的“新的架构风格”(REST)推导过程</p>
+</blockquote>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2018/Rest%20Notes-Designing%20Web%20Problems%20and%20Insights/#comments" id="sourceId::2018/Rest Notes-Designing Web Problems and Insights/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/Rest%20Notes-Representational%20State%20Transfer(REST)/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Rest Notes-表述性状态移交(Representational State Transfer ,REST)
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Rest Notes-基于网络应用的架构风格</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

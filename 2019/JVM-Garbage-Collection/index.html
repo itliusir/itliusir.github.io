@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JVM Garbage Collection | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要: gc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM Garbage Collection">
+<meta property="og:url" content="http://itliusir.com/2019/JVM-Garbage-Collection/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要: gc">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu.itliusir.com/JVM_1.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/JVM_2.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/JVM_3.png">
+<meta property="article:published_time" content="2019-03-08T06:43:00.000Z">
+<meta property="article:modified_time" content="2020-12-23T16:27:39.686Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="GC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu.itliusir.com/JVM_1.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                56
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                52
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-JVM-Garbage-Collection" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            JVM Garbage Collection
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2019/JVM-Garbage-Collection/">
+            <time datetime="2019-03-08T06:43:00.000Z" itemprop="datePublished">2019-03-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/JVM/">JVM</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/GC/" rel="tag">GC</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要: gc</p>
+<span id="more"></span>
+
+<h1 id="JVM-垃圾回收"><a href="#JVM-垃圾回收" class="headerlink" title="JVM 垃圾回收"></a>JVM 垃圾回收</h1><h2 id="Jvm-内存结构"><a href="#Jvm-内存结构" class="headerlink" title="Jvm 内存结构"></a>Jvm 内存结构</h2><h3 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h3><p>程序运行期间会使用到的运行时数据区</p>
+<h4 id="PC寄存器"><a href="#PC寄存器" class="headerlink" title="PC寄存器"></a>PC寄存器</h4><p>每一个虚拟机线程都有自己的PC寄存器，保存Java虚拟机正在执行的字节码指令的地址，如果该方法是 native 的，那 PC 寄存器的值是 undefined</p>
+<h4 id="Java-虚拟机栈"><a href="#Java-虚拟机栈" class="headerlink" title="Java 虚拟机栈"></a>Java 虚拟机栈</h4><p>线程私有的，栈与线程同时创建，生命周期和线程是一样的。虚拟机栈描述的是 Java 方法执行的内存模型：每个方法在执行的同时都会创建一个<strong>栈帧</strong> ，用于<strong>存储局部变量表，操作数栈，动态链接，方法出口等信息</strong>。每个方法从开始调用到执行完成都对应着一个栈帧在虚拟机栈中入栈到出栈的过程</p>
+<h5 id="栈帧-Frame"><a href="#栈帧-Frame" class="headerlink" title="栈帧(Frame)"></a>栈帧(Frame)</h5><p>用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接、方法返回值和异常分派</p>
+<p>栈帧随着方法调用而创建，随着方法结束而销毁，无论方法是正常完成还是异常完成</p>
+<p>栈帧的存储空间分配在Java虚拟机栈</p>
+<p>每一个栈帧都有自己的局部变量表、操作数栈和指向当前方法所属的类的运行时常量池的引用</p>
+<p>栈帧容量的大小仅仅取决于Java虚拟机的实现和方法调用时可被分配的内存</p>
+<p>一条线程只有正在执行某个方法的栈帧是活动的，叫做当前栈帧，对应的方法叫当前方法，定义这个方法的类叫当前类。对局部变量表和操作数栈的各种操作，通常指的是当前栈帧进行的操作</p>
+<blockquote>
+<p>栈帧是线程本地私有的数据，不可能在一个栈帧之中引用另外一条线程的栈帧</p>
+<p>如果当前方法调用了其他方法，或者当前方法执行结束，那这个方法的栈帧就不再是当前栈帧了。当一个新的方法被调用，则会新建一个栈帧并成为当前栈帧，当方法返回时会将结果（当前新的栈帧）返回给上一个栈帧，当前栈帧丢弃，上一个栈帧重新成为当前栈帧。</p>
+</blockquote>
+<ul>
+<li><strong>局部变量表</strong></li>
+</ul>
+<p>长度由编译期决定，存储于类和接口的二进制表示之中，既通过方法的Code属性保存及提供给栈帧使用</p>
+<ul>
+<li>一个局部变量可以保存类型boolean、byte、char、short、float、reference和returnAddress的数据</li>
+<li>两个局部变量可以保存类型为long和double的数据</li>
+</ul>
+<p>当方法被调用时候，参数将会传递至从0开始的连续的局部变量表里。如果是实例方法被调用则第0个局部变量一定是this</p>
+<blockquote>
+<p>局部变量使用索引来进行定位访问，0-max</p>
+<p>long和double这种需要两个局部变量的类型，索引取最小的那个局部变量。</p>
+</blockquote>
+<ul>
+<li><strong>操作数栈</strong></li>
+</ul>
+<p>同局部变量表，长度由编译期决定，存储于类和接口的二进制表示之中，既通过方法的Code属性保存及提供给栈帧使用</p>
+<p>操作数栈所属的栈帧在刚刚被创建的时候，操作数栈是空的。</p>
+<p>Java虚拟机提供一些字节码指令来从局部变量表或者对象实例的字段中复制常量或变量值到操作数栈中，也提供了一些指令用于从操作数栈取走数据、操作数据和把操作结果重新入栈。在方法调用的时候，操作数栈也用来准备调用方法的参数以及接收方法返回结果，例子参考<a href="http://itliusir.com/2018/JVM-Instruction-Execution-Flow/">初识jvm指令执行流程</a></p>
+<blockquote>
+<p>一个long或者double类型的数据会占用两个单位的栈深度，其他数据类型则会占用一个单位深度</p>
+</blockquote>
+<ul>
+<li><strong>动态链接</strong></li>
+</ul>
+<p>在Class文件里面，描述一个方法调用了其他方法，或者访问其成员变量是通过符号引用来表示的，动态链接的作用就是将这些符号引用所表示的方法转换为实际方法的直接引用</p>
+<p>类加载的过程中将要解析掉尚未被解析的符号引用，并且将变量访问转化为访问这些变量的存储结构所在的运行时内存位置的正确偏移量</p>
+<blockquote>
+<p>由于动态链接的存在，通过晚期绑定（Late Binding）使用的其他类的方法和变量在发生变化时，将不会对调用它们的方法构成影响</p>
+</blockquote>
+<h4 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h4><p>可供各条线程共享的运行时内存区域，也是供所有类实例和数组对象分配内存的区域</p>
+<p>Java堆在虚拟机启动的时候就被创建，它存储了被自动内存管理系统所管理的各种对象，这些受管理的对象无需，也无法显式地被销毁</p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>可供各条线程共享的运行时内存区域</p>
+<p>方法区在虚拟机启动的时候被创建，存储了每一个类的结构信息，例如<strong>运行时常量池</strong>(存放编译器生成的各种字面量和符号引用)、字段和方法数据、构造函数和普通方法的字节码内容、还包括一些在类、实例、接口初始化时用到的特殊方法</p>
+<blockquote>
+<p>虽然方法区是堆的逻辑组成部分，但是简单的虚拟机实现可以选择在这个区域不实现垃圾收集，在 JDK1.7 中是 Perm Space , 在 JDK1.8 中是Meta Space</p>
+</blockquote>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>每一个类或接口的常量池的运行时表示形式，它包括了若干种不同的常量：从编译期可知的数值字面量到必须运行期解析后才能获得的方法或字段引用</p>
+<blockquote>
+<p>每一个运行时常量池都分配在Java虚拟机的方法区之中，在类和接口被加载到虚拟机后，对应的运行时常量池就被创建出来</p>
+</blockquote>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>如果支持本地方法栈，则会在线程创建的时候按线程分配</p>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><h3 id="JVM-中内存结构图"><a href="#JVM-中内存结构图" class="headerlink" title="JVM 中内存结构图"></a>JVM 中内存结构图</h3><p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/JVM_1.png"><img src="http://qiniu.itliusir.com/JVM_1.png" alt="img"></a></p>
+<p><strong>堆区</strong> 又被划分为 新生代(Young) 和 老年代(Old)</p>
+<p><strong>Young</strong> 新生代，又被划分为 <strong>Eden区</strong> 和 <strong>S区</strong> ，默认情况下JVM采取的是一种动态分配的策略(<code>-XX:+UsePSAdaptiveSurvivorSizePolicy</code>)，根据对象生成的速率，以及S区使用情况动态调整Eden区和S区的比例，也可以使用参数固定此比例(<code>-XX:SurvivorRatio</code>) ,比例越低浪费的堆空间就越高(因为S区有一个区域一直为空，S区大了就会浪费一部分空间)，至于为什么会有S0与S1,可以参考下面的可达性分析清除方式，这里不过多解释</p>
+<p><strong>Metaspace</strong> 存放 Class 、Package 、Method 、Field 、字节码 、常量池 、符号引用等等</p>
+<p><strong>CCS</strong> 压缩类空间，只有启用压缩类短指针的时候才会存在。出现的原因：在堆里面分配每一个对象都会有一个指向自己 Class 的指针，64位的虚拟机每个指针长度是64位的，考虑性能原因我们可以把这个指针使用短指针来引用，使用32位的指针，如果使用短指针，其所引用的Class文件则会存放到CCS区，在 JVM 中是默认开启的 <code>UseCompressedClassPointers</code> ，默认1G大小，可以使用 <code>CompressedClassSpaceSize</code> 设置大小</p>
+<p><strong>CodeCache</strong> 存放JIT即时编译代码 、Native代码，可以使用 <code>-XX:InitialCodeCacheSize</code> <code>-XX:ReservedCodeCacheSize</code> 设置初始和最大大小</p>
+<blockquote>
+<p>需要注意的是在我们调用 new 指令时，它会在Eden区划出一块作为存储对象的内存，由于堆空间是共享的(参考上文中 Jvm的内存结构)，所以在划空间时候是需要进行同步的，JVM的解决办法是为每一个线程分配一段连续的内存作为线程私有的TLAB(Thread Local Allocation Buffer) ，并且只允许该线程拥有该部分内存，该技术对应参数(<code>-XX:+UseTLAB</code> ，默认开启)。</p>
+<p>同样在线程申请内存时候需要加锁，线程主要维护两个指针，一个指向TLAB空余内存的起始Adress，一个指向TLAB末尾。而new的时候便可以通过 <code>bump the pointer</code> 来实现，即将第一个指向起始位置的指针加上请求的字节数，当加上字节数后的值大于指向末尾的指针的值，则当前线程重新申请新的TLAB。当Eden区耗尽则会触发minor GC</p>
+</blockquote>
+<h3 id="分析垃圾的方法"><a href="#分析垃圾的方法" class="headerlink" title="分析垃圾的方法"></a>分析垃圾的方法</h3><blockquote>
+<p>无法被程序引用的在堆上已分配的内存空间称为垃圾</p>
+</blockquote>
+<h4 id="古老的引用计数法"><a href="#古老的引用计数法" class="headerlink" title="古老的引用计数法"></a>古老的引用计数法</h4><p>引用计数方式会为每个已分配的内存单元设置计数器，当计数器减少为0的时候意味着再无法被引用，将立即执行释放内存的动作。</p>
+<blockquote>
+<p><strong>引用计数</strong> 使用弱引用来解决循环引用带来的问题，弱引用不会影响计数器状态的引用，即使循环引用也不会阻止其被清除</p>
+</blockquote>
+<ul>
+<li><strong>问题</strong></li>
+</ul>
+<ol>
+<li>如果分配的内存单元原本就很小，这个时候计数器所占的内存占比就比较大。而垃圾回收方式只需要设置一个标记位置而已</li>
+<li>维护计数器的状态会占据整个程序执行时间中明显的部分，相当于将垃圾回收的消耗均摊到程序运行的整个过程</li>
+<li>计数器代码分布在用户代码各处不易维护</li>
+<li>当存在循环依赖时候内存释放比较复杂</li>
+</ol>
+<h4 id="主流的可达性分析法"><a href="#主流的可达性分析法" class="headerlink" title="主流的可达性分析法"></a>主流的可达性分析法</h4><p>基本思想是 <strong>标记-清除(mark-and-sweep)</strong> ，每隔一段时间或堆空间不足时候才进行一次垃圾回收，每次回收先将所有堆上分配的内存单元标记为 <strong>“不可到达”</strong> ，然后根据 <strong>GC Root</strong> 开始扫描，把可达到的内存单元标记为 <strong>“可以到达”</strong> 。最后回收标记为 <strong>“不可到达”</strong> 的内存单元。</p>
+<p><strong>GC Root:</strong> 类加载器、已启动且未停止的Thread、虚拟机栈的本地变量表、static成员、常量引用、本地方法栈的变量</p>
+<blockquote>
+<p><strong>标记-清除</strong> 并不会受循环引用的影响，如A与B循环依赖 但是当AB都 <strong>不可达</strong> 时则会将AB都进行回收。标记-清除垃圾回收同样也提供了弱引用，原因是为了解决可能是人为造成的内存泄露(无意长时间持有了对已经不需要的对象的引用，如private static修饰的类变量)</p>
+</blockquote>
+<ul>
+<li><strong>问题</strong></li>
+</ul>
+<ol>
+<li>在执行垃圾回收时候一般要把整个程序停下来并执行 <strong>标记-清除</strong> 的过程(不考虑并行回收) ，如果是实时系统一般无法承受这种因为标记过程过长而导致的时间消耗，其宁可选择引用计数均摊到整个运行过程中，分代式的垃圾回收一定程度上缓解了这个问题(例如java 虚拟机新生代与老年代的回收) ，但并没有根除消耗高峰的问题</li>
+<li>最需要垃圾回收时(堆内存已经快分配尽了，但已分配也就是需要标记的有很多)，它运行效果却最差(需要大量时间来标记，实际释放的却未必很多)</li>
+<li><strong>标记-清除</strong> 有两种实现思路，<strong>保守式</strong> 与 <strong>准确式</strong> ，<strong>保守式</strong> 不需要知道内存的具体布局形式，会把所有看上去像指针的数值看作指针并纳入标记计算中； <strong>准确式</strong> 则要求运行时系统清楚的了解内存的布局，能够分辨指针并只标记指针。前者不够准确，后者则需要消耗更多的内存和时间</li>
+</ol>
+<ul>
+<li><strong>清除的方式</strong></li>
+</ul>
+<ol>
+<li><p><strong>直接清除</strong> 把死亡对象所占据的内存标记为空闲内存，新建对象需要内存则从空闲内存中划分</p>
+<blockquote>
+<p><strong>缺点：</strong> 非连续内存空间分配效率低，并且会造成内存碎片，体现在现实中就是内存不够分配提前GC</p>
+</blockquote>
+</li>
+<li><p><strong>清除完进行压缩</strong> 在清除完将存活对象聚集到内存区域的起始位置，保证内存空间是连续的</p>
+<blockquote>
+<p><strong>缺点：</strong> 压缩算法的开销</p>
+</blockquote>
+</li>
+<li><p><strong>清除完进行复制再进行清理</strong> 首先把内存区域分为两部分，用指针from来维护之前需要分配内存的内存区域，在清除完将存活对象复制到to指针维护的内 存区域中，然后清理掉from区，最后重新交换from指针与to指针的内容</p>
+<blockquote>
+<p><strong>缺点：</strong> 内存空间使用效率极低，只有50%</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/JVM_2.png"><img src="http://qiniu.itliusir.com/JVM_2.png" alt="img"></a></p>
+</li>
+</ol>
+<p>现代垃圾回收器会综合上述几种清除方式，根据不同场景选出最合适的方式，例如JVM中会频繁进行Eden区回收，此时则采用复制方式，这样的原因是理想情况下清除垃圾后Eden区的对象基本都死亡了，需要复制的数据很少，使用复制算法效果很好。</p>
+<h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><p>如果老年代中的对象引用新生代的对象，在使用可达性分析标记存活对象的时候我们就需要扫描老年代。为了不做耗时较久的全堆扫描，HotSpot 的解决方案是 <code>Card Table</code> ，该技术将堆划分为一个个大小为512字节的 <code>Card</code> ，然后维护了一个 <code>Table</code> ，用来存储每张 <code>Card</code> 的一个标识位，这个标识位代表是否可能存在指向新生代对象的引用，若存在则认为这是一个脏的 <code>Card</code> 。则在新生代 Minor GC 时则不需要扫描整个老年代，而是寻找脏的 <code>Card</code> 将其中的对象加入到 Minor GC 的 GC Root 中，完成扫描则将所有标识位清空</p>
+<h3 id="对象分配"><a href="#对象分配" class="headerlink" title="对象分配"></a>对象分配</h3><ol>
+<li>对象优先在Eden区分配</li>
+<li>大对象直接进入老年代，可以通过参数( <code>-XX:PretenureSizeThreshold</code> )设置大对象的临界值，默认0，表示没有最大值</li>
+<li>每次S区进行复制算法的时候都会被记录下来，如果一个对象复制次数为 15 (可通过参数 <code>-XX:MaxTenuringThreshold</code> 设置 )，则会进入老年代</li>
+<li>在第3条的基础上会和 S 区存活对象在50%比例下(可通过参数 <code>-XX:TargetSurvivorRatio</code> 设置比例)的平均复制次数取一个最小值，达到这个值则会进入老年代</li>
+</ol>
+<blockquote>
+<p>可通过参数 (-XX:+PrintTenuringDistribution) 打印 Minor GC 后存活对象的年龄分布情况</p>
+</blockquote>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h3 id="串行收集器Serial"><a href="#串行收集器Serial" class="headerlink" title="串行收集器Serial"></a>串行收集器Serial</h3><h4 id="开启参数"><a href="#开启参数" class="headerlink" title="开启参数"></a>开启参数</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseSerialGC -XX:+UseSerialOldGC</span><br></pre></td></tr></table></figure>
+
+<h3 id="并行收集器Parallel"><a href="#并行收集器Parallel" class="headerlink" title="并行收集器Parallel"></a>并行收集器Parallel</h3><p>多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态。</p>
+<h4 id="开启参数-1"><a href="#开启参数-1" class="headerlink" title="开启参数"></a>开启参数</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseParallelGC -XX:+UseParallelOldGC</span><br><span class="line">-XX:ParallelGCThreads=&lt;N&gt; # 多少GC线程 默认CPU&gt;8 N=5/8 CPU&lt;8 N=CPU</span><br></pre></td></tr></table></figure>
+
+<h4 id="自适应调优"><a href="#自适应调优" class="headerlink" title="自适应调优"></a>自适应调优</h4><ul>
+<li><strong>-XX:MaxGCPauseMillis=</strong> 最大停顿时间</li>
+<li><strong>-XX:GCTimeRatio=</strong> 吞吐量(花在应用时间和花在垃圾收集的时间的占比) 默认99，垃圾收集时间=1/1+N</li>
+<li><strong>-Xmx=</strong> 最大堆的大小</li>
+</ul>
+<blockquote>
+<p>JVM会自动调整堆分区的大小来满足以上三个参数条件，当不够了就会变大，变化的比例同样可以通过JVM参数设置：</p>
+<ul>
+<li><code>-XX:YoungGenerationSizeIncrement=&lt;Y&gt;</code> 年轻代适应下大小百分比，默认值20</li>
+<li><code>-XX:TenuredGenerationSizeIncrement=&lt;T&gt;</code> 老年代适应下大小百分比，默认值20</li>
+<li><code>-XX:AdaptiveSizeDecrementScaleFactor=&lt;D&gt;</code> 变小的百分比，默认4</li>
+</ul>
+</blockquote>
+<h3 id="并发收集器Concurrent"><a href="#并发收集器Concurrent" class="headerlink" title="并发收集器Concurrent"></a>并发收集器Concurrent</h3><p>用户线程与垃圾收集线程同时执行(但不一定是并行的，可能会交替执行)，垃圾收集线程在执行的时候不会停顿用户程序的运行。适合对响应时间有要求的场景。本文只是简单介绍，之后会单独出对应文章</p>
+<h4 id="开启参数-2"><a href="#开启参数-2" class="headerlink" title="开启参数"></a>开启参数</h4><ul>
+<li><p><strong>CMS</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseConcMarkSweepGC -XX:+UseParNewGC</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>G1</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseG1GC</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="CMS-Concurrent-Mark-Sweep-收集器"><a href="#CMS-Concurrent-Mark-Sweep-收集器" class="headerlink" title="CMS (Concurrent Mark-Sweep)收集器"></a>CMS (Concurrent Mark-Sweep)收集器</h4><p>核心是 <strong>标记-清除</strong> ，优点是停顿时间最短，缺点是内存碎片，适用于Web</p>
+<ul>
+<li><strong>过程</strong><ul>
+<li><strong>初始标记(STW)</strong> 仅标记 GC Root 直接引用的对象</li>
+<li><strong>并发标记</strong> 从 GC Root 出发，标记可达对象</li>
+<li><strong>重新标记</strong> 标记 <strong>并发标记</strong> 过程中，变更的对象</li>
+<li><strong>并发清除</strong> 清除无用对象</li>
+</ul>
+</li>
+<li><strong>降级 Concurrent Mode Failure</strong><ul>
+<li>并发标记、清理过程、work thread 在运行，申请老年代可能失败</li>
+<li>失败后会 <strong>降级</strong> (临时启动 Serial Old 收集器)</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>缺点：</strong></p>
+<ol>
+<li><strong>CPU敏感</strong> 例如在微服务体系中的某个小服务，配置是2h，启动了一个垃圾回收线程，那么就只有一个 CPU 可以响应用户的请求</li>
+<li><strong>浮动垃圾</strong> 用户线程和垃圾回收线程同时工作，在GC时候，用户线程还是在做内存分配的</li>
+<li><strong>空间碎片</strong></li>
+</ol>
+</blockquote>
+<ul>
+<li><p><strong>相关参数</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-XX:ConcGCThreads # 并发的GC线程数 default: 0(jdk8)</span><br><span class="line">-XX:UseCMSCompactAtFullCollection # FullGC之后做压缩 default: true</span><br><span class="line">-XX:CMSFullGCsBeforeCompaction # 多少次FullGC之后压缩一次 default: 0</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction # Old区占用百分比后触发FullGC 该参数必须配合UseCMSInitiatingOccupancyOnly使用才有效 default: -1,负值表示使用CMSTriggerRatio-&gt;default: 80</span><br><span class="line">-XX:+UseCMSInitiatingOccupancyOnly # 是否开启CMSInitiatingOccupancyFraction占用率 default: false</span><br><span class="line">-XX:+CMSScavengeBeforeRemark # FullGC之前先做YGC 减少gc roots扫描的对象数，从而提高remark的效率 default: false</span><br><span class="line">-XX:+CMSClassUnloadingEnabled # 是否开启类卸载 如果开启 在full gc是会顺带扫描回收metaSpace/PermGen default: true(jdk8)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="G1-收集器"><a href="#G1-收集器" class="headerlink" title="G1 收集器"></a>G1 收集器</h4><p><strong>Region</strong> G1中的块的概念，</p>
+<p><strong>SATB Snapshot At The Beginning</strong> 通过Root Tracing 得到的，GC开始时候存活对象的快照</p>
+<p><strong>RSet</strong> 记录了其他 Region 中的对象引用本 Region 中对象的关系，属于 points-into 结构(谁引用了我的对象)</p>
+<ul>
+<li><p><strong>Young GC</strong></p>
+<p>与其他年轻代收集方式差不多，新对象进入 Eden 区，存活对象拷贝到S区，存活时间达到年龄阈值时，对象晋升到Old区</p>
+</li>
+<li><p><strong>Mixed GC</strong></p>
+<p>不是 Full GC，回收所有的 Young 和部分 Old</p>
+<blockquote>
+<p><strong>Global Concurrent Marking</strong></p>
+<ol>
+<li><strong>Initial Marking Phase(STW)：</strong> 标记 GC Root</li>
+<li><strong>Root region Scanning Phase：</strong> 标记存活 Region</li>
+<li><strong>Concurrent Marking Phase：</strong> 标记存活的对象</li>
+<li><strong>Remark Phase(STW)：</strong> 重新标记</li>
+<li><strong>Cleanup Phase：</strong> 部分STW</li>
+</ol>
+</blockquote>
+<p><strong>Mixed GC时机</strong></p>
+<ul>
+<li><code>InitiatingHeapOccupancyPercent</code> 堆占有率达到这个数值则触发 <strong>Global Concurrent Marking</strong> ，默认 45</li>
+<li><code>G1HeapWastePercent</code> 在 <strong>Global Concurrent Marking</strong> 结束之后，可以知道 Region 有多少空间要被回收，在每次YGC之后和再次发生 <strong>Mixed GC</strong> 之前，会检查垃圾占比是否达到此参数，达到了下次才会发生 <strong>Mixed GC</strong> ，默认 5(jdk8)</li>
+<li><code>G1MixedGCLiveThresholdPercent</code> Old 区的 region 被回收时候的存活对象占比需要达到多少，默认值 85</li>
+<li><code>G1MixedGCCountTarget</code> 一次 <strong>Global Concurrent Marking</strong> 之后，最多执行 <strong>Mixed GC</strong> 的次数，默认值 8</li>
+<li><code>G1OldCSetRegionThresholdPercent</code> 一次 <strong>Mixed GC</strong> 最多能回收Old区的 Region ，默认值 10</li>
+</ul>
+</li>
+<li><p><strong>常用参数</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-XX:G1HeapRegionSize=n # region的大小,1-32M,2048个 default: 0</span><br><span class="line">-XX:MaxGCPauseMillis=200 # 最大停顿时间</span><br><span class="line">-XX:G1NewSizePercent # Young区的最小占比 default: 5</span><br><span class="line">-XX:G1MaxNewSizePercent # Young区的最大占比 default: 60</span><br><span class="line">-XX:G1ReservePercent # 保留空间防止to space溢出 default: 10</span><br><span class="line">-XX:ParallelGCThreads=n # SWT线程数 default: 2(jdk linux)</span><br><span class="line">-XX:ConcGCThreads=n # 并发线程数=1/4*并行 default: 0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>G1中避免使用-Xmn、-XX:NewRatio等显式设置Young区的大小，会覆盖停顿时间目标</p>
+</blockquote>
+<h3 id="垃圾收集器搭配"><a href="#垃圾收集器搭配" class="headerlink" title="垃圾收集器搭配"></a>垃圾收集器搭配</h3><p><a target="_blank" rel="noopener" href="http://qiniu.itliusir.com/JVM_3.png"><img src="http://qiniu.itliusir.com/JVM_3.png" alt="img"></a></p>
+<p>实线的代表可以搭配使用的，例如 Old 区使用 CMS ，Young 区则可以使用 Serial、ParNew</p>
+<p>虚线的代表 CMS 可以退化为 SerialOld(可以通过压缩减少碎片、内存使用率增长较快则降低触发FullGC 阈值来避免退化)</p>
+<h3 id="选择垃圾收集器"><a href="#选择垃圾收集器" class="headerlink" title="选择垃圾收集器"></a>选择垃圾收集器</h3><ul>
+<li><strong>优先调整堆的大小让服务器自己来选择</strong></li>
+<li><strong>如果内存小于100M，使用串行收集器</strong></li>
+<li><strong>如果是单核，并且没有停顿时间的要求，串行或者JVM自己选</strong></li>
+<li><strong>如果允许停顿时间超过1秒，选择并行或者JVM自己选</strong></li>
+<li><strong>如果响应时间最重要，并且不能超过1秒，使用并发收集器</strong></li>
+</ul>
+<h2 id="可视化GC日志分析工具"><a href="#可视化GC日志分析工具" class="headerlink" title="可视化GC日志分析工具"></a>可视化GC日志分析工具</h2><h3 id="日志打印相关参数"><a href="#日志打印相关参数" class="headerlink" title="日志打印相关参数"></a>日志打印相关参数</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">-XX</span>:+PrintGCDetails <span class="comment"># 打印GC日志详情</span></span><br><span class="line"><span class="literal">-XX</span>:+PrintGCTimeStamps <span class="comment"># 打印时间戳</span></span><br><span class="line"><span class="literal">-XX</span>:+PrintGCDateStamps <span class="comment"># 打印日期戳</span></span><br><span class="line"><span class="literal">-Xloggc</span>:<span class="variable">$</span>&#123;PRO_NAME&#125;/logs/gc.log <span class="comment"># GC日志文件路径</span></span><br><span class="line"><span class="literal">-XX</span>:+PrintHeapAtGC <span class="comment"># 在每次GC的前后打印堆的使用量</span></span><br><span class="line"><span class="literal">-XX</span>:+PrintTenuringDistribution <span class="comment"># 发生GC时候打印Young区 复制年龄信息</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="日志格式-CMS"><a href="#日志格式-CMS" class="headerlink" title="日志格式(CMS)"></a>日志格式(CMS)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">1. &#123;Heap before GC invocations=40 (full 0):</span><br><span class="line">1.1.  par new generation   total 120192K, used 116952K [0x00000000f0000000, 0x00000000f8000000, 0x00000000f8000000)</span><br><span class="line">1.2.   eden space 109312K, 100% used [0x00000000f0000000, 0x00000000f6ac0000, 0x00000000f6ac0000)</span><br><span class="line">1.3.   from space 10880K,  70% used [0x00000000f6ac0000, 0x00000000f7236058, 0x00000000f7560000)</span><br><span class="line">1.4.   to   space 10880K,   0% used [0x00000000f7560000, 0x00000000f7560000, 0x00000000f8000000)</span><br><span class="line">1.5.  concurrent mark-sweep generation total 131072K, used 103011K [0x00000000f8000000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">1.6.  Metaspace       used 92140K, capacity 94694K, committed 95104K, reserved 1132544K</span><br><span class="line">1.7.   class space    used 10753K, capacity 11309K, committed 11392K, reserved 1048576K</span><br><span class="line">2. 2019-01-24T13:37:49.590+0800: 33.245: [GC (Allocation Failure) 2019-01-24T13:37:49.590+0800: 33.245: [ParNew</span><br><span class="line">Desired survivor size 5570560 bytes, new threshold 1 (max 15)</span><br><span class="line">- age   1:    7451168 bytes,    7451168 total</span><br><span class="line">: 116952K-&gt;8689K(120192K), 0.0155957 secs] 219963K-&gt;115232K(251264K), 0.0156544 secs] [Times: user=0.03 sys=0.00, real=0.02 secs] </span><br><span class="line">3. Heap after GC invocations=41 (full 0):</span><br><span class="line">3.1.  par new generation   total 120192K, used 8689K [0x00000000f0000000, 0x00000000f8000000, 0x00000000f8000000)</span><br><span class="line">3.2.   eden space 109312K,   0% used [0x00000000f0000000, 0x00000000f0000000, 0x00000000f6ac0000)</span><br><span class="line">3.3.   from space 10880K,  79% used [0x00000000f7560000, 0x00000000f7ddc480, 0x00000000f8000000)</span><br><span class="line">3.4.   to   space 10880K,   0% used [0x00000000f6ac0000, 0x00000000f6ac0000, 0x00000000f7560000)</span><br><span class="line">3.5.  concurrent mark-sweep generation total 131072K, used 106543K [0x00000000f8000000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">3.6.  Metaspace       used 92140K, capacity 94694K, committed 95104K, reserved 1132544K</span><br><span class="line">3.7.   class space    used 10753K, capacity 11309K, committed 11392K, reserved 1048576K</span><br><span class="line">&#125;</span><br><span class="line">4. 2019-01-24T13:37:49.606+0800: 33.261: [GC (CMS Initial Mark) [1 CMS-initial-mark: 106543K(131072K)] 117412K(251264K), 0.0029414 secs] [Times: user=0.03 sys=0.00, real=0.00 secs] </span><br><span class="line">4.1. 2019-01-24T13:37:49.609+0800: 33.264: [CMS-concurrent-mark-start]</span><br><span class="line">4.2. 2019-01-24T13:37:49.707+0800: 33.362: [CMS-concurrent-mark: 0.096/0.098 secs] [Times: user=0.19 sys=0.00, real=0.10 secs] </span><br><span class="line">4.3. 2019-01-24T13:37:49.707+0800: 33.362: [CMS-concurrent-preclean-start]</span><br><span class="line">4.4. 2019-01-24T13:37:49.710+0800: 33.365: [CMS-concurrent-preclean: 0.003/0.003 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">4.5. 2019-01-24T13:37:49.710+0800: 33.365: [CMS-concurrent-abortable-preclean-start]</span><br><span class="line"># ... 省略 before after gc detail</span><br><span class="line">4.6. 2019-01-24T13:37:50.004+0800: 33.659: [GC (Allocation Failure) 2019-01-24T13:37:50.004+0800: 33.659: [ParNew</span><br><span class="line">Desired survivor size 5570560 bytes, new threshold 1 (max 15)</span><br><span class="line">- age   1:    5574000 bytes,    5574000 total</span><br><span class="line">: 118001K-&gt;6415K(120192K), 0.0127596 secs] 224544K-&gt;114652K(251264K), 0.0128342 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]</span><br><span class="line">4.7. 2019-01-24T13:37:50.336+0800: 33.991: [CMS-concurrent-abortable-preclean: 0.411/0.626 secs] [Times: user=1.02 sys=0.09, real=0.63 secs] </span><br><span class="line">4.8. 2019-01-24T13:37:50.336+0800: 33.991: [GC (CMS Final Remark) [YG occupancy: 105816 K (120192 K)]2019-01-24T13:37:50.336+0800: 33.991: [Rescan (parallel) , 0.0214420 secs]2019-01-24T13:37:50.357+0800: 34.013: [weak refs processing, 0.0013584 secs]2019-01-24T13:37:50.359+0800: 34.014: [class unloading, 0.0203511 secs]2019-01-24T13:37:50.379+0800: 34.035: [scrub symbol table, 0.0189360 secs]2019-01-24T13:37:50.398+0800: 34.054: [scrub string table, 0.0010303 secs][1 CMS-remark: 108237K(131072K)] 214053K(251264K), 0.0639900 secs] [Times: user=0.08 sys=0.00, real=0.06 secs] </span><br><span class="line">4.9. 2019-01-24T13:37:50.400+0800: 34.055: [CMS-concurrent-sweep-start]</span><br><span class="line"># ...</span><br><span class="line">5.0. 2019-01-24T13:37:50.443+0800: 34.098: [CMS-concurrent-reset-start]</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志详解"><a href="#日志详解" class="headerlink" title="日志详解"></a>日志详解</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 中括号的内容是内存地址</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1. GC前堆的占用情况</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.1. 年轻代总大小 120192K，已用 116952K (f8000000-f0000000 = 134217728/1024 = 131072-total(120192)=10880)，即年轻代中的s区实际上是有一个大小为10880的空间是浪费的</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.2. eden区使用情况，使用率100%，大小 109312K(f6ac0000-f0000000=111935488/1024=109312)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.3. s-from区使用情况，使用率70%，大小 10880K，(f7236058-f6ac0000=7823448/1024 = 7640) /10880=70%</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.4. s-to区使用情况，使用率0%，大小 10880K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.5. 老年代使用情况，大小 131072K，使用 103011K，占比78.6%</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.6. 元数据空间使用情况(持久代小 94694K，使用 92140K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1.7. 元数据空间中类占用的空间情况，大小 11309K，使用 10753K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 新生代回收，从109312K减少至10880K，新分配了20192k 整个内存空间从109312K减少至19172K，总内存空间分配了251264K，耗时0.032s左右，年龄是1；[Times: user=0.05 sys=0.02, real=0.03 secs] 可以看到user+sys(进程实际消耗的CPU时间)&gt;real(调用从开始到结束的实际持续时间)，说明我们是多个cpu执行</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. GC后堆的占用情况 invocations=41 指的是已经进行41次gc</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3.1. 年轻代总大小 120192K，已用 8689K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3.2. eden区使用情况，使用率0%，大小 109312K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3.3. s-from区使用情况，使用率79%，大小 10880K，(f7ddc480-f7560000=8897664/1024 = 8689) /10880=79.8%</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3.4. s-to区使用情况，使用率0%，大小 10880K</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3.5. 老年代使用情况，大小 131072K，使用 106543K，占比81.3%</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 由-XX:CMSInitiatingOccupancyFraction参数默认80%可知，old区占比已经大于阈值，将要进行full-gc，此阶段是初始标记阶段，只是标记一下GC Roots能直接关联的对象，是STW的</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.1&amp;4.2. 并发标记阶段，和用户线程并发执行，主要作用是标记可达的对象</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.3&amp;4.4. 预清理阶段</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.5&amp;4.7. 此阶段的目的是使cms gc更加可控一些，作用也是执行一些预清理，以减少Rescan阶段造成应用暂停的时间</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.6. 先执行一次ParNew GC</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.8. 重新扫描标记阶段因用户线程继续运作而导致的变动对象，是STW的</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4.9. 并发清理</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 5.0. 重置线程参数</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://gceasy.io/">GCeasy</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chewiebug/GCViewer">GCViewer</a></li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2019/JVM-Garbage-Collection/#comments" id="sourceId::2019/JVM-Garbage-Collection/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/04-Unsafe/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Unsafe 源码分析
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2019/JVM-Monitor/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">JVM Monitor</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

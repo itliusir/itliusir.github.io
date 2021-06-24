@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://itliusir.com/2020/paper-leveldb/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Spring%20Boot-Spring%20Event/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Spring%20Boot-AutoConfiguration/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/javase-Method-invoke/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/jvm-JMM/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/javase-CAS/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/JVM-Specification-notes-2/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/JVM-Param/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/JVM-Monitor/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/JVM-Garbage-Collection/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/10-Monitor/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/11-Synchronized/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/2019-%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/18-Thread/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/paper-chubby/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/20-ThreadPoolExecutor/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/19-ThreadLocal/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/17-DelayQueue/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/16-ConcurrentLinkedQueue/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/15-ArrayBlockingQueue/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2020/13-CopyOnWriteArrayList/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/12-AbstractQueuedSynchronizer/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/07-LongAdder/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/06-AtomicStampedReference/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/05-AtomicInteger/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/14-ConcurrentHashMap/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/02-LinkedList/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/01-ArrayList/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/03-HashMap/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2019/04-Unsafe/</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/2018%20Annual-Summary/</loc>
+    
+    <lastmod>2018-12-28</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Spring-Study%20IOC2/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/SpringCloud-Netflix/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-REST%20Architectural%20Views/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Representational%20State%20Transfer(REST)/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2017/JVM-MAT/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-storage/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-namespace/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-introduction/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-architecture/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Data-Structure-StackApply1/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/database-redis-cluster-spec/</loc>
+    
+    <lastmod>2018-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/API-Gateway-Safety/</loc>
+    
+    <lastmod>2018-10-22</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Spring-Study%20IOC/</loc>
+    
+    <lastmod>2018-09-27</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Docker%20Notes-cgroups/</loc>
+    
+    <lastmod>2018-07-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Experience%20and%20Evaluation3/</loc>
+    
+    <lastmod>2018-06-10</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Experience%20and%20Evaluation1/</loc>
+    
+    <lastmod>2018-06-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Experience%20and%20Evaluation2/</loc>
+    
+    <lastmod>2018-06-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-REST%20Elements/</loc>
+    
+    <lastmod>2018-06-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Designing%20Web%20Problems%20and%20Insights/</loc>
+    
+    <lastmod>2018-06-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture%20Styles/</loc>
+    
+    <lastmod>2018-06-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Web%20Based%20Architecture/</loc>
+    
+    <lastmod>2018-06-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/Rest%20Notes-Software%20Architecture/</loc>
+    
+    <lastmod>2018-06-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/JVM-Specification-notes-1/</loc>
+    
+    <lastmod>2018-05-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/JVM-Instruction-Execution-Flow/</loc>
+    
+    <lastmod>2018-05-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/2018/database-redis-cluster/</loc>
+    
+    <lastmod>2018-04-12</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/about/index.html</loc>
+    
+    <lastmod>2018-02-04</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>http://itliusir.com/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>http://itliusir.com/tags/LinkedList/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Deque/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ArrayList/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/remove/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/AtomicInteger/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/HashMap/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Unsafe/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/LongAdder/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/AtomicStampedReference/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E7%AE%A1%E7%A8%8B/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/AbstractQueuedSynchronizer/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/AQS/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/CopyOnWriteArrayList/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ArrayBlockingQueue/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ConcurrentLinkedQueue/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ThreadLocal/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/DelayQueue/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/join/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E7%BA%BF%E7%A8%8B/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/2019/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ThreadPoolExecutor/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Stack/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/docker%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/cgroups/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/dockerintro/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/namespace/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/docker-storage/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/JVM-Instruction/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/MAT/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/jvm-monitor/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/JVM-Spec/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/class/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/jvm-param/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/REST/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/autoconfig/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/event/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ioc/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Netflix/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Redis-Cluster-spec/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/CAS/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Method/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/invoke/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Redis-Cluster/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/JMM/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Chubby/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/LevelDB/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Synchronized/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/ConcurrentHashMap/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/GC/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>http://itliusir.com/categories/JavaSE/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/JVM/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%A1%86%E6%9E%B6/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/Paper/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%A1%86%E6%9E%B6/Springboot/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%A1%86%E6%9E%B6/Spring/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+</urlset>
