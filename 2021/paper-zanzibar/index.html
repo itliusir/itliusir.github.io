@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>谷歌统一权限系统Zanzibar | liusir|blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要:Google Zanzibar 权限服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谷歌统一权限系统Zanzibar">
+<meta property="og:url" content="http://itliusir.com/2021/paper-zanzibar/index.html">
+<meta property="og:site_name" content="liusir|blog">
+<meta property="og:description" content="摘要:Google Zanzibar 权限服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu.itliusir.com/auth_exm.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/auth_exm2.png">
+<meta property="og:image" content="http://qiniu.itliusir.com/ayth_exm3.png">
+<meta property="article:published_time" content="2021-06-24T04:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-24T06:22:55.189Z">
+<meta property="article:author" content="liusir">
+<meta property="article:tag" content="Zanzibar">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu.itliusir.com/auth_exm.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/avatar.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">liusir|blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">目录</a>
+                
+                    <a class="main-nav-link" href="/about">关于我</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">目录</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于我</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://itliusir.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">刘君君</h2>
+            <h3 id="title">越努力，越幸运</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>北京, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/itliusir">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                57
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                53
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/itliusir" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://gitee.com/itliusir" target="_blank" title="git" class=tooltip>
+                            <i class="fa fa-git"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:liugang@itliusir.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-paper-zanzibar" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            谷歌统一权限系统Zanzibar
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/paper-zanzibar/">
+            <time datetime="2021-06-24T04:00:00.000Z" itemprop="datePublished">2021-06-24</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Paper/">Paper</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Zanzibar/" rel="tag">Zanzibar</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>摘要:<br>Google Zanzibar 权限服务</p>
+<span id="more"></span>
+
+<h1 id="Zanzibar"><a href="#Zanzibar" class="headerlink" title="Zanzibar"></a>Zanzibar</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>Zanzibar 是一个用于存储和评估访问控制列表的全球系统。 Zanzibar 提供统一的数据模型和配置语言，用于表达来自 Google 数百个客户端服务的广泛访问控制策略，包括Calendar、Cloud、 Drive、Maps、Photos、YouTube。</p>
+<img src="http://qiniu.itliusir.com/auth_exm.png" alt="image-20210616114929969" style="zoom:50%;" />
+
+
+
+<ul>
+<li><p><strong>Consistent</strong></p>
+<p>保证用户操作ACL的因果顺序，提供外部一致性。</p>
+</li>
+<li><p><strong>Flexible</strong></p>
+<p>支持丰富的访问控制策略</p>
+</li>
+<li><p><strong>Scalable</strong></p>
+<p>数以万亿计的 ACL 条目，百万check qps</p>
+</li>
+<li><p><strong>Fast</strong></p>
+<p>95%请求小于10ms，99.9%请求小于100ms</p>
+</li>
+<li><p><strong>Available</strong></p>
+<p>过去 3 年 可用率99.999%</p>
+</li>
+</ul>
+<h2 id="2-模型"><a href="#2-模型" class="headerlink" title="2. 模型"></a>2. 模型</h2><h3 id="2-1-Relation-Tuples"><a href="#2-1-Relation-Tuples" class="headerlink" title="2.1 Relation Tuples"></a>2.1 Relation Tuples</h3><p>ACL 表示为关系元组的对象-用户或对象-对象关系的集合。组只是具有成员资格语义的 ACL。关系元组具有高效的二进制编码，我们使用方便的文本符号表示它们：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">⟨*tuple*⟩ ::= ⟨*object*⟩‘#’⟨*relation*⟩‘@’⟨*user*⟩ </span><br><span class="line"></span><br><span class="line">⟨*object*⟩ ::= ⟨*namespace*⟩‘:’⟨*object id*⟩ </span><br><span class="line"></span><br><span class="line">⟨*user*⟩ ::= ⟨*user id*⟩ | ⟨*userset*⟩ </span><br><span class="line"></span><br><span class="line">⟨*userset*⟩ ::= ⟨*object*⟩‘#’⟨*relation*⟩</span><br></pre></td></tr></table></figure>
+
+<p><strong>Simple Example</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user1 has access on dir1</span></span><br><span class="line">dir1#access@user1</span><br><span class="line"><span class="comment">// Have a look on the subjects concept page if you don&#x27;t know the empty relation.</span></span><br><span class="line">dir1#parent@(file1#)</span><br><span class="line"><span class="comment">// Everyone with access to dir1 has access to file1. This would probably be defined</span></span><br><span class="line"><span class="comment">// through a subject set rewrite that defines this inherited relation globally.</span></span><br><span class="line"><span class="comment">// In this example, we define this tuple explicitly.</span></span><br><span class="line">file1#access@(dir1#access)</span><br><span class="line"><span class="comment">// Direct access on file2 was granted.</span></span><br><span class="line">file2#access@user1</span><br><span class="line"><span class="comment">// user2 is owner of file2</span></span><br><span class="line">file2#owner@user2</span><br><span class="line"><span class="comment">// Owners of file2 have access to it; possibly defined through subject set rewrites.</span></span><br><span class="line">file2#access@(file2#owner)</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="http://qiniu.itliusir.com/auth_exm2.png" alt="image-20210617160709202" style="zoom:50%;" />
+
+
+
+<h3 id="2-2-Consistency-Model"><a href="#2-2-Consistency-Model" class="headerlink" title="2.2 Consistency Model"></a>2.2 Consistency Model</h3><table>
+<thead>
+<tr>
+<th>Example Tuple</th>
+<th>Semantics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>doc:readme#owner@10</td>
+<td>User 10 is an owner of doc:readme</td>
+</tr>
+<tr>
+<td>group:eng#member@11</td>
+<td>User 11 is a member of group:eng</td>
+</tr>
+<tr>
+<td>doc:readme#viewer@group:eng#member</td>
+<td>Members of group:eng are viewers of doc:readme</td>
+</tr>
+<tr>
+<td>doc:readme#parent@folder:A#…</td>
+<td>doc:readme is in folder:A</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-Relation-Configs"><a href="#2-3-Relation-Configs" class="headerlink" title="2.3 Relation Configs"></a>2.3 Relation Configs</h3><p>为了减少关系元组在表达关系上会出现很多条的关系组，客户端通过关系配置中的用户集重写规则来定义对象不可知的关系。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">name: &quot;doc&quot;</span><br><span class="line">relation &#123; name: &quot;owner&quot; &#125;</span><br><span class="line">relation &#123;</span><br><span class="line"> name: &quot;editor&quot;</span><br><span class="line"> userset_rewrite &#123;</span><br><span class="line">  union &#123;</span><br><span class="line">   child &#123; _this &#123;&#125; &#125;</span><br><span class="line">   child &#123; computed_userset &#123; relation: &quot;owner&quot; &#125; &#125;</span><br><span class="line">&#125;&#125;&#125;</span><br><span class="line">relation &#123;</span><br><span class="line"> name: &quot;viewer&quot;</span><br><span class="line"> userset_rewrite &#123;</span><br><span class="line">  union &#123;</span><br><span class="line">   child &#123; _this &#123;&#125; &#125;</span><br><span class="line">   child &#123; computed_userset &#123; relation: &quot;editor&quot; &#125; &#125;</span><br><span class="line">   child &#123; tuple_to_userset &#123;</span><br><span class="line">     tupleset &#123; relation: &quot;parent&quot; &#125;</span><br><span class="line">     computed_userset &#123;</span><br><span class="line">       object: $TUPLE_USERSET_OBJECT  # parent folder</span><br><span class="line">relation: &quot;viewer&quot; &#125;&#125;&#125;</span><br><span class="line">&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="child-节点"><a href="#child-节点" class="headerlink" title="child 节点"></a>child 节点</h4><ul>
+<li><p><code>_this</code> </p>
+<p>返回所有用户集合，默认行为</p>
+</li>
+<li><p><code>computed_userset</code> </p>
+<p>计算出一个新的用户集合，例如使 viewer 用户引用 editor 用户。</p>
+</li>
+<li><p><code>tuple_to_userset</code><br>从输入对象中获取匹配的关系组，例如匹配其父级文件夹并继承其 viewer 权限</p>
+</li>
+</ul>
+<blockquote>
+<p> 一个用户集表达式也可以由多个子表达式组成，通过并集、交集和排除等操作组合。</p>
+</blockquote>
+<h2 id="3-架构"><a href="#3-架构" class="headerlink" title="3. 架构"></a>3. 架构</h2><img src="http://qiniu.itliusir.com/ayth_exm3.png" alt="image-20210616233003291" style="zoom:50%;" />
+
+
+
+<h3 id="3-1-aclserver"><a href="#3-1-aclserver" class="headerlink" title="3.1 aclserver"></a>3.1 aclserver</h3><p>aclservers 是主要的服务器类型。它们被组织成集群并响应 Check、Read、Expand 和 Write 请求。请求到达集群中的任何服务器，并且该服务器根据需要将工作分发到集群中的其他服务器。这些服务器可以依次联系其他服务器以计算中间结果。初始服务器收集最终结果并将其返回给客户端。</p>
+<h3 id="3-2-watchserver"><a href="#3-2-watchserver" class="headerlink" title="3.2 watchserver"></a>3.2 watchserver</h3><p>watchservers 是一种特殊的服务器类型，可以响应 Watch 请求。他们跟踪更改日志并近乎实时地为客户端提供命名空间更改流。</p>
+<h3 id="3-2-Storage"><a href="#3-2-Storage" class="headerlink" title="3.2 Storage"></a>3.2 Storage</h3><ul>
+<li><p><strong>Namespace Config Storage</strong></p>
+<p>命名空间配置存储在具有两个表的数据库中。一张表包含配置并以命名空间 ID 为键。另一个是配置更新的更改日志.</p>
+</li>
+<li><p><strong>Relation Tuple Storage</strong></p>
+<p>每个命名空间的关系元组存储在一个单独的数据库中，其中每一行都由主键（分片 ID、对象 ID、关系、用户、提交时间戳）标识。主键的排序允许我们查找给定对象 ID 或（对象 ID，关系）对的所有关系元组。<br>我们的客户端根据其数据模式配置命名空间的分片。通常，分片 ID 仅由对象 ID 确定。在某些情况下，例如，当命名空间存储具有大量成员的组时，分片 ID 是根据对象 ID 和用户计算得出的。</p>
+</li>
+<li><p><strong>change log</strong></p>
+<p>用于存储 Watch API 的元组更新历史记录。主键是（更改日志分片 ID、时间戳、唯一更新 ID），其中每次写入随机选择一个更改日志分片。</p>
+</li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+</div>
+
+            
+    
+        <a href="http://itliusir.com/2021/paper-zanzibar/#comments" id="sourceId::2021/paper-zanzibar/" class="article-comment-link cy_cmt_count">评论</a>
+    
+
+        </footer>
+    </div>
+	
+		<! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   大吉大利 请我吃鸡！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 微信打赏图案 -->
+		<img src="http://qiniu.itliusir.com/weixinpay.png" alt="微信打赏">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+	
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2020/paper-leveldb/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">LevelDB</div>
+        </a>
+    
+</nav>
+
+
+    
+	
+</article>
+
+
+    
+    <section id="comments">
+    
+    </section>
+
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Paper/">Paper</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/REST/">REST</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/">SpringCloud</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/">Redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/Springboot/">Springboot</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/AQS/" style="font-size: 10px;">AQS</a> <a href="/tags/AbstractQueuedSynchronizer/" style="font-size: 10px;">AbstractQueuedSynchronizer</a> <a href="/tags/ArrayBlockingQueue/" style="font-size: 10px;">ArrayBlockingQueue</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/AtomicInteger/" style="font-size: 10px;">AtomicInteger</a> <a href="/tags/AtomicStampedReference/" style="font-size: 10px;">AtomicStampedReference</a> <a href="/tags/CAS/" style="font-size: 10px;">CAS</a> <a href="/tags/Chubby/" style="font-size: 10px;">Chubby</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/ConcurrentLinkedQueue/" style="font-size: 10px;">ConcurrentLinkedQueue</a> <a href="/tags/CopyOnWriteArrayList/" style="font-size: 10px;">CopyOnWriteArrayList</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/Deque/" style="font-size: 10px;">Deque</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/JVM-Instruction/" style="font-size: 10px;">JVM-Instruction</a> <a href="/tags/JVM-Spec/" style="font-size: 10px;">JVM-Spec</a> <a href="/tags/LevelDB/" style="font-size: 10px;">LevelDB</a> <a href="/tags/LinkedList/" style="font-size: 10px;">LinkedList</a> <a href="/tags/LongAdder/" style="font-size: 10px;">LongAdder</a> <a href="/tags/MAT/" style="font-size: 10px;">MAT</a> <a href="/tags/Method/" style="font-size: 10px;">Method</a> <a href="/tags/Netflix/" style="font-size: 10px;">Netflix</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/Redis-Cluster/" style="font-size: 10px;">Redis Cluster</a> <a href="/tags/Redis-Cluster-spec/" style="font-size: 10px;">Redis Cluster spec</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/Synchronized/" style="font-size: 10px;">Synchronized</a> <a href="/tags/ThreadLocal/" style="font-size: 10px;">ThreadLocal</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Unsafe/" style="font-size: 10px;">Unsafe</a> <a href="/tags/Zanzibar/" style="font-size: 10px;">Zanzibar</a> <a href="/tags/autoconfig/" style="font-size: 10px;">autoconfig</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/docker-storage/" style="font-size: 10px;">docker storage</a> <a href="/tags/dockerintro/" style="font-size: 10px;">dockerintro</a> <a href="/tags/docker%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">docker架构</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/invoke/" style="font-size: 10px;">invoke</a> <a href="/tags/ioc/" style="font-size: 15px;">ioc</a> <a href="/tags/join/" style="font-size: 10px;">join</a> <a href="/tags/jvm-monitor/" style="font-size: 10px;">jvm monitor</a> <a href="/tags/jvm-param/" style="font-size: 10px;">jvm param</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/remove/" style="font-size: 10px;">remove</a> <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">信号量</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E7%AE%A1%E7%A8%8B/" style="font-size: 10px;">管程</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">线程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">友情链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://lovestblog.cn/">你假笨</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.cnkirito.moe/">徐靖峰</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://blog.cassite.net/">囧神</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 liusir-君君博客 版权所有<br>
+            <p class="copyright">
+            	本站总访问量 <span id="busuanzi_value_site_pv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 次, 访客数 <span id="busuanzi_value_site_uv" style="color: #009688; font-weight: bold; font-size: 1.3em;"></span> 人次
+            </p>
+			京ICP备17012292号
+        </div>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script type="text/javascript" src="http://qiniu.itliusir.com/canvas-nest.min2.js"></script>
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

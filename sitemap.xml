@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://itliusir.com/2021/paper-zanzibar/</loc>
+    
+    <lastmod>2021-06-24</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/2020/paper-leveldb/</loc>
     
     <lastmod>2020-12-23</lastmod>
@@ -410,20 +417,6 @@
 
   
   <url>
-    <loc>http://itliusir.com/tags/LinkedList/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/tags/Deque/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/tags/ArrayList/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
@@ -438,7 +431,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/AtomicInteger/</loc>
+    <loc>http://itliusir.com/tags/LinkedList/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Deque/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -459,14 +459,7 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/LongAdder/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://itliusir.com/tags/AtomicStampedReference/</loc>
+    <loc>http://itliusir.com/tags/AtomicInteger/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -481,6 +474,20 @@
   
   <url>
     <loc>http://itliusir.com/tags/%E7%AE%A1%E7%A8%8B/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/AtomicStampedReference/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/LongAdder/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -522,13 +529,6 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/ThreadLocal/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/tags/DelayQueue/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
@@ -536,7 +536,7 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/%E6%80%BB%E7%BB%93/</loc>
+    <loc>http://itliusir.com/tags/ThreadLocal/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -557,7 +557,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/2019/</loc>
+    <loc>http://itliusir.com/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -571,14 +578,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/%E5%AE%89%E5%85%A8/</loc>
+    <loc>http://itliusir.com/tags/Stack/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/Stack/</loc>
+    <loc>http://itliusir.com/tags/2019/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -592,14 +599,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/cgroups/</loc>
+    <loc>http://itliusir.com/tags/dockerintro/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/dockerintro/</loc>
+    <loc>http://itliusir.com/tags/cgroups/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -627,13 +634,6 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/MAT/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/tags/jvm-monitor/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
@@ -641,7 +641,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/JVM-Spec/</loc>
+    <loc>http://itliusir.com/tags/MAT/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/jvm-param/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -655,7 +662,7 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/jvm-param/</loc>
+    <loc>http://itliusir.com/tags/JVM-Spec/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -676,6 +683,13 @@
   </url>
   
   <url>
+    <loc>http://itliusir.com/tags/ioc/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://itliusir.com/tags/event/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
@@ -683,7 +697,7 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/ioc/</loc>
+    <loc>http://itliusir.com/tags/Redis-Cluster-spec/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -697,7 +711,7 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/Redis-Cluster-spec/</loc>
+    <loc>http://itliusir.com/tags/Redis-Cluster/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -725,13 +739,6 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/tags/Redis-Cluster/</loc>
-    <lastmod>2021-06-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://itliusir.com/tags/JMM/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
@@ -747,6 +754,13 @@
   
   <url>
     <loc>http://itliusir.com/tags/LevelDB/</loc>
+    <lastmod>2021-06-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://itliusir.com/tags/Zanzibar/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -804,14 +818,14 @@
   </url>
   
   <url>
-    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/</loc>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/SpringCloud/</loc>
+    <loc>http://itliusir.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/Docker/</loc>
     <lastmod>2021-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
